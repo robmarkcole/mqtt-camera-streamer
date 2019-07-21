@@ -16,7 +16,6 @@ MQTT_TOPIC_CAMERA = "homie/mac_webcam/capture"
 MQTT_QOS = 1
 
 DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
-FPS = 2  # The frames per second to stream
 VIDEO_SOURCE = 0
 
 
@@ -28,7 +27,7 @@ def main():
 
     # Open camera and capture frame
     cap = cv2.VideoCapture(VIDEO_SOURCE)
-    time.sleep(2)  # Webcam light should come on
+    time.sleep(2)  # Webcam light should come on if using one
 
     try:
         while True:
@@ -41,7 +40,6 @@ def main():
             client.publish(MQTT_TOPIC_CAMERA, byte_array, qos=MQTT_QOS)
             now = get_now_string()
             print(f"published frame on topic: {MQTT_TOPIC_CAMERA} at {now}")
-            time.sleep(1 / FPS)
 
     except KeyboardInterrupt:
         print("Closing camera")
