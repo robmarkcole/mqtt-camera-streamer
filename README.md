@@ -49,7 +49,10 @@ $ (venv) python3 check-cameras.py
 ```
 
 ## MQTT
-Need an MQTT broker? If you have Docker installed [I recommend eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with `$ docker run --p 1883:1883 eclipse-mosquitto`
+Need an MQTT broker? If you have Docker installed I recommend [eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with 
+```
+$ docker run --p 1883:1883 -d eclipse-mosquitto`
+```
 
 ### References
 * [homie MQTT convention](https://homieiot.github.io/)
