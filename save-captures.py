@@ -1,7 +1,7 @@
 """
-Capture frames from a camera using openCV and publish on an MQTT topic.
+Subscribe and save camera images with timestamp.
 """
-import time
+
 import mqtt as mqtt
 # from PIL import Image
 
