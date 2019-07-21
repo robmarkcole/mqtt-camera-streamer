@@ -30,7 +30,7 @@ def main():
     print("Frame captured!")
     imgRGB = cv2.cvtColor(np_array, cv2.COLOR_BGR2RGB)  # Convert to RGB
     image = Image.fromarray(imgRGB)  #  PIL image
-    image.show() # for debugging
+    # image.show() # for debugging only
 
     ## Get the bytearray
     imgByteArr = io.BytesIO()
