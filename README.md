@@ -30,9 +30,15 @@ You can view the camera feed using [Home Assistant](https://www.home-assistant.i
 camera:
   - platform: mqtt
     topic: homie/mac_webcam/capture
+    name: mqtt_camera
+  - platform: mqtt
+    topic: homie/mac_webcam/capture/rotated
+    name: mqtt_camera_rotated
 ```
 
-
+<p align="center">
+<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/ha_usage.png" width="500">
+</p>
 
 ### References
 * [homie MQTT convention](https://homieiot.github.io/)
