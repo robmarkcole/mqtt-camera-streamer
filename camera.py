@@ -4,11 +4,10 @@ Capture frames from a camera using openCV and publish on an MQTT topic.
 import time
 import mqtt as mqtt
 
-#  from PIL import Image
-
 MQTT_BROKER = "192.168.1.164"
 MQTT_PORT = 1883
 MQTT_TOPIC = "homie/mac_webcam/capture"
+MQTT_QOS = 1
 
 
 def main():
@@ -22,7 +21,7 @@ def main():
     with open(image_file, "rb") as file:
         filecontent = file.read()
         byteArr = bytearray(filecontent)
-        client.publish(MQTT_TOPIC, byteArr, qos=1)
+        client.publish(MQTT_TOPIC, byteArr, qos=MQTT_QOS)
         print(f"published frame on topic: {MQTT_TOPIC}")
     print("completed")
 
