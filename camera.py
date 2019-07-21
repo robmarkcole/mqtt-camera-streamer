@@ -1,28 +1,27 @@
 """
 Capture frames from a camera using openCV and publish on an MQTT topic.
 """
-import datetime
 import time
-import io
 import sys
-import mqtt as mqtt
+
+from mqtt import get_mqtt_client
+from helpers import pil_image_to_byte_array, get_now_string
 
 from PIL import Image
 import cv2
 
 MQTT_BROKER = "192.168.1.164"
 MQTT_PORT = 1883
-MQTT_TOPIC = "homie/mac_webcam/capture"
+MQTT_TOPIC_CAMERA = "homie/mac_webcam/capture"
 MQTT_QOS = 1
 
 DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
-FPS = 1  # The frames per second to stream
+FPS = 2  # The frames per second to stream
 VIDEO_SOURCE = 0
 
 
 def main():
-    client = mqtt.get_mqtt_client()
-    # client.username_pw_set(username, password)
+    client = get_mqtt_client()
     client.connect(MQTT_BROKER, port=MQTT_PORT)
     time.sleep(4)  # Wait for connection setup to complete
     client.loop_start()
@@ -30,6 +29,7 @@ def main():
     # Open camera and capture frame
     cap = cv2.VideoCapture(VIDEO_SOURCE)
     time.sleep(2)  # Webcam light should come on
+
     try:
         while True:
             _, np_array = cap.read()  # capture a frame
@@ -37,15 +37,10 @@ def main():
             image = Image.fromarray(np_array_RGB)  #  PIL image
             # image.show() # for debugging only
 
-            ## Get the bytearray
-            imgByteArr = io.BytesIO()
-            image.save(imgByteArr, "PNG")
-            imgByteArr = imgByteArr.getvalue()
-
-            # Publish
-            client.publish(MQTT_TOPIC, imgByteArr, qos=MQTT_QOS)
-            date_string = datetime.datetime.now().strftime(DATETIME_STR_FORMAT)
-            print(f"published frame on topic: {MQTT_TOPIC} at {date_string}")
+            byte_array = pil_image_to_byte_array(image)
+            client.publish(MQTT_TOPIC_CAMERA, byte_array, qos=MQTT_QOS)
+            now = get_now_string()
+            print(f"published frame on topic: {MQTT_TOPIC_CAMERA} at {now}")
             time.sleep(1 / FPS)
 
     except KeyboardInterrupt:

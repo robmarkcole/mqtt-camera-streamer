@@ -1,12 +1,11 @@
 """
 Subscribes to the feed, does processing on the image, and forwards as new feed.
 """
-import datetime
-import time
-import io
-import mqtt as mqtt
 
-from PIL import Image
+import time
+
+from helpers import pil_image_to_byte_array, byte_array_to_pil_image, get_now_string
+from mqtt import get_mqtt_client
 
 MQTT_BROKER = "192.168.1.164"
 MQTT_PORT = 1883
@@ -14,34 +13,27 @@ MQTT_SUBSCRIBE_TOPIC = "homie/mac_webcam/capture"
 MQTT_PUBLISH_TOPIC = "homie/mac_webcam/capture/rotated"
 MQTT_QOS = 1
 
-DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
+
 ROTATE_ANGLE = 45  # Angle of rotation in degrees to apply
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    date_string = datetime.datetime.now().strftime(DATETIME_STR_FORMAT)
-    print("message on " + str(msg.topic) + f" at {date_string}")
+    now = get_now_string()
+    print("message on " + str(msg.topic) + f" at {now}")
     try:
-        image = Image.open(io.BytesIO(msg.payload))  # PIL image
-        image = image.rotate(ROTATE_ANGLE) # Apply rotation
+        image = byte_array_to_pil_image(msg.payload)  # PIL image
+        image = image.rotate(ROTATE_ANGLE)  # Apply rotation
+        byte_array = pil_image_to_byte_array(image)
 
-        ## Get the bytearray
-        imgByteArr = io.BytesIO()
-        image.save(imgByteArr, "PNG")
-        imgByteArr = imgByteArr.getvalue()
-
-        # Publish
-        client.publish(MQTT_PUBLISH_TOPIC, imgByteArr, qos=MQTT_QOS)
-        date_string = datetime.datetime.now().strftime(DATETIME_STR_FORMAT)
-        print(f"published frame on topic: {MQTT_PUBLISH_TOPIC} at {date_string}")
+        client.publish(MQTT_PUBLISH_TOPIC, byte_array, qos=MQTT_QOS)
+        print(f"published processed frame on topic: {MQTT_PUBLISH_TOPIC} at {now}")
 
     except Exception as exc:
         print(exc)
 
 
 def main():
-    client = mqtt.get_mqtt_client()
-    # client.username_pw_set(username, password)
+    client = get_mqtt_client()
     client.on_message = on_message
     client.connect(MQTT_BROKER, port=MQTT_PORT)
     client.subscribe(MQTT_SUBSCRIBE_TOPIC)
