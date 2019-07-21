@@ -23,7 +23,7 @@ def on_message(client, userdata, msg):
     print("message on " + str(msg.topic) + f" at {date_string}")
     try:
         image = Image.open(io.BytesIO(msg.payload))  # PIL image
-        image = image.rotate(45)
+        image = image.rotate(ROTATE_ANGLE) # Apply rotation
 
         ## Get the bytearray
         imgByteArr = io.BytesIO()
