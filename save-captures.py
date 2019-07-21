@@ -2,9 +2,10 @@
 Subscribe and save camera images with timestamp.
 """
 import time
+import io
 import mqtt as mqtt
 
-#  from PIL import Image
+from PIL import Image
 
 CAPTURES_DIRECTORY = "tests/captures/"
 
@@ -15,6 +16,13 @@ MQTT_TOPIC = "homie/mac_webcam/capture"
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print("on_message: " + str(msg.topic))
+    try:
+        image = Image.open(io.BytesIO(msg.payload))
+        save_file_path = CAPTURES_DIRECTORY + "test_output.jpg"
+        image.convert("RGB").save(save_file_path)
+        print(f"Saved {save_file_path}")
+    except Exception as exc:
+        print(exc)
 
 
 def main():
