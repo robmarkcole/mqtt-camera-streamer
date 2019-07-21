@@ -9,14 +9,19 @@ $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
 ```
 
-To save published frames to file first run `save-captures.py`:
-```
-$ (venv) python3 save-captures.py
-```
-
-To published frames over MQTT run `camera.py`:
+To publish camera frames over MQTT:
 ```
 $ (venv) python3 camera.py
+```
+
+(OPTIONAL) To process a camera stream:
+```
+$ (venv) python3 processing.py
+```
+
+(OPTIONAL) To save published frames to disk:
+```
+$ (venv) python3 save-captures.py
 ```
 
 ## Camera display
