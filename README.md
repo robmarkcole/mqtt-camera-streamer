@@ -43,6 +43,10 @@ camera:
 </p>
 
 ## Listing cameras
+If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the inbuilt webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`. To check which cameras are detected run:
+```
+$ (venv) python3 check-cameras.py
+```
 
 ## MQTT
 Need an MQTT broker? If you have Docker installed [I recommend eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with `$ docker run --p 1883:1883 eclipse-mosquitto`
