@@ -1,5 +1,5 @@
 # project specific directories
-tests/captures/
+# tests/captures/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
