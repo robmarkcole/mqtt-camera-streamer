@@ -4,15 +4,22 @@ Subscribes to the feed, does processing on the image, and forwards as new feed.
 
 import time
 
-from helpers import pil_image_to_byte_array, byte_array_to_pil_image, get_now_string
+from helpers import (
+    pil_image_to_byte_array,
+    byte_array_to_pil_image,
+    get_now_string,
+    get_config,
+)
 from mqtt import get_mqtt_client
 
-MQTT_BROKER = "192.168.1.164"
-MQTT_PORT = 1883
-MQTT_SUBSCRIBE_TOPIC = "homie/mac_webcam/capture"
-MQTT_PUBLISH_TOPIC = "homie/mac_webcam/capture/rotated"
-MQTT_QOS = 1
+CONFIG = get_config("config.yml")
 
+MQTT_BROKER = CONFIG["mqtt"]["broker"]
+MQTT_PORT = CONFIG["mqtt"]["port"]
+MQTT_QOS = CONFIG["mqtt"]["QOS"]
+
+MQTT_SUBSCRIBE_TOPIC = CONFIG["processing"]["subscribe_topic"]
+MQTT_PUBLISH_TOPIC = CONFIG["processing"]["publish_topic"]
 
 ROTATE_ANGLE = 45  # Angle of rotation in degrees to apply
 

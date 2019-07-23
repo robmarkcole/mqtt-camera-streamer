@@ -16,6 +16,10 @@ $ sudo apt install python3-opencv
 ```
 
 ## Usage
+Use the `config.yaml` file to setup the system and validate the config by running:
+```
+$ (venv) python3 validate_config.py
+```
 
 To publish camera frames over MQTT:
 ```
