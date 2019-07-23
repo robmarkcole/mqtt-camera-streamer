@@ -55,7 +55,7 @@ camera:
 ## Listing cameras
 If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the inbuilt webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`. To check which cameras are detected run:
 ```
-$ (venv) python3 check-cameras.py
+$ (venv) python3 scripts/check-cameras.py
 ```
 Alternatively you can pass a string to an MJPEG/RTSP stream, For example `"rtsp://admin:password@192.168.1.94:554/11" `
 
