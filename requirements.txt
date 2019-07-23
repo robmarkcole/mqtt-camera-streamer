@@ -2,3 +2,4 @@ black
 paho-mqtt
 opencv-python
 Pillow
+imutils

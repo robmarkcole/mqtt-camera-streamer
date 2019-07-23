@@ -1,12 +1,18 @@
 # mqtt-camera-streamer
-Working with camera streams can get quite complicated, and may force you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast working with MQTT is very straightforward, and is also very familiar to anyone with an interest in IOT. It is possible to setup a data processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed data downstream on another topic. The aim of this code is to publish frames from a camera feed to an MQTT topic, and demonstrate how this can be used to create an image processing pipeline that can be used in an IOT or home automation project. 
+Working with camera streams can get quite complicated, and may force you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast working with MQTT is very straightforward, and is also very familiar to anyone with an interest in IOT. It is possible to setup a data processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed data downstream on another topic. The aim of this code is to publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and demonstrate how this can be used to create a simple image processing pipeline that can be used in an IOT or home automation project. Note that this is not a high FPS (frames per second) solution, in practice I achieve around 1 FPS.
 
 ## Setup
-Use a venv to isolate your environment, and install the required dependencies:
+On linux/OSX/Windows use a venv to isolate your environment, and install the required dependencies:
 ```
 $ (base) python3 -m venv venv
 $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
+```
+
+#### Raspberry Pi
+Installing openCV on a pi using pip is challenging. Instead do not use a venv and install openCV system wide using: 
+```
+$ sudo apt install python3-opencv
 ```
 
 ## Usage
@@ -47,6 +53,7 @@ If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOU
 ```
 $ (venv) python3 check-cameras.py
 ```
+Alternatively you can pass a string to an MJPEG/RTSP stream, For example `"rtsp://admin:password@192.168.1.94:554/11" `
 
 ## MQTT
 Need an MQTT broker? If you have Docker installed I recommend [eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with 
