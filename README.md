@@ -18,22 +18,22 @@ $ sudo apt install python3-opencv
 ## Usage
 Use the `config.yaml` file to setup the system and validate the config by running:
 ```
-$ (venv) python3 validate_config.py
+$ (venv) python3 scripts/validate_config.py config/config.yml
 ```
 
 To publish camera frames over MQTT:
 ```
-$ (venv) python3 camera.py
+$ (venv) python3 scripts/camera.py
 ```
 
 (OPTIONAL) To process a camera stream (the example rotates the image):
 ```
-$ (venv) python3 processing.py
+$ (venv) python3 scripts/processing.py
 ```
 
 (OPTIONAL) To save frames to disk:
 ```
-$ (venv) python3 save-captures.py
+$ (venv) python3 scripts/save-captures.py
 ```
 
 ## Camera display

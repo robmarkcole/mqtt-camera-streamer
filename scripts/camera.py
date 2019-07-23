@@ -2,6 +2,7 @@
 Capture frames from a camera using openCV and publish on an MQTT topic.
 """
 import time
+import os
 
 from mqtt import get_mqtt_client
 from helpers import pil_image_to_byte_array, get_now_string, get_config
@@ -10,7 +11,8 @@ from imutils import opencv2matplotlib
 
 from PIL import Image
 
-CONFIG = get_config("config.yml")
+CONFIG_FILE_PATH = os.getenv('MQTT_CAMERA_CONFIG', './config/config.yml')
+CONFIG = get_config(CONFIG_FILE_PATH)
 
 MQTT_BROKER = CONFIG["mqtt"]["broker"]
 MQTT_PORT = CONFIG["mqtt"]["port"]
