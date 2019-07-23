@@ -7,7 +7,7 @@ import os
 from helpers import byte_array_to_pil_image, get_now_string, get_config
 from mqtt import get_mqtt_client
 
-CONFIG_FILE_PATH = os.getenv('MQTT_CAMERA_CONFIG', './config/config.yml')
+CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
 CONFIG = get_config(CONFIG_FILE_PATH)
 
 MQTT_BROKER = CONFIG["mqtt"]["broker"]

@@ -2,7 +2,7 @@ import os
 from helpers import get_config
 import pprint
 
-CONFIG_FILE_PATH = os.getenv('MQTT_CAMERA_CONFIG', './config/config.yml')
+CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
 
 try:
     CONFIG = get_config(CONFIG_FILE_PATH)
