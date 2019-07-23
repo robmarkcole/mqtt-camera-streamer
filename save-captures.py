@@ -3,15 +3,18 @@ Subscribe and save camera images with timestamp.
 """
 import time
 
-from helpers import byte_array_to_pil_image, get_now_string
+from helpers import byte_array_to_pil_image, get_now_string, get_config
 from mqtt import get_mqtt_client
 
-CAPTURES_DIRECTORY = "tests/captures/"
-DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
+CONFIG = get_config("config.yml")
 
-MQTT_BROKER = "192.168.1.164"
-MQTT_PORT = 1883
-MQTT_TOPIC = "homie/mac_webcam/capture"
+MQTT_BROKER = CONFIG["mqtt"]["broker"]
+MQTT_PORT = CONFIG["mqtt"]["port"]
+MQTT_QOS = CONFIG["mqtt"]["QOS"]
+
+SAVE_TOPIC = CONFIG["save-captures"]["mqtt_topic"]
+CAPTURES_DIRECTORY = CONFIG["save-captures"]["captures_directory"]
+DATETIME_STR_FORMAT = CONFIG["save-captures"]["datetime_str_format"]
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -34,7 +37,7 @@ def main():
     client = get_mqtt_client()
     client.on_message = on_message
     client.connect(MQTT_BROKER, port=MQTT_PORT)
-    client.subscribe(MQTT_TOPIC)
+    client.subscribe(SAVE_TOPIC)
     time.sleep(4)  # Wait for connection setup to complete
     client.loop_forever()
 

@@ -3,3 +3,4 @@ paho-mqtt
 opencv-python
 Pillow
 imutils
+PyYAML
