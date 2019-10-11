@@ -46,6 +46,9 @@ $ (venv) python3 scripts/save-captures.py
 ## Camera display
 The `viewer.py` script uses Streamlit to display the camera feed:
 
+<p align="center">
+<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/viewer_usage.png" width="500">
+</p>
 
 ## Home Assistant
 You can view the camera feed using [Home Assistant](https://www.home-assistant.io/) and configuring an [MQTT camera](https://www.home-assistant.io/components/camera.mqtt/). Add to your `configuration.yaml`:
