@@ -26,6 +26,13 @@ To publish camera frames over MQTT:
 $ (venv) python3 scripts/camera.py
 ```
 
+To view the camera frames:
+```
+$ (venv) streamlit run scripts/viewer.py
+```
+
+Note: if streamlit becomes unresponsive, `ctrl-z` to pause Streamlit then `kill -9 %%`
+
 (OPTIONAL) To process a camera stream (the example rotates the image):
 ```
 $ (venv) python3 scripts/processing.py
@@ -37,6 +44,10 @@ $ (venv) python3 scripts/save-captures.py
 ```
 
 ## Camera display
+The `viewer.py` script uses Streamlit to display the camera feed:
+
+
+## Home Assistant
 You can view the camera feed using [Home Assistant](https://www.home-assistant.io/) and configuring an [MQTT camera](https://www.home-assistant.io/components/camera.mqtt/). Add to your `configuration.yaml`:
 ```yaml
 camera:
