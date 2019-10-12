@@ -14,5 +14,5 @@ processing:
 
 save-captures:
   mqtt_topic: homie/mac_webcam/capture
-  captures_directory: /Users/robincole/data/captures
+  captures_directory: captures/
   datetime_str_format: "%Y-%m-%d_%H:%M:%S.%f"

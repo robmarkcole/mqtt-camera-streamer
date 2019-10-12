@@ -12,6 +12,7 @@ except Exception as exc:
 
 try:
     pprint.pprint(CONFIG)
+    print(f"Valid config in {CONFIG_FILE_PATH}, congratulations!")
 except Exception as exc:
     print(f"Invalid config in {CONFIG_FILE_PATH}")
     print(exc)
