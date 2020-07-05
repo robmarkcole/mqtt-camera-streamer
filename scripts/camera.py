@@ -6,7 +6,7 @@ import os
 
 from mqtt import get_mqtt_client
 from helpers import pil_image_to_byte_array, get_now_string, get_config
-from imutils.video import WebcamVideoStream
+from imutils.video import VideoStream
 from imutils import opencv2matplotlib
 
 from PIL import Image
@@ -30,7 +30,7 @@ def main():
     client.loop_start()
 
     # Open camera
-    camera = WebcamVideoStream(src=VIDEO_SOURCE).start()
+    camera = VideoStream(src=VIDEO_SOURCE, framerate=FPS).start()
     time.sleep(2)  # Webcam light should come on if using one
 
     while True:
