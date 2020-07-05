@@ -19,7 +19,7 @@ MQTT_PORT = CONFIG["mqtt"]["port"]
 MQTT_QOS = CONFIG["mqtt"]["QOS"]
 
 MQTT_TOPIC_CAMERA = CONFIG["camera"]["mqtt_topic"]
-VIDEO_SOURCE = CONFIG["camera"]["vide_source"]
+VIDEO_SOURCE = CONFIG["camera"]["video_source"]
 FPS = CONFIG["camera"]["fps"]
 
 
