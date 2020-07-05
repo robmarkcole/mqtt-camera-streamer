@@ -12,7 +12,7 @@ $ (venv) pip3 install -r requirements.txt
 ```
 
 #### Raspberry Pi
-Do not use a venv and install openCV system wide using: 
+Do not use a venv and install openCV system wide using:
 ```
 $ sudo apt install python3-opencv
 $ pip3 install -r requirements.txt
