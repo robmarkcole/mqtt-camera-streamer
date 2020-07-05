@@ -94,3 +94,4 @@ Note that I have structured the MQTT topics following the homie MQTT convention,
 * [imageZMQ](https://github.com/jeffbass/imagezmq) -> inspired this project, but uses ZMQ
 * [homie MQTT convention](https://homieiot.github.io/) -> convention for structuring MQTT topics
 * [yolocam_mqtt](https://github.com/LarsAC/yolocam_mqtt/blob/master/yolo_mqtt_server.py) -> another source of ideas
+* [In-depth review and comparison of the Raspberry Pi High Quality Camera](https://medium.com/@alexellisuk/in-depth-review-and-comparison-of-the-raspberry-pi-high-quality-camera-806490c4aeb7)
