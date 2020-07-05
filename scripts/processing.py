@@ -4,8 +4,12 @@ Subscribes to the feed, does processing on the image, and forwards as new feed.
 import os
 import time
 
-from helpers import (byte_array_to_pil_image, get_config, get_now_string,
-                     pil_image_to_byte_array)
+from helpers import (
+    byte_array_to_pil_image,
+    get_config,
+    get_now_string,
+    pil_image_to_byte_array,
+)
 from mqtt import get_mqtt_client
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
