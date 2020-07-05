@@ -20,7 +20,7 @@ $ pip3 install -r requirements.txt
 I have not tested Streamlit on the Raspberry pi, but you can use the viewer on another machine (WIndows, OSX) so don't worry.
 
 ## Listing cameras
-If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the inbuilt webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`. 
+If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the inbuilt webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
 
 To check which cameras are detected run:
 ```
@@ -32,8 +32,9 @@ Alternatively you can pass a string to an MJPEG/RTSP stream, For example `"rtsp:
 ## Camera usage
 Use the `config.yml` file in `config` directory to setup the system (mqtt broker IP etc) and validate the config by running:
 ```
-$ (venv) python3 scripts/validate_config.py
+$ (venv) python3 scripts/validate-config.py
 ```
+By default `scripts/camera.py` will look for the config at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`.
 
 To publish camera frames over MQTT:
 ```
@@ -45,7 +46,7 @@ To view the camera frames with Streamlit:
 $ (venv) streamlit run scripts/viewer.py
 ```
 
-**Note:** if streamlit becomes unresponsive, `ctrl-z` to pause Streamlit then `kill -9 %%`. Also note that the viewer can be run on amy machine on your network.
+**Note:** if Streamlit becomes unresponsive, `ctrl-z` to pause Streamlit then `kill -9 %%`. Also note that the viewer can be run on amy machine on your network.
 
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):
