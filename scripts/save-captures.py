@@ -16,7 +16,6 @@ MQTT_QOS = CONFIG["mqtt"]["QOS"]
 
 SAVE_TOPIC = CONFIG["save-captures"]["mqtt_topic"]
 CAPTURES_DIRECTORY = CONFIG["save-captures"]["captures_directory"]
-DATETIME_STR_FORMAT = CONFIG["save-captures"]["datetime_str_format"]
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
