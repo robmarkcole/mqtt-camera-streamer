@@ -1,7 +1,8 @@
 """
 Some boilerplate code to handle MQTT.
 """
-import paho.mqtt.client as mqtt
+from paho.mqtt import client as mqtt
+
 
 # Reqired callbacks
 def on_connect(client, userdata, flags, rc):

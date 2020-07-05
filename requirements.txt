@@ -5,3 +5,4 @@ Pillow
 imutils==0.5.3
 PyYAML
 streamlit==0.62.1
+isort

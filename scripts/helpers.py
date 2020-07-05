@@ -5,8 +5,9 @@ Source -> https://github.com/jrosebr1/imutils/blob/master/imutils/video/webcamvi
 """
 import datetime
 import io
-from PIL import Image
+
 import yaml
+from PIL import Image
 
 DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
 
