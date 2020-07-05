@@ -4,7 +4,7 @@ mqtt:
   QOS: 1
 
 camera:
-  vide_source: 0
+  video_source: 0
   fps: 2  
   mqtt_topic: homie/mac_webcam/capture
 
@@ -15,4 +15,3 @@ processing:
 save-captures:
   mqtt_topic: homie/mac_webcam/capture
   captures_directory: captures/
-  datetime_str_format: "%Y-%m-%d_%H:%M:%S.%f"

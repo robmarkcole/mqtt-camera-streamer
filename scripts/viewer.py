@@ -1,12 +1,12 @@
-import paho.mqtt.client as mqtt
 import os
-import numpy as np
-from PIL import Image
-import streamlit as st
 import time
 
-from helpers import byte_array_to_pil_image, get_now_string, get_config
+import numpy as np
+import streamlit as st
+from helpers import byte_array_to_pil_image, get_config, get_now_string
 from mqtt import get_mqtt_client
+from paho.mqtt import client as mqtt
+from PIL import Image
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
 CONFIG = get_config(CONFIG_FILE_PATH)

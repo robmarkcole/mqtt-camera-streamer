@@ -1,14 +1,13 @@
 """
-Capture frames from a camera using openCV and publish on an MQTT topic.
+Capture frames from a camera and publish on an MQTT topic.
 """
-import time
 import os
+import time
 
-from mqtt import get_mqtt_client
-from helpers import pil_image_to_byte_array, get_now_string, get_config
-from imutils.video import WebcamVideoStream
+from helpers import get_config, get_now_string, pil_image_to_byte_array
 from imutils import opencv2matplotlib
-
+from imutils.video import VideoStream
+from mqtt import get_mqtt_client
 from PIL import Image
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
@@ -19,7 +18,7 @@ MQTT_PORT = CONFIG["mqtt"]["port"]
 MQTT_QOS = CONFIG["mqtt"]["QOS"]
 
 MQTT_TOPIC_CAMERA = CONFIG["camera"]["mqtt_topic"]
-VIDEO_SOURCE = CONFIG["camera"]["vide_source"]
+VIDEO_SOURCE = CONFIG["camera"]["video_source"]
 FPS = CONFIG["camera"]["fps"]
 
 
@@ -30,7 +29,7 @@ def main():
     client.loop_start()
 
     # Open camera
-    camera = WebcamVideoStream(src=VIDEO_SOURCE).start()
+    camera = VideoStream(src=VIDEO_SOURCE, framerate=FPS).start()
     time.sleep(2)  # Webcam light should come on if using one
 
     while True:

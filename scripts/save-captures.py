@@ -1,10 +1,10 @@
 """
 Subscribe and save camera images with timestamp.
 """
-import time
 import os
+import time
 
-from helpers import byte_array_to_pil_image, get_now_string, get_config
+from helpers import byte_array_to_pil_image, get_config, get_now_string
 from mqtt import get_mqtt_client
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
@@ -16,7 +16,6 @@ MQTT_QOS = CONFIG["mqtt"]["QOS"]
 
 SAVE_TOPIC = CONFIG["save-captures"]["mqtt_topic"]
 CAPTURES_DIRECTORY = CONFIG["save-captures"]["captures_directory"]
-DATETIME_STR_FORMAT = CONFIG["save-captures"]["datetime_str_format"]
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
