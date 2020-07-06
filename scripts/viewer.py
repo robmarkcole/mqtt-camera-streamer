@@ -21,6 +21,7 @@ VIEWER_WIDTH = 600
 
 
 def get_random_numpy():
+    """Return a dummy frame."""
     return np.random.randint(0, 100, size=(32, 32))
 
 
@@ -29,7 +30,9 @@ viewer = st.image(get_random_numpy(), width=VIEWER_WIDTH)
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
-    st.write(f"Connected with result code {str(rc)} to MQTT broker on {MQTT_BROKER}")
+    st.write(
+        f"Connected with result code {str(rc)} to MQTT broker on {MQTT_BROKER}"
+    )
 
 
 # The callback for when a PUBLISH message is received from the server.
