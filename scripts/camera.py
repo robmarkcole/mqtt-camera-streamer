@@ -29,7 +29,10 @@ def main():
     client.loop_start()
 
     # Open camera
-    camera = VideoStream(src=VIDEO_SOURCE, framerate=FPS).start()
+    if VIDEO_SOURCE == "picamera":
+        camera = VideoStream(usePiCamera=True, framerate=FPS).start()
+    else:
+        camera = VideoStream(src=VIDEO_SOURCE, framerate=FPS).start()
     time.sleep(2)  # Webcam light should come on if using one
 
     while True:

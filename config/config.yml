@@ -1,10 +1,10 @@
 mqtt:
-  broker: localhost
+  broker: 192.168.1.134 # localhost
   port: 1883
   QOS: 1
 
 camera:
-  video_source: 0
+  video_source: picamera # 0 for usb webcam
   fps: 2  
   mqtt_topic: homie/mac_webcam/capture
 

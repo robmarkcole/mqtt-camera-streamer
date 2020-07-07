@@ -24,13 +24,13 @@ $ pip3 install -r requirements.txt
 I have not tested Streamlit on the Raspberry pi, but you can use the viewer on another machine (WIndows, OSX) so don't worry.
 
 ## Listing cameras
-The `check-cameras.py` script assists in discovering which cameras are on your computer. If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
+The `check-cameras.py` script assists in discovering which cameras are on your computer (excluding rpi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
 
 To check which cameras are detected run:
 ```
 $ (venv) python3 scripts/check-cameras.py
 ```
-You then configure the desired camera as e.g. `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you would configure `video_source: "rtsp://admin:password@192.168.1.94:554/11"`
+You then configure the desired camera as e.g. `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you would configure `video_source: "rtsp://admin:password@192.168.1.94:554/11"`. To use an rpi camera configure: `video_source: picamera`.
 
 ## Camera usage
 Use the `config.yml` file in `config` directory to configure your system (mqtt broker IP etc) and validate the config can be loaded by running:
