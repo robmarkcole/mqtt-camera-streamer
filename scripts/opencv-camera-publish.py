@@ -1,5 +1,5 @@
 """
-Capture frames from a camera and publish on an MQTT topic.
+Capture frames from a camera using OpenCV and publish on an MQTT topic.
 """
 import os
 import time
