@@ -46,6 +46,9 @@ def main():
         now = get_now_string()
         print(f"published frame on topic: {MQTT_TOPIC_CAMERA} at {now}")
         time.sleep(1 / FPS)
+        # Reset the stream for the next capture
+        stream.seek(0)
+        stream.truncate()
 
 
 if __name__ == "__main__":

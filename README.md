@@ -16,7 +16,7 @@ $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
 ```
 ## Installation on RPi
-Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`
+Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the raspberry pi in desktop mode so you can view the camera feed on the RPi. Check that the camera is connected correctly using `raspistill -o image.jpg`
 
 ## Listing cameras with OpenCV
 The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
