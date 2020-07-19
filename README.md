@@ -42,7 +42,7 @@ To publish camera frames with OpenCV over MQTT:
 ```
 $ (venv) python3 scripts/opencv-camera-publish.py
 ```
-Alternatively if you are using an RPi camera:
+Alternatively if you are using an RPi camera (noting that you do not to configure the `video_source` in this case):
 ```
 $ (venv) python3 scripts/picamera-publish.py
 ```
