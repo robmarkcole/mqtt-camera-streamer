@@ -1,12 +1,12 @@
 # mqtt-camera-streamer
-**Summary:** Publish frames from a connected camera to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit). USB webcam & MJPEG/RTSP stream support is via [OpenCV](https://docs.opencv.org/master/), whilst the official raspberry pi camera is supported by [picamera](https://picamera.readthedocs.io/en/release-1.13/).
+**Summary:** Publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit).
 
 **Long introduction:** A typical task in IOT/science is that you have a camera connected to one computer and you want to view the camera feed on a second computer, and maybe preprocess the images before saving them to disk. I have always found this to be way more effort than expected. In particular, working with camera streams can get quite complicated and may lead you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast, working with [MQTT](http://mqtt.org/) is very straightforward and is often familiar to anyone with an interest in IOT. This repo, `mqtt-camera-streamer` uses MQTT to send frames from a camera over a network at low frames-per-second (FPS). A viewer is provided for viewing the camera stream on any computer on the network. Frames can be saved to disk for further processing. Also it is possible to setup an image processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed image downstream on another topic.
 
 **Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
 
-## OpenCV or picamera
-On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a raspberry pi installing OpenCV can be troublesome. For RPi users you are recommended to use an official RPi camera (the ones with the ribbon) and use the dedicated RPi camera script. This means you aren't required to install OpenCV on the RPi.
+# OpenCV 
+On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a raspberry pi (RPi) installing OpenCV can be troublesome.
 
 ## Installation on Mac/linux/windows
 Use a venv to isolate your environment, and install the required dependencies:
@@ -15,8 +15,9 @@ $ (base) python3 -m venv venv
 $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
 ```
+
 ## Installation on RPi
-Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the raspberry pi in desktop mode so you can view the camera feed on the RPi. Check that the camera is connected correctly using `raspistill -o image.jpg`
+Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the raspberry pi in desktop mode so you can view the camera feed on the RPi. Check that the camera is connected correctly using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
 
 ## Listing cameras with OpenCV
 The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
@@ -41,10 +42,6 @@ By default `scripts/opencv-camera.py` will look for the config file at `./config
 To publish camera frames with OpenCV over MQTT:
 ```
 $ (venv) python3 scripts/opencv-camera-publish.py
-```
-Alternatively if you are using an RPi camera (noting that you do not to configure the `video_source` in this case):
-```
-$ (venv) python3 scripts/picamera-publish.py
 ```
 
 ## Camera display
