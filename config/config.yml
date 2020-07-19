@@ -1,10 +1,10 @@
 mqtt:
-  broker: localhost
+  broker: localhost # or an ip address like 192.168.1.164
   port: 1883
   QOS: 1
 
 camera:
-  video_source: 0
+  video_source: 0 # http://192.168.1.134:8000/stream.mjpg for a picamera running web_server.py
   fps: 2  
   mqtt_topic: homie/mac_webcam/capture
 

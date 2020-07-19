@@ -6,7 +6,7 @@
 **Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
 
 # OpenCV 
-On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a raspberry pi (RPi) installing OpenCV can be troublesome.
+On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome.
 
 ## Installation on Mac/linux/windows
 Use a venv to isolate your environment, and install the required dependencies:
@@ -17,7 +17,7 @@ $ (venv) pip3 install -r requirements.txt
 ```
 
 ## Installation on RPi
-Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the raspberry pi in desktop mode so you can view the camera feed on the RPi. Check that the camera is connected correctly using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
+Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the RPi in desktop mode so you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
 
 ## Listing cameras with OpenCV
 The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
@@ -27,13 +27,14 @@ To check which OpenCV cameras are detected run:
 $ (venv) python3 scripts/check-opencv-cameras.py
 ```
 
-## Configuring an OpenCV camera
-Use the `config.yml` file in the `config` directory to configure your system. If your desired camera is listed as source 0 you will configure `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you may configure `video_source: "rtsp://admin:password@192.168.1.94:554/11"`
+## Configuration using `config.yml`
+Use the `config.yml` file in the `config` directory to configure your system. If your desired camera is listed as source 0 you will configure `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you may configure something like `video_source: "rtsp://admin:password@192.168.1.94:554/11"` for a commercial RTSP camera. To configure a RPi camera running the `web_streaming.py` example you configure `video_source: http://pi_ip:8000/stream.mjpg`
 
 Validate the config can be loaded by running:
 ```
 $ (venv) python3 scripts/validate-config.py
 ```
+
 **Note** that this script does not check the accuracy of any of the values in `config.yml`, just that the file path is correct and the file structure is OK.
 
 By default `scripts/opencv-camera.py` will look for the config file at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`
@@ -78,6 +79,9 @@ camera:
   - platform: mqtt
     topic: homie/mac_webcam/capture/rotated
     name: mqtt_camera_rotated
+  - platform: mjpeg # the raw mjpeg feed if using picamera
+    name: picamera
+    mjpeg_url: http://192.168.1.134:8000/stream.mjpg
 ```
 
 <p align="center">
