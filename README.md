@@ -1,5 +1,5 @@
 # mqtt-camera-streamer
-**TLDR:** Publish frames from a connected camera (e.g. USB webcam, or alternatively an MJPEG/RTSP stream) to an MQTT topic. The camera stream can be viewed in a browser with [Streamlit](https://github.com/streamlit/streamlit) or Home Assistant. Configuration is via `config.yml`
+**TLDR:** Publish frames from a connected camera to an MQTT topic, and view the feed in a browser with [Streamlit](https://github.com/streamlit/streamlit). Configuration is via `config.yml`. USB webcam & MJPEG/RTSP stream support is via openCV, whilst the raspberry pi camera is supported by [picamera](https://picamera.readthedocs.io/en/release-1.13/).
 
 **Long introduction:** A typical task in IOT/science is that you have a camera connected to one computer and you want to view the camera feed on a different computer, and maybe preprocess the images before saving them to disk. I have always found this to be may more work than expected. In particular working with camera streams can get quite complicated, and may lead you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast, working with [MQTT](http://mqtt.org/) is very straightforward and is also probably familiar to anyone with an interest in IOT. Whilst MQTT is rarely used for sending files, I have not encountered any issues doing this.
 
@@ -7,7 +7,10 @@
 
 **Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
 
-## Installation on linux/OSX/Windows
+## OpenCV or Picamera
+On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a raspberry pi installing openCV can be troublesome. For RPi users you are recommended to use an official rpi camera (the ones with the ribbon) and use the dedicated RPi camera script. This means you aren't required to install openCV on the RPi.
+
+## Installation
 Use a venv to isolate your environment, and install the required dependencies:
 ```
 $ (base) python3 -m venv venv
@@ -15,16 +18,8 @@ $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
 ```
 
-#### Installation on Raspberry Pi
-Do not use a venv but install openCV system wide using:
-```
-$ sudo apt install python3-opencv
-$ pip3 install -r requirements.txt
-```
-I have not tested Streamlit on the Raspberry pi, but you can use the viewer on another machine (WIndows, OSX) so don't worry.
-
 ## Listing cameras
-The `check-cameras.py` script assists in discovering which cameras are on your computer. If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
+The `check-cameras.py` script assists in discovering which cameras are on your computer (does not work with picamera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
 
 To check which cameras are detected run:
 ```
