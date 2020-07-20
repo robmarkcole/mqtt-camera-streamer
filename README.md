@@ -95,6 +95,45 @@ docker run -p 1883:1883 -d eclipse-mosquitto
 ```
 Note that I have structured the MQTT topics following the homie MQTT convention, linked in the references. This is not necessary but is best practice IMO.
 
+## RPi service
+You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using: ```sudo nano /etc/systemd/system/my_script.service```
+
+Entering the following (adapted for your `script.py` file location and args):
+```
+[Unit]
+Description=Service for script.py
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u script.py args
+WorkingDirectory=/home/pi/github/dir-with-script
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Once this file has been created you can to start the service using:
+```sudo systemctl start my_script.service```
+
+View the status and logs with:
+```sudo systemctl status my_script.service```
+
+Stop the service with:
+```sudo systemctl stop my_script.service```
+
+Restart the service with:
+```sudo systemctl restart my_script.service```
+
+You can have the service auto-start on rpi boot by using:
+```sudo systemctl enable my_script.service```
+
+You can disable auto-start using:
+```sudo systemctl disable my_script.service```
+
 ### References
 * [imageZMQ](https://github.com/jeffbass/imagezmq) -> inspired this project, but uses ZMQ
 * [homie MQTT convention](https://homieiot.github.io/) -> convention for structuring MQTT topics
