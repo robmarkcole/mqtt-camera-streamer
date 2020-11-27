@@ -1,8 +1,8 @@
-black>=19.3b0
-paho-mqtt>=1.4.0
-Pillow>=7.2.0
+black>=20.8b1
+paho-mqtt>=1.5.1
+Pillow>=8.0.1
 imutils>=0.5.3
-PyYAML>=5.1.2
-streamlit==0.62.1
-isort>=5.0.3
-opencv-python>=4.1.1.26 # may fail on rpi
+PyYAML>=5.3.1
+streamlit==0.71.0
+isort>=5.6.4
+opencv-python>=4.4.0.46 # may fail on rpi
