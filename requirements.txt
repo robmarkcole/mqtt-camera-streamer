@@ -3,6 +3,6 @@ paho-mqtt>=1.5.1
 Pillow>=8.0.1
 imutils>=0.5.3
 PyYAML>=5.3.1
-streamlit==0.71.0
 isort>=5.6.4
 opencv-python>=4.4.0.46 # may fail on rpi
+streamlit==0.71.0
