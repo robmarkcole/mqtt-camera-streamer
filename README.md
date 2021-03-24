@@ -5,19 +5,13 @@
 
 **Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
 
-# OpenCV 
-On Mac/linux/windows OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome.
-
-## Installation on Mac/linux/windows
+## Installation
 Use a venv to isolate your environment, and install the required dependencies:
 ```
 $ (base) python3 -m venv venv
 $ (base) source venv/bin/activate
 $ (venv) pip3 install -r requirements.txt
 ```
-
-## Installation on RPi
-Installation of OpenCV may fail, or succeed and raise errors when you actually try to import OpenCV (using `cv2`). In this case use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. It is recommended to use the RPi in desktop mode so you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
 
 ## Listing cameras with OpenCV
 The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
@@ -94,6 +88,12 @@ Need an MQTT broker? If you have Docker installed I recommend [eclipse-mosquitto
 docker run -p 1883:1883 -d eclipse-mosquitto
 ```
 Note that I have structured the MQTT topics following the homie MQTT convention, linked in the references. This is not necessary but is best practice IMO.
+
+## OpenCV & streamlit on RPi
+OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome, and I found it necessary to first `sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libavcodec58 libavformat58 libswscale5` before installing opencv using the instructions below. Likewise Streamlit can be challenging to install on an RPi, see [this thread](https://discuss.streamlit.io/t/raspberry-pi-streamlit/2900) for latest guidance. On 24/3/2021 I was able to install `opencv-python==4.5.1.48` but not streamlit on an RPi4 32bit.
+
+## RPi camera
+Use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. If you use the RPi in desktop mode you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
 
 ## RPi service
 You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using: ```sudo nano /etc/systemd/system/my_script.service```
