@@ -6,7 +6,7 @@
 **Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
 
 ## Installation
-Use a venv to isolate your environment, and install the required dependencies:
+Install system wide on an RPi, or on other OS use a venv to isolate your environment, and install the required dependencies:
 ```
 $ (base) python3 -m venv venv
 $ (base) source venv/bin/activate
@@ -31,7 +31,7 @@ $ (venv) python3 scripts/validate-config.py
 
 **Note** that this script does not check the accuracy of any of the values in `config.yml`, just that the file path is correct and the file structure is OK.
 
-By default `scripts/opencv-camera.py` will look for the config file at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`
+By default `scripts/opencv-camera.py` will look for the config file at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`. You can set this using `export MQTT_CAMERA_CONFIG=/home/pi/github/mqtt-camera-streamer/config/config.yml`
 
 ## Publish camera frames
 To publish camera frames with OpenCV over MQTT:
@@ -90,23 +90,25 @@ docker run -p 1883:1883 -d eclipse-mosquitto
 Note that I have structured the MQTT topics following the homie MQTT convention, linked in the references. This is not necessary but is best practice IMO.
 
 ## OpenCV & streamlit on RPi
-OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome, and I found it necessary to first `sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libavcodec58 libavformat58 libswscale5` before installing opencv using the instructions below. Likewise Streamlit can be challenging to install on an RPi, see [this thread](https://discuss.streamlit.io/t/raspberry-pi-streamlit/2900) for latest guidance. On 24/3/2021 I was able to install `opencv-python==4.5.1.48` but not streamlit on an RPi4 32bit.
+OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome, and I found it necessary to first `sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libavcodec58 libavformat58 libswscale5` before installing opencv using the instructions below. Likewise Streamlit can be challenging to install on an RPi, and if you dont need it then remove it from `requirements.txt`. If you do wish to install Streamlit on the RPi see [this thread](https://discuss.streamlit.io/t/raspberry-pi-streamlit/2900) for latest guidance. On 24/3/2021 I was able to install `opencv-python==4.5.1.48` but not streamlit on an RPi4 32bit.
 
 ## RPi camera
 Use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. If you use the RPi in desktop mode you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
 
 ## RPi service
-You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using: ```sudo nano /etc/systemd/system/my_script.service```
+You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using:
 
-Entering the following (adapted for your `script.py` file location and args):
+```sudo nano /etc/systemd/system/my_script.service```
+
+Entering the following (adapted for your `script.py` file location and args, assumes you are using system python3):
 ```
 [Unit]
-Description=Service for script.py
+Description=Service for mqtt-camera-publish
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 -u script.py args
-WorkingDirectory=/home/pi/github/dir-with-script
+ExecStart=/usr/bin/python3 -u opencv-camera-publish.py
+WorkingDirectory=/home/pi/github/mqtt-camera-streamer/scripts
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
