@@ -1,5 +1,5 @@
 mqtt:
-  broker: 192.168.1.164 # an ip address or use localhost if appropriate
+  broker: localhost # or an ip address like 192.168.1.164
   port: 1883
   QOS: 1
 
