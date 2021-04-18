@@ -64,6 +64,10 @@ $ (venv) python3 scripts/db-recorder.py
 ```
 The images can be viewed using [sqlite browser](https://sqlitebrowser.org/) or [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin.
 
+<p align="center">
+<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/sqlite-browser.jpg" width="500">
+</p>
+
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):
 ```
