@@ -1,5 +1,5 @@
 """
-Modified version of save-captires.py that additionally saves images to sqlite db.
+Modified version of save-captires.py that additionally saves image thumbnail to sqlite db.
 
 Ref https://towardsdev.com/storing-digital-files-in-remote-sql-databases-in-python-73494f09d39b
 """
@@ -13,6 +13,7 @@ from helpers import (
     get_now_string,
     sqlite_connect,
     convert_into_binary,
+    pil_image_to_byte_array,
 )
 from mqtt import get_mqtt_client
 
@@ -34,6 +35,7 @@ CREATE TABLE IF NOT EXISTS {table_name} (
     name TEXT NOT NULL, data BLOB
 );
 """
+THUMBNAIL_SIZE = (500, 200)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -57,9 +59,9 @@ def on_message(client, userdata, msg):
             table_name=DB_TABLE
         )
 
-        # Convert the file into binary
-        binary_file = convert_into_binary(save_file_path)
-        data_tuple = (save_file_path, binary_file)
+        image.thumbnail(size=THUMBNAIL_SIZE)
+        binary_data = pil_image_to_byte_array(image)
+        data_tuple = (save_file_path, binary_data)
 
         # Execute the query
         cursor.execute(db_insert_blob, data_tuple)
