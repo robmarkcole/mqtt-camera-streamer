@@ -77,6 +77,11 @@ $ (venv) pip install datasette-render-images
 $ (venv) datasette captures/records.db
 ```
 
+<p align="center">
+<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/datasette.jpg" width="800">
+</p>
+
+
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):
 ```
