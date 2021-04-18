@@ -46,7 +46,6 @@ def on_message(client, userdata, msg):
 
         save_file_path = CAPTURES_DIRECTORY + f"capture_{now}.jpg"
         image.save(save_file_path)
-        print(f"Saved {save_file_path}")
 
         # Additional code to save thumbnail to db
         db_conn = sqlite_connect(DB)
@@ -65,7 +64,7 @@ def on_message(client, userdata, msg):
         # Execute the query
         cursor.execute(db_insert_blob, data_tuple)
         db_conn.commit()
-        print("File inserted to db successfully")
+        print(f"Saved {save_file_path} and inserted to db")
         cursor.close()
 
     except Exception as exc:

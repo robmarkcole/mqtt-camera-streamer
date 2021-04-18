@@ -32,8 +32,9 @@ def get_config(config_filepath: str) -> dict:
         config = yaml.safe_load(f)
     return config
 
+
 # Create a function to connect to a database with SQLite
-def sqlite_connect(db_name : str) -> sqlite3.Connection:
+def sqlite_connect(db_name: str) -> sqlite3.Connection:
     """Connect to a database if exists. Create an instance if otherwise.
     Args:
         db_name: The name of the database to connect
@@ -48,7 +49,8 @@ def sqlite_connect(db_name : str) -> sqlite3.Connection:
     finally:
         return conn
 
+
 def convert_into_binary(file_path: str):
-    with open(file_path, 'rb') as file:
+    with open(file_path, "rb") as file:
         binary = file.read()
     return binary
