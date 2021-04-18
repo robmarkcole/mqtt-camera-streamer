@@ -62,6 +62,7 @@ As `save-captures.py` but in addition saving the frame to a sqlite db:
 ```
 $ (venv) python3 scripts/db-recorder.py
 ```
+The images can be viewed using [sqlite browser](https://sqlitebrowser.org/) or [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin
 
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):

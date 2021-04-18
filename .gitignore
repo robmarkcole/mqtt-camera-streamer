@@ -108,3 +108,4 @@ venv.bak/
 .vscode/settings.json
 .db
 .jpg
+captures/records.db
