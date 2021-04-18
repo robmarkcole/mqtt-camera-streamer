@@ -57,6 +57,12 @@ To save frames to disk:
 $ (venv) python3 scripts/save-captures.py
 ```
 
+## Save frame thumbanils to db
+To save frame thumbnails to a sqlite db:
+```
+$ (venv) python3 scripts/db-recorder.py
+```
+
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):
 ```

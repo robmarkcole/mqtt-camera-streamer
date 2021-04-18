@@ -5,7 +5,7 @@ mqtt:
 
 camera:
   video_source: 0 # http://192.168.1.134:8000/stream.mjpg for a picamera running web_server.py
-  fps: 2  
+  fps: 0.5 
   mqtt_topic: homie/mac_webcam/capture
 
 processing:

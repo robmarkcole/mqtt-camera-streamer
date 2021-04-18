@@ -8,6 +8,7 @@ import io
 
 import yaml
 from PIL import Image
+import sqlite3
 
 DATETIME_STR_FORMAT = "%Y-%m-%d_%H:%M:%S.%f"
 
@@ -30,3 +31,19 @@ def get_config(config_filepath: str) -> dict:
     with open(config_filepath) as f:
         config = yaml.safe_load(f)
     return config
+
+# Create a function to connect to a database with SQLite
+def sqlite_connect(db_name : str) -> sqlite3.Connection:
+    """Connect to a database if exists. Create an instance if otherwise.
+    Args:
+        db_name: The name of the database to connect
+    Returns:
+        an sqlite3.connection object
+    """
+    try:
+        # Create a connection
+        conn = sqlite3.connect(db_name)
+    except sqlite3.Error:
+        print(f"Error connecting to the database '{db_name}'")
+    finally:
+        return conn
