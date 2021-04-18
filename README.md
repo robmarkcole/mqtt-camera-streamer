@@ -62,11 +62,20 @@ As `save-captures.py` but in addition saving the frame thumbnail to a sqlite db:
 ```
 $ (venv) python3 scripts/db-recorder.py
 ```
-The images can be viewed using [sqlite browser](https://sqlitebrowser.org/) or [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin.
+
+The images can be viewed using [sqlite browser](https://sqlitebrowser.org/)
 
 <p align="center">
 <img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/sqlite-browser.jpg" width="800">
 </p>
+
+If you wish to run a server with UI for browsing the images then [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin can be used.
+
+```
+$ (venv) pip install datasette
+$ (venv) pip install datasette-render-images
+$ (venv) datasette captures/records.db
+```
 
 ## Image processing pipeline
 To process a camera stream (the example rotates the image):
