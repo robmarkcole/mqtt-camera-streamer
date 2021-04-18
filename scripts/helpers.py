@@ -47,3 +47,8 @@ def sqlite_connect(db_name : str) -> sqlite3.Connection:
         print(f"Error connecting to the database '{db_name}'")
     finally:
         return conn
+
+def convert_into_binary(file_path: str):
+    with open(file_path, 'rb') as file:
+        binary = file.read()
+    return binary

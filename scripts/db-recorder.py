@@ -1,5 +1,5 @@
 """
-Subscribe and save camera image thumbnails to sqlite db with timestamp.
+Modified version of save-captires.py that additionally saves images to sqlite db.
 
 Ref https://towardsdev.com/storing-digital-files-in-remote-sql-databases-in-python-73494f09d39b
 """
@@ -7,7 +7,13 @@ import os
 import time
 import sqlite3
 
-from helpers import byte_array_to_pil_image, get_config, get_now_string, sqlite_connect
+from helpers import (
+    byte_array_to_pil_image,
+    get_config,
+    get_now_string,
+    sqlite_connect,
+    convert_into_binary,
+)
 from mqtt import get_mqtt_client
 
 CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
@@ -20,8 +26,8 @@ MQTT_QOS = CONFIG["mqtt"]["QOS"]
 SAVE_TOPIC = CONFIG["save-captures"]["mqtt_topic"]
 CAPTURES_DIRECTORY = CONFIG["save-captures"]["captures_directory"]
 
-DB = CAPTURES_DIRECTORY + '/records.db'
-DB_TABLE = 'mqtt_camera'
+DB = CAPTURES_DIRECTORY + "/records.db"
+DB_TABLE = "mqtt_camera"
 
 CREATE_TABLE_DDL = """
 CREATE TABLE IF NOT EXISTS {table_name} (
@@ -42,6 +48,26 @@ def on_message(client, userdata, msg):
         image.save(save_file_path)
         print(f"Saved {save_file_path}")
 
+        # Additional code to save thumbnail to db
+        db_conn = sqlite_connect(DB)
+        cursor = db_conn.cursor()
+
+        db_insert_blob = """
+        INSERT INTO {table_name} (name, data) VALUES (?, ?)
+        """.format(
+            table_name=DB_TABLE
+        )
+
+        # Convert the file into binary
+        binary_file = convert_into_binary(save_file_path)
+        data_tuple = (save_file_path, binary_file)
+
+        # Execute the query
+        cursor.execute(db_insert_blob, data_tuple)
+        db_conn.commit()
+        print("File inserted to db successfully")
+        cursor.close()
+
     except Exception as exc:
         print(exc)
 
@@ -49,17 +75,16 @@ def on_message(client, userdata, msg):
 def main():
     db_conn = sqlite_connect(DB)
     cursor = db_conn.cursor()
-    print(CREATE_TABLE_DDL.format(table_name = DB_TABLE))
-    cursor.execute(CREATE_TABLE_DDL.format(table_name = DB_TABLE))
+    cursor.execute(CREATE_TABLE_DDL.format(table_name=DB_TABLE))
     db_conn.commit()
     db_conn.close()
 
-    # client = get_mqtt_client()
-    # client.on_message = on_message
-    # client.connect(MQTT_BROKER, port=MQTT_PORT)
-    # client.subscribe(SAVE_TOPIC)
-    # time.sleep(4)  # Wait for connection setup to complete
-    # client.loop_forever()
+    client = get_mqtt_client()
+    client.on_message = on_message
+    client.connect(MQTT_BROKER, port=MQTT_PORT)
+    client.subscribe(SAVE_TOPIC)
+    time.sleep(4)  # Wait for connection setup to complete
+    client.loop_forever()
 
 
 if __name__ == "__main__":
