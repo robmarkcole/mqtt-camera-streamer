@@ -7,13 +7,13 @@ Model download/export needs internet access; inference uses the local ONNX file.
 
 ## Install and export
 
-Run these commands from the repository root with Python 3.12:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+these commands from the repository root. The pinned Python version is 3.12;
+uv manages Python, the `.venv` environment, and the dependencies in `uv.lock`:
 
 ```sh
-python3.12 -m venv .venv-onnx
-source .venv-onnx/bin/activate
-python -m pip install -r requirements-onnx.txt
-python scripts/export-rfdetr-onnx.py
+uv sync --locked
+uv run scripts/export-rfdetr-onnx.py
 ```
 
 The export script downloads pretrained RF-DETR Nano and writes
@@ -44,9 +44,9 @@ relative video sources. If authentication is required, set `MQTT_USERNAME` and
 `mqtt.tls` for TLS using the system trust store, and set the broker's TLS port.
 
 ```sh
-python scripts/onnx_camera.py --config config/onnx.local.yml
+uv run scripts/onnx_camera.py --config config/onnx.local.yml
 # Bounded smoke test:
-python scripts/onnx_camera.py --config config/onnx.local.yml --max-frames 10
+uv run scripts/onnx_camera.py --config config/onnx.local.yml --max-frames 10
 ```
 
 `MQTT_CAMERA_ONNX_CONFIG` can set the default config path. Ctrl-C or SIGTERM closes
@@ -115,14 +115,19 @@ Tracking and configurable hold times can be added next.
 ## Verify changes
 
 ```sh
-python -m pip install -r requirements-test.txt
-python -m pytest -q tests/test_onnx_camera.py
-ruff check scripts/onnx_camera.py scripts/export-rfdetr-onnx.py tests/test_onnx_camera.py
+uv sync --locked
+uv run pytest -q
+uv run ruff check scripts/onnx_camera.py scripts/export-rfdetr-onnx.py tests/test_onnx_camera.py
 ```
 
 Tests use real Supervision objects and an ephemeral MQTT broker bound to loopback.
 They verify discovery, zero-detection state, non-retained predictions, HA birth
 handling, stale availability, and orderly shutdown without needing a camera or HA.
+
+Use `uv sync --locked --no-dev` and `uv run --no-dev ...` on a runtime-only host.
+The original `requirements.txt` remains for the separate legacy examples; do not
+install it into the ONNX environment. Update dependencies with `uv lock` and commit
+the resulting `uv.lock` together with any `pyproject.toml` changes.
 
 Upstream APIs: [RF-DETR ONNX](https://rfdetr.roboflow.com/latest/exports/onnx/),
 [live streams](https://rfdetr.roboflow.com/latest/learn/run/videos-and-streams/),

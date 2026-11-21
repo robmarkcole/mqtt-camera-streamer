@@ -1,4 +1,0 @@
--r requirements-onnx.txt
-pytest>=8,<10
-amqtt>=0.12,<0.13
-ruff>=0.9
