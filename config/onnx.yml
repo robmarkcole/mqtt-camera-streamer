@@ -1,0 +1,22 @@
+# Paths are relative to this configuration file.
+camera_id: usb_camera
+name: USB camera
+source: 0 # macOS camera indices can change; verify the external camera first
+model_path: ../models/rfdetr-nano/rfdetr-nano.onnx
+threshold: 0.5
+max_fps: 2
+stale_seconds: 30
+# Entity keys map to model class names. Counts are objects visible in a frame.
+classes:
+  person: [person]
+  vehicle: [car, motorcycle, bus, truck]
+mqtt:
+  broker: localhost # use the same broker as Home Assistant
+  port: 1883
+  topic_prefix: mqtt_camera
+  discovery_prefix: homeassistant
+  ha_status_topic: homeassistant/status
+  # Set these environment variables if the broker requires authentication.
+  username_env: MQTT_USERNAME
+  password_env: MQTT_PASSWORD
+  tls: false

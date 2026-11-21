@@ -87,6 +87,10 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.venv-*/
+work/
+models/
+config/*.local.yml
 env/
 venv/
 ENV/

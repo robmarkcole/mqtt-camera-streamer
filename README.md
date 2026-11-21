@@ -1,4 +1,10 @@
 # mqtt-camera-streamer
+
+**ONNX object detection:** Run a USB webcam through RF-DETR and Supervision, and
+publish predictions and automatically discovered presence/count entities to Home
+Assistant over MQTT. See the [ONNX and Home Assistant setup](docs/onnx-home-assistant.md).
+This is installed separately from the legacy frame streaming examples below.
+
 **Summary:** Publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit).
 
 **Long introduction:** A typical task in IOT/science is that you have a camera connected to one computer and you want to view the camera feed on a second computer, and maybe preprocess the images before saving them to disk. I have always found this to be way more effort than expected. In particular, working with camera streams can get quite complicated and may lead you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast, working with [MQTT](http://mqtt.org/) is very straightforward and is often familiar to anyone with an interest in IOT. This repo, `mqtt-camera-streamer` uses MQTT to send frames from a camera over a network at low frames-per-second (FPS). A viewer is provided for viewing the camera stream on any computer on the network. Frames can be saved to disk for further processing. Also it is possible to setup an image processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed image downstream on another topic.
