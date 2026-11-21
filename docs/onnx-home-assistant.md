@@ -38,6 +38,8 @@ Copy `config/onnx.yml` to `config/onnx.local.yml` and edit:
   vehicle groups. Unknown labels fail at startup rather than silently reporting 0.
 - `threshold`, `max_fps`, and `stale_seconds`: confidence, maximum publication /
   inference rate, and the time without results before entities become unavailable.
+- `torch_threads`: Torch/TorchVision CPU preprocessing threads. This does not set
+  the ONNX Runtime session's own thread pool.
 - `tracking`: track confirmation, recovery time and low-confidence association.
 - `presence`: the default hold duration and optional overrides per entity group.
 
@@ -177,12 +179,20 @@ confirmation, weak-detection recovery, per-group holds, outage reset and one sta
 presence episode across missing frames.
 
 Use `uv sync --locked --no-dev` and `uv run --no-dev ...` on a runtime-only host.
-The original `requirements.txt` remains for the separate legacy examples; do not
-install it into the ONNX environment. Update dependencies with `uv lock` and commit
-the resulting `uv.lock` together with any `pyproject.toml` changes.
+Legacy tools are optional uv extras described in the README. Update dependencies
+with `uv lock` and commit the resulting `uv.lock` together with any
+`pyproject.toml` changes. See the [Pi deployment guide](raspberry-pi.md) for the
+systemd environment and inference benchmark.
 
 Upstream APIs: [RF-DETR ONNX](https://rfdetr.roboflow.com/latest/exports/onnx/),
 [live streams](https://rfdetr.roboflow.com/latest/learn/run/videos-and-streams/),
 [Supervision](https://supervision.roboflow.com/latest/),
 [Roboflow tracking](https://supervision.roboflow.com/latest/how_to/track_objects/), and
 [Home Assistant MQTT discovery](https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery).
+
+## Images and recordings
+
+Sparse MQTT JPEGs now discover a Snapshot camera by default. Use `images.transport: rtsp`
+for optional PyAV RTSP output, or `off` for metadata only. Optional `storage` writes
+JPEGs plus relative paths/predictions in SQLite. See [images and RTSP](images-and-rtsp.md)
+for configuration, retention, SSH preview and the additional RTSP server.

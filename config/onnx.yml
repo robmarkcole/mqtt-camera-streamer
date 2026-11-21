@@ -5,6 +5,7 @@ source: 0 # macOS camera indices can change; verify the external camera first
 model_path: ../models/rfdetr-nano/rfdetr-nano.onnx
 threshold: 0.5
 max_fps: 2
+torch_threads: 2 # Torch/TorchVision preprocessing, not the ONNX Runtime thread pool.
 stale_seconds: 30
 tracking:
   enabled: true
@@ -42,3 +43,19 @@ mqtt:
   username_env: MQTT_USERNAME
   password_env: MQTT_PASSWORD
   tls: false
+
+# Sparse JPEGs are the default; use rtsp (requires an RTSP server) or off.
+images:
+  transport: mqtt
+  interval_seconds: 1
+  jpeg_quality: 80
+  max_width: 960
+  rtsp_url_env: RTSP_PUBLISH_URL
+  rtsp_fps: 2
+# Optional snapshots on disk, indexed by relative path in records.db.
+storage:
+  enabled: false
+  directory: ../captures
+  interval_seconds: 5
+  max_files: 10000
+  max_age_days: 7

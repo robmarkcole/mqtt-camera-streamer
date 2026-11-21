@@ -5,6 +5,7 @@ import json
 import logging
 import math
 import os
+import re
 import signal
 import threading
 import time
@@ -14,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import supervision as sv
 import yaml
+from media import ImageConfig, MediaOutputs, StorageConfig
 from paho.mqtt import client as mqtt
 from plates import PlateConfig, PlateProcessor
 from pydantic import (
@@ -72,11 +74,14 @@ class CameraConfig(BaseModel):
     model_path: Path
     threshold: float = Field(default=0.5, ge=0, le=1)
     max_fps: float = Field(default=2, gt=0)
+    torch_threads: int = Field(default=2, ge=1)
     stale_seconds: int = Field(default=30, ge=1)
     classes: dict[str, list[str]]
     tracking: TrackingConfig = Field(default_factory=TrackingConfig)
     presence: PresenceConfig = Field(default_factory=PresenceConfig)
     lpr: PlateConfig = Field(default_factory=PlateConfig)
+    images: ImageConfig = Field(default_factory=ImageConfig)
+    storage: StorageConfig = Field(default_factory=StorageConfig)
     mqtt: BrokerConfig
 
     @model_validator(mode="after")
@@ -128,6 +133,7 @@ def load_config(path):
     path = Path(path).resolve()
     config = CameraConfig.model_validate(yaml.safe_load(path.read_text()))
     config.model_path = (path.parent / config.model_path).resolve()
+    config.storage.directory = (path.parent / config.storage.directory).resolve()
     if config.model_path.suffix.lower() != ".onnx":
         raise ValueError("model_path must point to an RF-DETR ONNX export")
     if config.stale_seconds <= 1 / config.max_fps:
@@ -252,6 +258,7 @@ class HomeAssistantPublisher:
         self.lock = threading.RLock()
         self.last_result = None
         self.last_plate = None
+        self.last_snapshot = None
         self.last_received = -math.inf
         self.online = False
         self.client = mqtt.Client(
@@ -322,6 +329,19 @@ class HomeAssistantPublisher:
                 )
                 yield topic, payload
 
+        camera_topic = f"{self.config.mqtt.discovery_prefix}/camera/{self.config.camera_id}_snapshot/config"
+        camera_payload = None
+        if self.config.images.transport == "mqtt":
+            camera_payload = {
+                "name": "Snapshot",
+                "unique_id": f"mqtt_camera_{self.config.camera_id}_snapshot",
+                "topic": f"{self.base}/snapshot",
+                "availability_topic": f"{self.base}/availability",
+                "device": common["device"],
+            }
+        # Clear our previous discovery when switching away from MQTT images.
+        yield camera_topic, camera_payload
+
         if self.config.lpr.enabled:
             plate_common = dict(common, state_topic=f"{self.base}/plate")
             # These are historical observations, not live occupancy states.
@@ -355,7 +375,12 @@ class HomeAssistantPublisher:
 
     def _announce(self):
         for topic, payload in self.discovery():
-            info = self.client.publish(topic, json.dumps(payload), qos=1, retain=True)
+            info = self.client.publish(
+                topic,
+                json.dumps(payload) if payload is not None else b"",
+                qos=1,
+                retain=True,
+            )
             if info.rc != mqtt.MQTT_ERR_SUCCESS:
                 LOG.warning(
                     "MQTT discovery publish failed: %s", mqtt.error_string(info.rc)
@@ -371,6 +396,11 @@ class HomeAssistantPublisher:
             self._publish("availability", "offline", retain=True, qos=1)
             if self.last_plate is not None:
                 self._publish("plate", json.dumps(self.last_plate), retain=True, qos=1)
+            if (
+                self.last_snapshot is not None
+                and time.monotonic() - self.last_received < self.config.stale_seconds
+            ):
+                self._publish("snapshot", self.last_snapshot, retain=True)
             self.online = False
             self.connected.set()
         LOG.info("Connected to MQTT broker")
@@ -412,6 +442,13 @@ class HomeAssistantPublisher:
                 self._publish("availability", "online", retain=True, qos=1)
                 self.online = True
 
+    def publish_snapshot(self, jpeg):
+        """Keep only the newest JPEG; never queue disconnected camera frames."""
+        with self.lock:
+            self.last_snapshot = jpeg
+            if self.connected.is_set():
+                self._publish("snapshot", jpeg, retain=True)
+
     def publish_plate(self, event):
         """Retain the last confirmed observation; never replay transient plate events."""
         with self.lock:
@@ -449,25 +486,39 @@ class HomeAssistantPublisher:
             self.client.loop_stop()
 
 
-def run(config, max_frames=None):
-    """Reuse RF-DETR's ONNX adapter and unbuffered live-source generator."""
-    from rfdetr import RFDETRInference
-
+def create_predictor(config):
+    """Load the same CPU predictor for the service and performance benchmark."""
     if not config.model_path.is_file():
         raise FileNotFoundError(f"Export the model first: {config.model_path}")
+    import torch
+    from rfdetr import RFDETRInference
+
+    torch.set_num_threads(config.torch_threads)
     predictor = RFDETRInference(config.model_path, device="cpu")
     supported = set(predictor.class_names)
     requested = {label for labels in config.classes.values() for label in labels}
     if missing := requested - supported:
         raise ValueError(f"Configured classes absent from model: {sorted(missing)}")
-    processor = PredictionProcessor(config)
-    plates = (
-        PlateProcessor(config.lpr, stale_seconds=config.stale_seconds)
-        if config.lpr.enabled
-        else None
-    )
-    results = predictor.predict(
-        config.source,
+    return predictor
+
+
+def resolve_camera_source(source):
+    """Resolve stable Linux V4L2 symlinks to indexes accepted by RF-DETR."""
+    if not isinstance(source, str) or not source.startswith("/dev/"):
+        return source
+    device = Path(source).resolve(strict=True)
+    match = re.fullmatch(r"/dev/video(\d+)", str(device))
+    if match is None or not device.is_char_device():
+        raise ValueError(
+            "Camera device must resolve to a V4L2 /dev/videoN character device"
+        )
+    return int(match[1])
+
+
+def prediction_stream(predictor, config):
+    """Reuse RF-DETR's latest-frame capture, preprocessing and decoding."""
+    return predictor.predict(
+        resolve_camera_source(config.source),
         threshold=(
             config.tracking.recovery_threshold
             if config.tracking.enabled
@@ -475,10 +526,29 @@ def run(config, max_frames=None):
         ),
         stream=True,
         stream_buffer=False,
-        include_source_image=config.lpr.enabled,
+        include_source_image=(
+            config.lpr.enabled
+            or config.images.transport != "off"
+            or config.storage.enabled
+        ),
     )
+
+
+def run(config, max_frames=None):
+    """Run camera inference and publish results without blocking MQTT callbacks."""
+    predictor = create_predictor(config)
+    processor = PredictionProcessor(config)
+    plates = (
+        PlateProcessor(config.lpr, stale_seconds=config.stale_seconds)
+        if config.lpr.enabled
+        else None
+    )
+    results = prediction_stream(predictor, config)
     try:
-        with HomeAssistantPublisher(config) as publisher:
+        with (
+            HomeAssistantPublisher(config) as publisher,
+            MediaOutputs(config, publisher) as media,
+        ):
             sequence = 0
             while max_frames is None or sequence < max_frames:
                 started = time.monotonic()
@@ -490,14 +560,20 @@ def run(config, max_frames=None):
                 sequence += 1
                 payload = processor.process(detections, sequence, processing_ms)
                 publisher.publish(payload)
+                frame = detections.metadata.get("source_image")
+                events = []
                 if plates is not None:
-                    frame = detections.metadata.get("source_image")
                     if frame is None:
                         raise ValueError(
                             "RF-DETR result is missing its RGB source_image"
                         )
-                    for event in plates.process(frame):
-                        publisher.publish_plate(dict(event, frame_sequence=sequence))
+                    events = [
+                        dict(event, frame_sequence=sequence)
+                        for event in plates.process(frame)
+                    ]
+                    for event in events:
+                        publisher.publish_plate(event)
+                media.process(frame, payload, events)
                 LOG.info(
                     "Frame %s: %s (%.0f ms)", sequence, payload["counts"], processing_ms
                 )

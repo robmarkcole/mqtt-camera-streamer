@@ -1,0 +1,34 @@
+[Unit]
+Description=USB camera ONNX predictions to Home Assistant MQTT
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=mqtt-camera
+Group=mqtt-camera
+SupplementaryGroups=video
+WorkingDirectory=/opt/mqtt-camera-streamer
+EnvironmentFile=/etc/mqtt-camera/mqtt.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=2
+Environment=OPENBLAS_NUM_THREADS=2
+ExecStart=/opt/mqtt-camera-streamer/deploy/uv.sh run --offline --no-sync --no-dev scripts/onnx_camera.py --config /etc/mqtt-camera/config.yml
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=30
+StateDirectory=mqtt-camera
+StateDirectoryMode=0750
+CacheDirectory=mqtt-camera
+CacheDirectoryMode=0750
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

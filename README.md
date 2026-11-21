@@ -1,177 +1,144 @@
 # mqtt-camera-streamer
 
-**ONNX object detection:** Run a USB webcam through RF-DETR and Supervision, and
-publish predictions and automatically discovered presence/count entities to Home
-Assistant over MQTT. See the [ONNX and Home Assistant setup](docs/onnx-home-assistant.md).
-Use `uv sync --locked` and `uv run scripts/onnx_camera.py` for this workflow.
-Optional [pretrained license plate detection and OCR](docs/license-plates.md)
-publishes confirmed plates and Home Assistant sensors over MQTT.
-This is installed separately from the legacy frame streaming examples below.
+Run USB webcam or RTSP frames through RF-DETR ONNX, track detections with
+Roboflow ByteTrack/Supervision, and publish predictions to Home Assistant over
+MQTT. Optional pretrained license plate detection and OCR run locally on CPU.
 
-**Summary:** Publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit).
+The inference service is headless. Home Assistant provides the dashboard and
+automations; a viewer is not required on the camera computer.
 
-**Long introduction:** A typical task in IOT/science is that you have a camera connected to one computer and you want to view the camera feed on a second computer, and maybe preprocess the images before saving them to disk. I have always found this to be way more effort than expected. In particular, working with camera streams can get quite complicated and may lead you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast, working with [MQTT](http://mqtt.org/) is very straightforward and is often familiar to anyone with an interest in IOT. This repo, `mqtt-camera-streamer` uses MQTT to send frames from a camera over a network at low frames-per-second (FPS). A viewer is provided for viewing the camera stream on any computer on the network. Frames can be saved to disk for further processing. Also it is possible to setup an image processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed image downstream on another topic.
+## Quick start with uv
 
-**Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+from the repository root. Python 3.12 is pinned in `.python-version`.
 
-## Installation
-Install system wide on an RPi, or on other OS use a venv to isolate your environment, and install the required dependencies:
-```
-$ (base) python3 -m venv venv
-$ (base) source venv/bin/activate
-$ (venv) pip3 install -r requirements.txt
+```sh
+uv sync --locked
+uv run scripts/export-rfdetr-onnx.py
+cp config/onnx.yml config/onnx.local.yml
 ```
 
-## Listing cameras with OpenCV
-The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
+Edit the local file's camera source, broker host/port and camera ID. Verify the
+external webcam index rather than assuming it is `0`:
 
-To check which OpenCV cameras are detected run:
-```
-$ (venv) python3 scripts/check-opencv-cameras.py
-```
-
-## Configuration using `config.yml`
-Use the `config.yml` file in the `config` directory to configure your system. If your desired camera is listed as source 0 you will configure `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you may configure something like `video_source: "rtsp://admin:password@192.168.1.94:554/11"` for a commercial RTSP camera. To configure a RPi camera running the `web_streaming.py` example you configure `video_source: http://pi_ip:8000/stream.mjpg`
-
-Validate the config can be loaded by running:
-```
-$ (venv) python3 scripts/validate-config.py
+```sh
+uv run scripts/check-opencv-cameras.py
 ```
 
-**Note** that this script does not check the accuracy of any of the values in `config.yml`, just that the file path is correct and the file structure is OK.
+Set `MQTT_USERNAME` and `MQTT_PASSWORD` in the environment when authentication is
+required. These are broker credentials, not Home Assistant API tokens. The
+[Home Assistant Mosquitto app](https://github.com/home-assistant/app-mosquitto)
+requires credentials. Configure Home Assistant's MQTT integration on the same
+broker with discovery enabled.
 
-By default `scripts/opencv-camera.py` will look for the config file at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`. You can set this using `export MQTT_CAMERA_CONFIG=/home/pi/github/mqtt-camera-streamer/config/config.yml`
-
-## Publish camera frames
-To publish camera frames with OpenCV over MQTT:
-```
-$ (venv) python3 scripts/opencv-camera-publish.py
-```
-
-## Camera display
-To view the camera stream with Streamlit:
-```
-$ (venv) streamlit run scripts/viewer.py
+```sh
+uv run scripts/onnx_camera.py --config config/onnx.local.yml
+# Stop after ten predictions for a smoke test:
+uv run scripts/onnx_camera.py --config config/onnx.local.yml --max-frames 10
 ```
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/viewer_usage.png" width="500">
-</p>
+One device per camera appears in Home Assistant with person/vehicle presence,
+count entities and a snapshot camera. Sparse JPEGs over MQTT are the default;
+RTSP output and local file-backed recording are optional. Two-frame track confirmation and configurable presence holds
+reduce flickering; counts remain instantaneous. Configuration and model files
+with local settings/weights are ignored by Git.
 
-**Note:** if Streamlit becomes unresponsive, `ctrl-z` to pause Streamlit then `kill -9 %%`. Also note that the viewer can be run on any machine on your network.
+## Guides
 
-## Save frames
-To save frames to disk:
-```
-$ (venv) python3 scripts/save-captures.py
-```
+| Task | Guide |
+| --- | --- |
+| Headless Raspberry Pi, uv and systemd | [Raspberry Pi deployment](docs/raspberry-pi.md) |
+| Configuration, tracking and MQTT discovery | [ONNX and Home Assistant](docs/onnx-home-assistant.md) |
+| MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
+| Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
+| Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 
-## Save frames to db
-As `save-captures.py` but in addition saving the frame thumbnail to a sqlite db:
-```
-$ (venv) python3 scripts/db-recorder.py
-```
+## License plates
 
-The images can be viewed using [sqlite browser](https://sqlitebrowser.org/)
+Cache the pretrained ONNX models, enable `lpr.enabled` in the local configuration,
+and run the same service:
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/sqlite-browser.jpg" width="800">
-</p>
-
-If you wish to run a server with UI for browsing the images then [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin can be used.
-
-```
-$ (venv) pip install datasette
-$ (venv) pip install datasette-render-images
-$ (venv) datasette captures/records.db
+```sh
+uv run scripts/download-plate-models.py --config config/onnx.local.yml
+uv run scripts/onnx_camera.py --config config/onnx.local.yml
 ```
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/datasette.jpg" width="800">
-</p>
+Confirmed readings update Last plate, timestamp and confidence sensors. A
+non-retained `mqtt_camera/<camera_id>/plate/events` message drives automations.
+Repeated matching OCR readings and a cooldown suppress duplicate events.
 
+## Benchmark
 
-## Image processing pipeline
-To process a camera stream (the example rotates the image):
-```
-$ (venv) python3 scripts/processing.py
-```
+Use a representative recording to compare machines without opening a webcam or
+requiring an MQTT broker:
 
-## Home Assistant
-You can view the camera feed using [Home Assistant](https://www.home-assistant.io/) and configuring an [MQTT camera](https://www.home-assistant.io/components/camera.mqtt/). Add to your `configuration.yaml`:
-```yaml
-camera:
-  - platform: mqtt
-    topic: homie/mac_webcam/capture
-    name: mqtt_camera
-  - platform: mqtt
-    topic: homie/mac_webcam/capture/rotated
-    name: mqtt_camera_rotated
-  - platform: mjpeg # the raw mjpeg feed if using picamera
-    name: picamera
-    mjpeg_url: http://192.168.1.134:8000/stream.mjpg
+```sh
+uv run scripts/benchmark.py --config config/onnx.local.yml \
+  --source /path/to/recording.mp4 --warmup 5 --frames 100 \
+  --lpr off --output work/benchmark-detection.json
+uv run scripts/benchmark.py --config config/onnx.local.yml \
+  --source /path/to/recording.mp4 --warmup 5 --frames 100 \
+  --lpr every-frame --output work/benchmark-plates.json
 ```
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/ha_usage.png" width="500">
-</p>
+Reports include warm steady-state p50/p95 stage latency, observed pipeline FPS,
+model load time, model hash, versions, CPU time and peak process RSS. Pi telemetry
+is included when available. This measures capture/decode plus inference and
+tracking, with optional plate scans; MQTT, JPEG encoding, recording, RTSP output
+and the service's rate-limit sleep are excluded. These results are not model-only FPS or a promise of Pi performance.
 
-## MQTT
-Need an MQTT broker? If you have Docker installed I recommend [eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with:
-```
-docker run -p 1883:1883 -d eclipse-mosquitto
-```
-Note that I have structured the MQTT topics following the homie MQTT convention, linked in the references. This is not necessary but is best practice IMO.
+## Legacy frame streaming examples
 
-## OpenCV & streamlit on RPi
-OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome, and I found it necessary to first `sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libavcodec58 libavformat58 libswscale5` before installing opencv using the instructions below. Likewise Streamlit can be challenging to install on an RPi, and if you dont need it then remove it from `requirements.txt`. If you do wish to install Streamlit on the RPi see [this thread](https://discuss.streamlit.io/t/raspberry-pi-streamlit/2900) for latest guidance. On 24/3/2021 I was able to install `opencv-python==4.5.1.48` but not streamlit on an RPi4 32bit.
+The original scripts publish complete PNG frames at low frame rates, and can
+rotate or save frames received through MQTT. Their configuration is
+`config/config.yml`, separate from the inference service's configuration.
+`MQTT_CAMERA_CONFIG` overrides the legacy configuration path.
 
-## RPi camera
-Use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. If you use the RPi in desktop mode you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
-
-## RPi service
-You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using:
-
-```sudo nano /etc/systemd/system/my_script.service```
-
-Entering the following (adapted for your `script.py` file location and args, assumes you are using system python3):
-```
-[Unit]
-Description=Service for mqtt-camera-publish
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/python3 -u opencv-camera-publish.py
-WorkingDirectory=/home/pi/github/mqtt-camera-streamer/scripts
-StandardOutput=inherit
-StandardError=inherit
-Restart=always
-User=pi
-
-[Install]
-WantedBy=multi-user.target
+```sh
+# Check the legacy YAML can be loaded (does not validate its values):
+uv run scripts/validate-config.py
+# Capture and publish complete camera frames:
+uv run --extra legacy scripts/opencv-camera-publish.py
+# Rotate received images onto another topic:
+uv run scripts/processing.py
+# Save received frames to disk or SQLite:
+uv run scripts/save-captures.py
+uv run scripts/db-recorder.py
 ```
 
-Once this file has been created you can to start the service using:
-```sudo systemctl start my_script.service```
+Create the configured capture directory before saving images. Set the legacy
+broker host/port in `config/config.yml`; these scripts also use `MQTT_USERNAME`
+and `MQTT_PASSWORD`. A raw frame topic such as `homie/mac_webcam/capture` can be
+shown using Home Assistant's [MQTT camera](https://www.home-assistant.io/integrations/camera.mqtt/).
 
-View the status and logs with:
-```sudo systemctl status my_script.service```
+The SQLite browser is an optional workstation tool:
 
-Stop the service with:
-```sudo systemctl stop my_script.service```
+```sh
+# Browse recorded metadata and image paths:
+uv run --extra database datasette captures/records.db
+```
 
-Restart the service with:
-```sudo systemctl restart my_script.service```
+Stop these foreground commands with Ctrl-C. A CSI camera requires its own modern
+Picamera2/libcamera capture path or a compatible network stream; this project
+does not directly implement CSI capture. The Pi guide covers USB V4L2 webcams.
 
-You can have the service auto-start on rpi boot by using:
-```sudo systemctl enable my_script.service```
+## Development
 
-You can disable auto-start using:
-```sudo systemctl disable my_script.service```
+```sh
+uv sync --locked
+uv run pytest -q
+uv run ruff check scripts/onnx_camera.py scripts/plates.py scripts/media.py scripts/benchmark.py tests
+```
 
-### References
-* [imageZMQ](https://github.com/jeffbass/imagezmq) -> inspired this project, but uses ZMQ. [Discussion on ZMQ vs MQTT here](https://github.com/jeffbass/imagezmq/issues/5)
-* [homie MQTT convention](https://homieiot.github.io/) -> convention for structuring MQTT topics
-* [yolocam_mqtt](https://github.com/LarsAC/yolocam_mqtt/blob/master/yolo_mqtt_server.py) -> another source of ideas
-* [In-depth review and comparison of the Raspberry Pi High Quality Camera](https://medium.com/@alexellisuk/in-depth-review-and-comparison-of-the-raspberry-pi-high-quality-camera-806490c4aeb7)
+Dependencies live in `pyproject.toml` and `uv.lock`. Use `uv add`, `uv remove` or
+`uv lock` to change them and commit the lockfile. `uv sync --locked --no-dev`
+prepares a runtime environment; repeat `--no-dev` with `uv run` on that host.
+Streamlit has been removed. Imutils and Datasette are opt-in extras. Screen
+capture and YouTube download dependencies are not part of this deployment profile.
+RTSP output reuses PyAV (already used by Supervision), with no FFmpeg executable
+required; it needs an RTSP server such as the optional standalone MediaMTX binary.
+
+## License
+
+See [LICENSE](LICENSE). Pretrained model provenance and upstream links are in the
+plate and dependency guides.

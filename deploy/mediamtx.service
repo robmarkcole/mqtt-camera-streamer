@@ -1,0 +1,18 @@
+[Unit]
+Description=Optional camera RTSP server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=mqtt-camera
+Group=mqtt-camera
+ExecStart=/usr/local/bin/mediamtx /etc/mqtt-camera/mediamtx.yml
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

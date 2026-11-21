@@ -147,13 +147,13 @@ class PlateProcessor:
             },
         )
 
-    def process(self, rgb_frame, *, now=None):
+    def process(self, rgb_frame, *, now=None, force=False):
         now = time.monotonic() if now is None else now
         if self.last_scan_at is not None:
             if now - self.last_scan_at >= self.stale_seconds:
                 self.tracker.reset()
                 self.histories.clear()
-            elif now - self.last_scan_at < self.config.interval_seconds:
+            elif not force and now - self.last_scan_at < self.config.interval_seconds:
                 return []
         self.last_scan_at = now
         # RF-DETR source_image is RGB; FastALPR expects OpenCV-style BGR input.

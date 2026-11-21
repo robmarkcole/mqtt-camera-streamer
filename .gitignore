@@ -110,3 +110,6 @@ venv.bak/
 .db
 .jpg
 captures/records.db
+
+# Captured images and SQLite recordings
+captures/
