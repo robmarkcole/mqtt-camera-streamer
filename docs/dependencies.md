@@ -61,7 +61,8 @@ the export stack blocked. The runtime deliberately supports detection only.
 A clean Linux ARM64 runtime installation of this lockfile contained 42 packages
 (previously 70), occupying about 520 MiB in the virtual environment, excluding
 Python, model files and model caches. Those are container measurements, not Pi
-hardware results. The two-thread detection run used about 551 MiB peak process
+hardware results; see the [Pi guide](raspberry-pi.md#measured-raspberry-pi-4-smoke-test)
+for the subsequent physical Pi 4 checks. The two-thread detection run used about 551 MiB peak process
 RSS with a finite recording; live capture buffers fewer frames. ONNX Runtime and
 model workspaces still consume memory even after the training stack is removed.
 
