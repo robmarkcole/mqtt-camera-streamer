@@ -6,7 +6,8 @@
     "Local imports replace package imports in decode.py",
     "Standard-library logging replaces RF-DETR logger in decode.py and streams.py",
     "streams.py finite-source prefetch is reduced from 30 to 2 frames for bounded Pi RAM",
-    "streams.py missing-OpenCV guidance points to the locked runtime install"
+    "streams.py missing-OpenCV guidance points to the locked runtime install",
+    "quantization.py extracts only graph-selection helpers; package/calibration/execution imports omitted"
   ],
   "files": {
     "_resize.py": {
@@ -28,6 +29,10 @@
     "streams.py": {
       "upstream_path": "src/rfdetr/_prediction/streams.py",
       "upstream_sha256": "6186529a4524c0d6702a7c1368e4e90749cb7ac2f5265561312e1d6903d6cf79"
+    },
+    "quantization.py": {
+      "upstream_path": "src/rfdetr/export/_onnx/quantize.py",
+      "upstream_sha256": "36a4e1b4cbee2ee75cea5c56110feff23001a59f9cc2d9087495f7723278c703"
     }
   }
 }

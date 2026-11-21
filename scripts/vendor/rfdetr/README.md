@@ -10,6 +10,11 @@ imports and the standard logger. `streams.py` uses the standard logger and reduc
 frame. Apart from that queue bound and removing package-level imports, no
 preprocessing, decoding or reconnect policy is changed.
 
+`quantization.py` extracts the graph-selection helpers from the upstream ONNX
+quantizer, preserving attention/head exclusions without importing the training
+package. Execution and calibration are implemented in the optional development
+tool. This helper is not imported by normal inference.
+
 The service implements its own small metadata/session adapter around these helpers.
 Input normalization follows the upstream NumPy fallback in
 `src/rfdetr/export/_runtime/preprocess.py`. The rest of RF-DETR is installed only
@@ -20,3 +25,6 @@ license/copyright, update the provenance hashes and modified-file notices, run t
 capture/decoding tests, and run `scripts/compare-onnx.py` against the official
 predictor on representative frames at both tracking and detection thresholds.
 Do not update the helper copy implicitly when changing the optional exporter.
+
+After changing quantization helpers, also repeat labelled quality checks and native
+Pi comparisons from `docs/int8.md`; predictor parity alone does not validate INT8.

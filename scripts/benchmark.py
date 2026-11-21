@@ -172,8 +172,15 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
         versions[package] = importlib.metadata.version(package)
     with config.model_path.open("rb") as artifact:
         model_sha256 = hashlib.file_digest(artifact, "sha256").hexdigest()
+    session = getattr(predictor, "session", None)
+    quantization = None
+    if session is not None:
+        raw = session.get_modelmeta().custom_metadata_map.get("rfdetr_quantization")
+        quantization = json.loads(raw) if raw else None
     return {
         "schema_version": 2,
+        "quantization": quantization,
+        "model_bytes": config.model_path.stat().st_size,
         "detector_backend": "onnxruntime-direct",
         "helpers_source": "rfdetr-1.12.1",
         "measured_at": datetime.now(UTC).isoformat(),
@@ -220,6 +227,14 @@ def main():
         "--source",
         help="Override source with a recording, stream, or numeric camera index",
     )
+    parser.add_argument(
+        "--model",
+        type=Path,
+        help="Override ONNX model path, relative to the working directory",
+    )
+    parser.add_argument(
+        "--onnx-threads", type=int, help="Override ONNX Runtime CPU threads"
+    )
     parser.add_argument("--frames", type=int, default=100)
     parser.add_argument("--warmup", type=int, default=5)
     parser.add_argument(
@@ -231,7 +246,15 @@ def main():
     args = parser.parse_args()
     if args.frames < 1 or args.warmup < 0:
         parser.error("--frames must be positive and --warmup nonnegative")
+    if args.onnx_threads is not None and args.onnx_threads < 1:
+        parser.error("--onnx-threads must be positive")
     config = load_config(args.config)
+    if args.model is not None:
+        if args.model.suffix.lower() != ".onnx":
+            parser.error("--model must point to an ONNX artifact")
+        config.model_path = args.model.resolve()
+    if args.onnx_threads is not None:
+        config.onnx_threads = args.onnx_threads
     if args.source is not None:
         config.source = (
             int(args.source)

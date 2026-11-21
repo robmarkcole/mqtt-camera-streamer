@@ -75,6 +75,14 @@ thermal monitoring, rather than interpreting package removal as a speed claim.
 Repeat parity/accuracy checks on representative data when changing the exported
 artifact or vendored helpers; this is not a full COCO accuracy evaluation.
 
+## Optional INT8 tools
+
+The `quantize` extra adds ONNX and SymPy only for development-time quantization.
+It does not add Torch. Copy the resulting model to the Pi and keep the normal
+runtime installation without that extra. [Measured INT8 results and commands](int8.md)
+show the speed, file-size and quality tradeoff; the application still uses the
+same Supervision, tracking and ALPR path.
+
 ## Ideas from Roboflow's blog
 
 These are deployment ideas, not Pi throughput promises. Cross-check code snippets

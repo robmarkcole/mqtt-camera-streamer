@@ -56,6 +56,7 @@ with local settings/weights are ignored by Git.
 | Configuration, tracking and MQTT discovery | [ONNX and Home Assistant](docs/onnx-home-assistant.md) |
 | MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
 | Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
+| INT8 quantization and Pi comparisons | [INT8 experiments](docs/int8.md) |
 | Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 
 ## License plates

@@ -238,6 +238,16 @@ Tests used a user-owned installation without sudo. No system services were enabl
 boot behavior, long uptime and production-broker integration remain deployment
 checks. The systemd units were separately verified in a Linux ARM64 container.
 
+## INT8 follow-up
+
+The [INT8 experiment guide](int8.md) records a subsequent comparison on this Pi.
+Static INT8 improved detection/tracking from about 0.45 to 0.66 FPS and the
+pipeline with every-frame plate scans from about 0.42 to 0.58 FPS. Its model file
+was about 32 MiB versus 103 MiB FP32, with a 1.28-point mAP50–95 loss on the small
+calibration-disjoint diagnostic. FP32 remains the default pending evaluation on
+representative deployment footage; the guide includes quantization and comparison
+commands that keep all development tools off the Pi.
+
 ## Updates
 
 Stop the service, update to a reviewed revision, run the locked sync as the
