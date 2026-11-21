@@ -540,6 +540,18 @@ wheels = [
 ]
 
 [[package]]
+name = "jsonargparse"
+version = "4.53.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6e/78/c98e5733f7503ea7b44737408798eabf7b4009c43c496a2b51eb9c084aca/jsonargparse-4.53.0.tar.gz", hash = "sha256:1777126997427bf3fa4b8da02eeded5250a1544d7b16496f82069e2bcaf9d17f", size = 167354, upload-time = "2026-10-23T08:45:14.653Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/2f/77a50c590181e0da3fc857622a163c7d66f5f43d9dba0e8d609c97b86f1c/jsonargparse-4.53.0-py3-none-any.whl", hash = "sha256:3e78dfd4e02ef00c899e85a9b0593347d730c7d551411568438a294cf1d39959", size = 177603, upload-time = "2026-10-23T08:45:11.244Z" },
+]
+
+[[package]]
 name = "kiwisolver"
 version = "1.5.1"
 source = { registry = "https://pypi.org/simple" }
@@ -721,6 +733,7 @@ dependencies = [
     { name = "pyyaml" },
     { name = "rfdetr", extra = ["onnx", "stream"] },
     { name = "supervision" },
+    { name = "trackers" },
 ]
 
 [package.dev-dependencies]
@@ -738,6 +751,7 @@ requires-dist = [
     { name = "pyyaml", specifier = ">=6,<7" },
     { name = "rfdetr", extras = ["onnx", "stream"], specifier = "==1.12.1" },
     { name = "supervision", specifier = "==0.32.0" },
+    { name = "trackers", specifier = "==2.7.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -994,6 +1008,26 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/9b/08/9474c3f1a098da173cfd91047e1c6badaf0cfb4f5bd5598c54581a24c6d2/onnxruntime-1.32.0-cp313-cp313-win_arm64.whl", hash = "sha256:29e4b0fdd3bea834ace358bd8c48641266ec327f730363ab0ab5d0ca574d38fe", size = 16030922, upload-time = "2026-11-13T11:06:42.903Z" },
     { url = "https://files.pythonhosted.org/packages/08/3b/28be6dee643e29086c86b0b778e43d73e9c910aa044e8ac67856a9452131/onnxruntime-1.32.0-cp313-cp313t-manylinux_2_28_aarch64.whl", hash = "sha256:b01314ab8aa8176919818b19b899cd1cd72b5e4fc33e1127396f043206b6ceed", size = 23205671, upload-time = "2026-11-13T11:06:45.93Z" },
     { url = "https://files.pythonhosted.org/packages/4a/b0/8cc346bc2113c51d185d5f6ecbf8962c28ae2dfbc5461d9d36b79a267c6e/onnxruntime-1.32.0-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:926b6a87ffdcef56805b213807c28b97ae53763a630795baee1dfb420c2a5b68", size = 27797958, upload-time = "2026-11-13T11:06:48.981Z" },
+]
+
+[[package]]
+name = "opencv-python"
+version = "5.1.0.95"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/24/a2/97d6867da049747d3cd39ddddbe31d421eec42a2f4edadd2e20d5a84b1da/opencv_python-5.1.0.95.tar.gz", hash = "sha256:3d4a901a458e9503c92610f237850cfc970c66b3f1cc94f45f2942715280ebab", size = 83412736, upload-time = "2026-11-17T18:18:58.78Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/54/9e/cf62919a706d3288f1a5d9158d5614f1c44e0c3ee978cc769f942a22a232/opencv_python-5.1.0.95-cp37-abi3-macosx_15_0_arm64.whl", hash = "sha256:0b62fb3c71086ea96369e0f47e3b11949345b2f301b88dff97c92c5118176d7b", size = 25824349, upload-time = "2026-11-17T17:40:16.287Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/25/018c8ad2f404bd235d03d822b033a1e59464054bd57d164575fb0939608a/opencv_python-5.1.0.95-cp37-abi3-macosx_15_0_x86_64.whl", hash = "sha256:6438ef9bfbd15b9ff6474115d836932d24fba80f693f6b1b53b8e0a7a4b387a6", size = 47012381, upload-time = "2026-11-17T17:40:20.193Z" },
+    { url = "https://files.pythonhosted.org/packages/7a/35/1b920c87c56c6aa181b0d249ae767e6834e70dfb6d5caaa4e238a44d95e1/opencv_python-5.1.0.95-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:a36fc15cb1ccf31dc2883ff9f13b214340267ff1ff4c51f198ea3d6a4a6cbdbb", size = 49914363, upload-time = "2026-11-17T18:16:25.401Z" },
+    { url = "https://files.pythonhosted.org/packages/69/b5/d55ad2e38fafe028c21639fa750ddcfdee29eaa047c3638e2e71741a6cda/opencv_python-5.1.0.95-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:63ad2b9e34c8ee4acde30fd93a162bc91f53480273f595667fedb5bb65ce6069", size = 72331896, upload-time = "2026-11-17T18:16:37.174Z" },
+    { url = "https://files.pythonhosted.org/packages/58/1a/97d26c43318bdfbc2dcef3de833c00a95c5c31c5c153c7255faa2b409c3c/opencv_python-5.1.0.95-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:4764e8da33b82ccacaf1e6601224d3d1570e97fbdb8343834415260bd5afcbd4", size = 55014603, upload-time = "2026-11-17T18:16:49.183Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/a1/c7f78207d0fcc2d655b9a15598d64da14edf0808db2a86df24459d31cc56/opencv_python-5.1.0.95-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:54e3be8acbda657c51227379a657a706a4e88032ce4a070728a8d6531e7c9ffc", size = 79247133, upload-time = "2026-11-17T18:17:03.743Z" },
+    { url = "https://files.pythonhosted.org/packages/ae/f0/12cf2079221a98b7849645d2401197d35b66de6c3b4da57c9c9f2efe77fb/opencv_python-5.1.0.95-cp37-abi3-win32.whl", hash = "sha256:c752bbfd6f5e343e039dcedcdbc3832b4f75f0c4f7d1c084e446b911ad97f44a", size = 37231052, upload-time = "2026-11-17T14:37:09.52Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/40/e8c3938d34f22e629a7c599482360b1cadebc22b3c5b25bbbdccded52624/opencv_python-5.1.0.95-cp37-abi3-win_amd64.whl", hash = "sha256:ab505983b1c1e21e89b5c43bf59cccc805b8aa7981f4385a17812efa63ceccb9", size = 47965460, upload-time = "2026-11-17T14:37:05.247Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/a2/4f404c12cdd3d3486f65dd69572a5336bea8bab96d6e1e475b40d5374bef/opencv_python-5.1.0.95-cp37-abi3-win_arm64.whl", hash = "sha256:1c6714e81ddae43726cfd438eb8ae025585f35852e71e9e474620c2eafed71be", size = 15819422, upload-time = "2026-11-17T14:37:01.093Z" },
 ]
 
 [[package]]
@@ -1606,6 +1640,25 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/0d/ea/b2a5bd54b28a324dae8211928b2d730b6547500342c7e6c6dea08bd0a485/tqdm-4.70.1.tar.gz", hash = "sha256:cefd0eca11b2a37a3aee776544d4f4ae913f02688135b5556b8788dfa474afc4", size = 171846, upload-time = "2026-09-11T07:25:16.601Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/03/921a3d3c75785aca9ebfbfcabfbc3a1be12e2ab5265deb026d55a5a3f83e/tqdm-4.70.1-py3-none-any.whl", hash = "sha256:c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73", size = 80199, upload-time = "2026-09-11T07:25:14.599Z" },
+]
+
+[[package]]
+name = "trackers"
+version = "2.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jsonargparse" },
+    { name = "numpy" },
+    { name = "opencv-python" },
+    { name = "pydeprecate" },
+    { name = "requests" },
+    { name = "rich" },
+    { name = "scipy" },
+    { name = "supervision" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/cf/0d/398b53f0c319347df72d1079927ef2405ecbd0f5c905311dc4b96241ee5c/trackers-2.7.0.tar.gz", hash = "sha256:938cc2b924bf9afd0650027017e8df443d8db1602a01c5d62b2eef108b78f749", size = 273537, upload-time = "2026-11-05T14:47:09.408Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f0/16/e9f815389516a4e0e9264fc0998a7c7cac7994571f4045a9bad22fdd917b/trackers-2.7.0-py3-none-any.whl", hash = "sha256:127a60c00682c91e3d8ac37b433138c07fe7c4c605c8ee703e48a55a4404b237", size = 324865, upload-time = "2026-11-05T14:47:07.702Z" },
 ]
 
 [[package]]

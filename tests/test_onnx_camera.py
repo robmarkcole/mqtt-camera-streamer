@@ -1,8 +1,6 @@
 """Exercise real Supervision detections and MQTT discovery on a local broker."""
 
-import asyncio
 import json
-import socket
 import sys
 import threading
 from pathlib import Path
@@ -10,29 +8,14 @@ from pathlib import Path
 import numpy as np
 import pytest
 import supervision as sv
-from amqtt.broker import Broker
 from paho.mqtt import client as mqtt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from onnx_camera import (
-    CameraConfig,
     HomeAssistantPublisher,
     load_config,
     prediction_payload,
 )
-
-
-@pytest.fixture
-def config():
-    return CameraConfig(
-        camera_id="test_camera",
-        name="Test camera",
-        model_path=Path("nano.onnx"),
-        stale_seconds=2,
-        max_fps=2,
-        classes={"person": ["person"], "vehicle": ["car", "truck"]},
-        mqtt={"broker": "127.0.0.1"},
-    )
 
 
 def detections():
@@ -81,41 +64,6 @@ mqtt: {broker: localhost}
     path.write_text(path.read_text() + "max_fps: 0\n")
     with pytest.raises(ValueError):
         load_config(path)
-
-
-@pytest.fixture
-def broker_port():
-    ready = threading.Event()
-    control = {}
-    with socket.socket() as listener:
-        listener.bind(("127.0.0.1", 0))
-        port = listener.getsockname()[1]
-
-    async def serve():
-        broker = Broker(
-            {
-                "listeners": {"default": {"type": "tcp", "bind": f"127.0.0.1:{port}"}},
-                "plugins": {
-                    "amqtt.plugins.authentication.AnonymousAuthPlugin": {
-                        "allow_anonymous": True
-                    }
-                },
-            }
-        )
-        await broker.start()
-        control.update(loop=asyncio.get_running_loop(), stop=asyncio.Event())
-        ready.set()
-        await control["stop"].wait()
-        await broker.shutdown()
-
-    thread = threading.Thread(target=lambda: asyncio.run(serve()), daemon=True)
-    thread.start()
-    assert ready.wait(10), "test broker failed to start"
-    try:
-        yield port
-    finally:
-        control["loop"].call_soon_threadsafe(control["stop"].set)
-        thread.join(10)
 
 
 class Observer:
@@ -168,6 +116,7 @@ def test_real_mqtt_discovery_state_restart_staleness_and_shutdown(config, broker
             discovered = json.loads(observer.wait(discovery)[1])
             assert discovered["availability_topic"] == f"{base}/availability"
             assert discovered["expire_after"] == 2
+            assert "value_json.presence" in discovered["value_template"]
             assert discovered["device"]["identifiers"] == ["mqtt_camera_test_camera"]
             observer.wait(f"{base}/availability", b"offline")
             publisher.publish(prediction_payload(detections(), config, 1, 10))

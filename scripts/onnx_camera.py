@@ -15,7 +15,15 @@ import numpy as np
 import supervision as sv
 import yaml
 from paho.mqtt import client as mqtt
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    NonNegativeFloat,
+    field_validator,
+    model_validator,
+)
+from trackers import ByteTrackTracker
 
 LOG = logging.getLogger(__name__)
 
@@ -41,6 +49,20 @@ class BrokerConfig(BaseModel):
         return value.strip("/")
 
 
+class TrackingConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    enabled: bool = True
+    minimum_consecutive_frames: int = Field(default=2, ge=1)
+    lost_track_seconds: float = Field(default=2, gt=0)
+    recovery_threshold: float = Field(default=0.1, ge=0, le=1)
+
+
+class PresenceConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+    hold_seconds: NonNegativeFloat = 5
+    hold_seconds_by_class: dict[str, NonNegativeFloat] = Field(default_factory=dict)
+
+
 class CameraConfig(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     camera_id: str = Field(pattern=r"^[a-zA-Z0-9_]+$")
@@ -51,7 +73,18 @@ class CameraConfig(BaseModel):
     max_fps: float = Field(default=2, gt=0)
     stale_seconds: int = Field(default=30, ge=1)
     classes: dict[str, list[str]]
+    tracking: TrackingConfig = Field(default_factory=TrackingConfig)
+    presence: PresenceConfig = Field(default_factory=PresenceConfig)
     mqtt: BrokerConfig
+
+    @model_validator(mode="after")
+    def valid_processing(self):
+        if self.tracking.enabled and self.tracking.recovery_threshold > self.threshold:
+            raise ValueError("tracking.recovery_threshold must not exceed threshold")
+        unknown = self.presence.hold_seconds_by_class.keys() - self.classes.keys()
+        if unknown:
+            raise ValueError(f"Unknown presence hold groups: {sorted(unknown)}")
+        return self
 
     @field_validator("source")
     @classmethod
@@ -87,13 +120,18 @@ def load_config(path):
     return config
 
 
-def prediction_payload(detections: sv.Detections, config, sequence, processing_ms):
-    """Use Supervision filtering and serialize only configured classes."""
+def select_classes(detections: sv.Detections, config):
+    """Filter model output with Supervision before association or publication."""
     names = np.asarray(detections.data.get("class_name", []), dtype=str)
     if len(names) != len(detections):
         raise ValueError("RF-DETR predictions must include class_name metadata")
     wanted = {label for labels in config.classes.values() for label in labels}
-    selected = detections[np.isin(names, list(wanted))]
+    return detections[np.isin(names, list(wanted))]
+
+
+def prediction_payload(detections: sv.Detections, config, sequence, processing_ms):
+    """Serialize current detections; the processor applies held presence."""
+    selected = select_classes(detections, config)
     names = np.asarray(selected.data.get("class_name", []), dtype=str)
     counts = {
         key: int(np.isin(names, labels).sum()) for key, labels in config.classes.items()
@@ -104,9 +142,12 @@ def prediction_payload(detections: sv.Detections, config, sequence, processing_m
             "class_id": int(class_id),
             "confidence": float(confidence),
             "box_xyxy": box.tolist(),
+            "tracker_id": int(selected.tracker_id[index])
+            if selected.tracker_id is not None
+            else None,
         }
-        for label, class_id, confidence, box in zip(
-            names, selected.class_id, selected.confidence, selected.xyxy
+        for index, (label, class_id, confidence, box) in enumerate(
+            zip(names, selected.class_id, selected.confidence, selected.xyxy)
         )
     ]
     return {
@@ -117,8 +158,72 @@ def prediction_payload(detections: sv.Detections, config, sequence, processing_m
         "model": config.model_path.name,
         "processing_ms": round(processing_ms, 1),
         "counts": counts,
+        "presence": {key: count > 0 for key, count in counts.items()},
         "detections": objects,
     }
+
+
+class PresenceHold:
+    """Hold presence in elapsed seconds while keeping instantaneous counts."""
+
+    def __init__(self, config):
+        self.holds = {
+            key: config.presence.hold_seconds_by_class.get(
+                key, config.presence.hold_seconds
+            )
+            for key in config.classes
+        }
+        self.last_seen = {}
+
+    def update(self, counts, now):
+        for key, count in counts.items():
+            if count > 0:
+                self.last_seen[key] = now
+        return {
+            key: count > 0 or now - self.last_seen.get(key, -math.inf) < self.holds[key]
+            for key, count in counts.items()
+        }
+
+    def reset(self):
+        self.last_seen.clear()
+
+
+class PredictionProcessor:
+    """Reuse Roboflow ByteTrack and gate presence on confirmed, observed tracks."""
+
+    def __init__(self, config):
+        self.config = config
+        self.presence = PresenceHold(config)
+        self.last_frame_at = None
+        self.tracker = (
+            ByteTrackTracker(
+                lost_track_buffer=math.ceil(config.tracking.lost_track_seconds * 30),
+                frame_rate=config.max_fps,
+                track_activation_threshold=config.threshold,
+                high_conf_det_threshold=config.threshold,
+                minimum_consecutive_frames=config.tracking.minimum_consecutive_frames,
+            )
+            if config.tracking.enabled
+            else None
+        )
+
+    def process(self, detections, sequence, processing_ms, *, now=None):
+        now = time.monotonic() if now is None else now
+        if (
+            self.last_frame_at is not None
+            and now - self.last_frame_at >= self.config.stale_seconds
+        ):
+            self.presence.reset()
+            if self.tracker is not None:
+                self.tracker.reset()
+        self.last_frame_at = now
+        selected = select_classes(detections, self.config)
+        if self.tracker is not None:
+            selected = self.tracker.update(selected, timestamp=now)
+            selected = selected[selected.tracker_id >= 0]
+        payload = prediction_payload(selected, self.config, sequence, processing_ms)
+        payload["presence"] = self.presence.update(payload["counts"], now)
+        return payload
 
 
 class HomeAssistantPublisher:
@@ -191,9 +296,9 @@ class HomeAssistantPublisher:
                         name=f"{key.replace('_', ' ').title()} detected",
                         device_class="occupancy",
                         value_template=(
-                            "{{ 'ON' if value_json.counts['"
+                            "{{ 'ON' if value_json.presence['"
                             + key
-                            + "'] > 0 else 'OFF' }}"
+                            + "'] else 'OFF' }}"
                         ),
                     )
                 topic = (
@@ -296,9 +401,14 @@ def run(config, max_frames=None):
     requested = {label for labels in config.classes.values() for label in labels}
     if missing := requested - supported:
         raise ValueError(f"Configured classes absent from model: {sorted(missing)}")
+    processor = PredictionProcessor(config)
     results = predictor.predict(
         config.source,
-        threshold=config.threshold,
+        threshold=(
+            config.tracking.recovery_threshold
+            if config.tracking.enabled
+            else config.threshold
+        ),
         stream=True,
         stream_buffer=False,
         include_source_image=False,
@@ -314,9 +424,7 @@ def run(config, max_frames=None):
                     break
                 processing_ms = (time.monotonic() - started) * 1000
                 sequence += 1
-                payload = prediction_payload(
-                    detections, config, sequence, processing_ms
-                )
+                payload = processor.process(detections, sequence, processing_ms)
                 publisher.publish(payload)
                 LOG.info(
                     "Frame %s: %s (%.0f ms)", sequence, payload["counts"], processing_ms

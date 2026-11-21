@@ -10,6 +10,7 @@ dependencies = [
     "PyYAML>=6,<7",
     "rfdetr[onnx,stream]==1.12.1",
     "supervision==0.32.0",
+    "trackers==2.7.0",
 ]
 
 [dependency-groups]

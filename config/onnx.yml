@@ -6,7 +6,15 @@ model_path: ../models/rfdetr-nano/rfdetr-nano.onnx
 threshold: 0.5
 max_fps: 2
 stale_seconds: 30
-# Entity keys map to model class names. Counts are objects visible in a frame.
+tracking:
+  enabled: true
+  minimum_consecutive_frames: 2
+  lost_track_seconds: 2
+  recovery_threshold: 0.1 # Weak detections may recover a track, but cannot start one.
+presence:
+  hold_seconds: 5
+  hold_seconds_by_class: {} # e.g. {person: 10, vehicle: 15}
+# Entity keys map to model class names. Counts are confirmed objects in a frame.
 classes:
   person: [person]
   vehicle: [car, motorcycle, bus, truck]
