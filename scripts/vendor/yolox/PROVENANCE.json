@@ -1,0 +1,31 @@
+{
+  "repository": "https://github.com/Megvii-BaseDetection/YOLOX",
+  "commit": "6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+  "modifications": [
+    "Extracted selected inference functions and their minimal imports; no algorithms changed"
+  ],
+  "files": {
+    "preprocess.py": {
+      "upstream_path": "yolox/data/data_augment.py",
+      "upstream_sha256": "f99b0b1568dafde0acd99f0a1e27a33644885349834d55a9dc632fe691ee352d",
+      "functions": [
+        "preproc"
+      ]
+    },
+    "postprocess.py": {
+      "upstream_path": "yolox/utils/demo_utils.py",
+      "upstream_sha256": "e1d6e1d263691ac15fdaa4f891efa83707da4af0fd895be122459105df3ee601",
+      "functions": [
+        "nms",
+        "multiclass_nms",
+        "multiclass_nms_class_aware",
+        "multiclass_nms_class_agnostic",
+        "demo_postprocess"
+      ]
+    },
+    "coco_classes.py": {
+      "upstream_path": "yolox/data/datasets/coco_classes.py",
+      "upstream_sha256": "b38193c481a73f1f674cedab9e551b15b39b1a7aaed3e09e16505362cc54ad51"
+    }
+  }
+}

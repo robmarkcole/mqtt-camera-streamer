@@ -1,13 +1,13 @@
 # mqtt-camera-streamer
 
-Run USB webcam or RTSP frames through RF-DETR ONNX, track detections with
+Run USB webcam or RTSP frames through RF-DETR or YOLOX ONNX, track detections with
 Roboflow ByteTrack/Supervision, and publish predictions to Home Assistant over
 MQTT. Optional pretrained license plate detection and OCR run locally on CPU.
 
 The runtime uses ONNX Runtime directly, with no PyTorch, TorchVision, Transformers
-or RF-DETR Python package. Supervision, Roboflow ByteTrack and plate recognition
-remain available. Model export uses the optional `export` extra on a development
-computer.
+or detector training package. Supervision, Roboflow ByteTrack and plate recognition
+remain available. Model export uses the optional `export` (RF-DETR) or
+`yolox-export` extra on a development computer.
 
 The inference service is headless. Home Assistant provides the dashboard and
 automations; a viewer is not required on the camera computer.
@@ -56,6 +56,7 @@ with local settings/weights are ignored by Git.
 | Configuration, tracking and MQTT discovery | [ONNX and Home Assistant](docs/onnx-home-assistant.md) |
 | MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
 | Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
+| YOLOX Nano/Tiny, export and Pi comparisons | [YOLOX models](docs/yolox.md) |
 | INT8 quantization and Pi comparisons | [INT8 experiments](docs/int8.md) |
 | Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 
@@ -141,8 +142,8 @@ Dependencies live in `pyproject.toml` and `uv.lock`. Use `uv add`, `uv remove` o
 prepares a runtime environment; repeat `--no-dev` with `uv run` on that host.
 Streamlit has been removed. Imutils and Datasette are opt-in extras. Screen
 capture and YouTube download dependencies are not part of this deployment profile.
-Install the `export` extra only when exporting or comparing models; use
-`uv sync --locked --no-dev` on the Pi to exclude it and development tools.
+Install model export extras only when exporting or comparing models; use
+`uv sync --locked --no-dev` on the Pi to exclude them and development tools.
 RTSP output reuses PyAV (already used by Supervision), with no FFmpeg executable
 required; it needs an RTSP server such as the optional standalone MediaMTX binary.
 

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import numpy as np
 import supervision as sv
-from onnx_detector import ONNXDetector
+from onnx_detector import load_detector
 from PIL import Image
 from quantize_onnx import file_hash, image_list
 from supervision.metrics import MeanAveragePrecision
@@ -86,7 +86,7 @@ def evaluate(
             item["sha256"] for item in manifest.get("calibration_images", [])
         ):
             raise ValueError("Evaluation images overlap this model's calibration set")
-    detector = ONNXDetector(model, threads=threads)
+    detector = load_detector(model, threads=threads)
     ordinal = {name: index for index, name in enumerate(class_names)}
     if set(detector.class_names) - ordinal.keys():
         raise ValueError("Dataset class names do not cover the exported labels")

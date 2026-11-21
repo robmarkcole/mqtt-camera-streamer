@@ -1,6 +1,7 @@
-# RF-DETR ONNX webcam detection with Home Assistant
+# ONNX webcam detection with Home Assistant
 
-The detector runs exported RF-DETR models directly through ONNX Runtime CPU.
+The detector runs exported RF-DETR or YOLOX Nano/Tiny models directly through ONNX Runtime CPU.
+See [YOLOX setup and Pi results](yolox.md) for the alternative exports.
 Small Apache-licensed NumPy preprocessing/decoding and bounded capture helpers
 are reused from RF-DETR 1.12.1, with attribution in `scripts/vendor/rfdetr`.
 Supervision detections feed class filtering, Roboflow ByteTrack and MQTT/HA.
@@ -129,7 +130,7 @@ Under `mqtt_camera/<camera_id>/` the service publishes:
 | `availability` | `online` or `offline` | Yes |
 
 `predicted_at` is UTC prediction completion time, not camera exposure time.
-`processing_ms` includes obtaining the next result and RF-DETR inference; it
+`processing_ms` includes obtaining the next result and detector inference; it
 excludes the rate-limit sleep and optional plate stage. Bounding boxes refer to
 original source-image pixels.
 The schema carries `schema_version: 1`; `presence` and per-detection `tracker_id`

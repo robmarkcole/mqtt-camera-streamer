@@ -101,7 +101,7 @@ by the Pi. The app and configuration are documented
 [here](https://github.com/home-assistant/app-mosquitto/blob/main/mosquitto/DOCS.md).
 
 The supplied example starts at 1 inference FPS with a 60-second stale timeout.
-`onnx_threads` limits RF-DETR ONNX Runtime CPU inference threads; spinning is
+`onnx_threads` limits ONNX Runtime CPU inference threads; spinning is
 disabled to reduce idle CPU contention. Start by comparing 2 and 4 threads on
 a four-core Pi; a lower thread budget can reduce inference FPS. This setting is
 different from the previous Torch preprocessing limit. LPR is off in the example
@@ -143,7 +143,7 @@ check sample counts before interpreting its p95. `--source 0` benchmarks a live
 camera instead; stop the service first so the camera has a single owner.
 
 The JSON report separates model load time from warm measured frames. It includes
-p50/p95 capture+RF-DETR latency, tracking time, actual plate scan time, whole-frame
+p50/p95 capture+detector latency, tracking time, actual plate scan time, whole-frame
 latency, observed FPS, CPU core equivalents, and peak process RSS. Capture/decode,
 pre/postprocessing and source blocking are included; MQTT and application rate
 limiting, JPEG encoding, recording and RTSP publishing are excluded. It is not a raw neural-network kernel benchmark. Peak RSS
@@ -265,3 +265,7 @@ Keep the prior revision/lockfile and model artifact for rollback. Preparation an
 the short Pi 4 smoke test above do not replace sustained workload, camera/boot
 and recovery testing on the intended installation. [systemd reference](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html),
 [uv installation](https://docs.astral.sh/uv/getting-started/installation/).
+
+For a faster CPU alternative, see [YOLOX Nano/Tiny](yolox.md) for metadata-bearing
+ONNX exports, the physical Pi comparison and the measured quality tradeoff.
+Neither export extra belongs in the Pi runtime.

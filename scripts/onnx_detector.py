@@ -95,15 +95,42 @@ def preprocess(rgb, metadata):
     return np.ascontiguousarray(((chw - mean) / std)[None], dtype=metadata.input_dtype)
 
 
+def create_cpu_session(model_path, threads=2):
+    options = ort.SessionOptions()
+    options.intra_op_num_threads = threads
+    options.inter_op_num_threads = 1
+    options.add_session_config_entry("session.intra_op.allow_spinning", "0")
+    options.add_session_config_entry("session.inter_op.allow_spinning", "0")
+    return ort.InferenceSession(
+        str(model_path), sess_options=options, providers=["CPUExecutionProvider"]
+    )
+
+
+def load_detector(model_path, threads=2):
+    """Choose a validated adapter from embedded metadata; load the graph only once."""
+    session = create_cpu_session(model_path, threads)
+    props = session.get_modelmeta().custom_metadata_map
+    supported = [
+        name for name in ("rfdetr_inference", "yolox_inference") if name in props
+    ]
+    if len(supported) != 1:
+        raise ValueError(
+            "Expected exactly one supported detector metadata contract (RF-DETR or YOLOX)"
+        )
+    if supported[0] == "yolox_inference":
+        from yolox_detector import YOLOXDetector
+
+        return YOLOXDetector(model_path, threads=threads, session=session)
+    return ONNXDetector(model_path, threads=threads, session=session)
+
+
 class ONNXDetector:
-    def __init__(self, model_path, threads=2):
-        options = ort.SessionOptions()
-        options.intra_op_num_threads = threads
-        options.inter_op_num_threads = 1
-        options.add_session_config_entry("session.intra_op.allow_spinning", "0")
-        options.add_session_config_entry("session.inter_op.allow_spinning", "0")
-        self.session = ort.InferenceSession(
-            str(model_path), sess_options=options, providers=["CPUExecutionProvider"]
+    family = "rfdetr"
+    helpers_source = "rfdetr-1.12.1"
+
+    def __init__(self, model_path, threads=2, *, session=None):
+        self.session = (
+            session if session is not None else create_cpu_session(model_path, threads)
         )
         raw = self.session.get_modelmeta().custom_metadata_map.get("rfdetr_inference")
         if raw is None:

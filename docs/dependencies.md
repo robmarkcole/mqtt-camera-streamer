@@ -127,3 +127,8 @@ Relevant references: [RF-DETR ONNX adapter](https://github.com/roboflow/rf-detr/
 [uv PyTorch source configuration](https://docs.astral.sh/uv/guides/integration/pytorch/),
 [OpenCV wheel variants](https://pypi.org/project/opencv-python-headless/),
 [PyAV](https://pyav.org/docs/stable/).
+
+YOLOX Nano/Tiny support adds no base runtime packages. Its attributed NumPy/OpenCV
+letterbox, decode and NMS helpers live in `scripts/vendor/yolox`; the optional
+`yolox-export` extra stays on the development computer. See [the YOLOX guide](yolox.md)
+for source provenance, export parity and Pi speed/quality measurements.

@@ -1,4 +1,4 @@
-"""RF-DETR ONNX webcam predictions and Home Assistant MQTT discovery."""
+"""ONNX webcam predictions and Home Assistant MQTT discovery."""
 
 import argparse
 import json
@@ -16,7 +16,7 @@ import numpy as np
 import supervision as sv
 import yaml
 from media import ImageConfig, MediaOutputs, StorageConfig
-from onnx_detector import ONNXDetector
+from onnx_detector import load_detector
 from paho.mqtt import client as mqtt
 from plates import PlateConfig, PlateProcessor
 from pydantic import (
@@ -140,7 +140,7 @@ def load_config(path):
     config.model_path = (path.parent / config.model_path).resolve()
     config.storage.directory = (path.parent / config.storage.directory).resolve()
     if config.model_path.suffix.lower() != ".onnx":
-        raise ValueError("model_path must point to an RF-DETR ONNX export")
+        raise ValueError("model_path must point to a metadata-bearing ONNX detector export")
     if config.stale_seconds <= 1 / config.max_fps:
         raise ValueError("stale_seconds must exceed the interval between predictions")
     return config
@@ -306,7 +306,7 @@ class HomeAssistantPublisher:
                 "identifiers": [f"mqtt_camera_{self.config.camera_id}"],
                 "name": self.config.name,
                 "manufacturer": "mqtt-camera-streamer",
-                "model": "RF-DETR ONNX",
+                "model": "ONNX camera detector",
             },
         }
         for key in self.config.classes:
@@ -495,7 +495,7 @@ def create_predictor(config):
     """Load the same CPU predictor for the service and performance benchmark."""
     if not config.model_path.is_file():
         raise FileNotFoundError(f"Export the model first: {config.model_path}")
-    predictor = ONNXDetector(config.model_path, threads=config.onnx_threads)
+    predictor = load_detector(config.model_path, threads=config.onnx_threads)
     supported = set(predictor.class_names)
     requested = {label for labels in config.classes.values() for label in labels}
     if missing := requested - supported:

@@ -69,7 +69,7 @@ def pi_health():
 
 
 def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
-    """Measure capture+RF-DETR, tracking, optional ALPR, and whole frame latency."""
+    """Measure capture+detector, tracking, optional ALPR, and whole frame latency."""
     if lpr_mode == "off":
         config = config.model_copy(
             update={"lpr": config.lpr.model_copy(update={"enabled": False})}
@@ -182,7 +182,8 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
         "quantization": quantization,
         "model_bytes": config.model_path.stat().st_size,
         "detector_backend": "onnxruntime-direct",
-        "helpers_source": "rfdetr-1.12.1",
+        "helpers_source": getattr(predictor, "helpers_source", "rfdetr-1.12.1"),
+        "detector_family": getattr(predictor, "family", "rfdetr"),
         "measured_at": datetime.now(UTC).isoformat(),
         "platform": {
             "system": platform.system(),
@@ -216,7 +217,7 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
         "health_before": health_before,
         "health_after": pi_health(),
         "stages": {key: summarize(values) for key, values in samples.items()},
-        "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit",
+        "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit",
     }
 
 

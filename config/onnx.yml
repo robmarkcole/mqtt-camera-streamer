@@ -5,7 +5,7 @@ source: 0 # macOS camera indices can change; verify the external camera first
 model_path: ../models/rfdetr-nano/rfdetr-nano.onnx
 threshold: 0.5
 max_fps: 2
-onnx_threads: 2 # RF-DETR ONNX Runtime CPU inference threads.
+onnx_threads: 2 # RF-DETR (default) or metadata-bearing YOLOX ONNX Runtime CPU inference threads.
 stale_seconds: 30
 tracking:
   enabled: true

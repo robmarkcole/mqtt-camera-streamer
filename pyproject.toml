@@ -1,7 +1,7 @@
 [project]
 name = "mqtt-camera-streamer"
 version = "0.1.0"
-description = "RF-DETR ONNX webcam predictions and Home Assistant MQTT discovery"
+description = "RF-DETR and YOLOX ONNX camera predictions with Home Assistant MQTT"
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "av>=19,<20",
@@ -18,6 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+yolox-export = ["torch>=2.2,<3", "torchvision>=0.17,<1", "onnx>=1.17,<2", "loguru>=0.7,<1", "tabulate>=0.9,<1", "psutil>=5,<8"]
 quantize = ["onnx>=1.17,<2", "sympy>=1.13,<2"]
 export = ["rfdetr[onnx]==1.12.1", "torch>=2.2,<3", "torchvision>=0.17,<1"]
 legacy = ["imutils>=0.5.4,<0.6"]
@@ -29,7 +30,7 @@ dev = ["amqtt>=0.12,<0.13", "pytest>=8,<10", "ruff>=0.9"]
 [tool.uv]
 package = false
 
-# Only the optional export extra needs Torch; no training stack is installed on Pi.
+# Only optional model-export extras need Torch; no training stack is installed on Pi.
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
