@@ -16,9 +16,11 @@ import numpy as np
 import supervision as sv
 import yaml
 from media import ImageConfig, MediaOutputs, StorageConfig
+from onnx_detector import ONNXDetector
 from paho.mqtt import client as mqtt
 from plates import PlateConfig, PlateProcessor
 from pydantic import (
+    AliasChoices,
     BaseModel,
     ConfigDict,
     Field,
@@ -27,6 +29,7 @@ from pydantic import (
     model_validator,
 )
 from trackers import ByteTrackTracker
+from vendor.rfdetr.streams import iter_live_frames
 
 LOG = logging.getLogger(__name__)
 
@@ -74,7 +77,9 @@ class CameraConfig(BaseModel):
     model_path: Path
     threshold: float = Field(default=0.5, ge=0, le=1)
     max_fps: float = Field(default=2, gt=0)
-    torch_threads: int = Field(default=2, ge=1)
+    onnx_threads: int = Field(
+        default=2, ge=1, validation_alias=AliasChoices("onnx_threads", "torch_threads")
+    )
     stale_seconds: int = Field(default=30, ge=1)
     classes: dict[str, list[str]]
     tracking: TrackingConfig = Field(default_factory=TrackingConfig)
@@ -490,11 +495,7 @@ def create_predictor(config):
     """Load the same CPU predictor for the service and performance benchmark."""
     if not config.model_path.is_file():
         raise FileNotFoundError(f"Export the model first: {config.model_path}")
-    import torch
-    from rfdetr import RFDETRInference
-
-    torch.set_num_threads(config.torch_threads)
-    predictor = RFDETRInference(config.model_path, device="cpu")
+    predictor = ONNXDetector(config.model_path, threads=config.onnx_threads)
     supported = set(predictor.class_names)
     requested = {label for labels in config.classes.values() for label in labels}
     if missing := requested - supported:
@@ -516,22 +517,27 @@ def resolve_camera_source(source):
 
 
 def prediction_stream(predictor, config):
-    """Reuse RF-DETR's latest-frame capture, preprocessing and decoding."""
-    return predictor.predict(
-        resolve_camera_source(config.source),
-        threshold=(
-            config.tracking.recovery_threshold
-            if config.tracking.enabled
-            else config.threshold
-        ),
-        stream=True,
-        stream_buffer=False,
-        include_source_image=(
-            config.lpr.enabled
-            or config.images.transport != "off"
-            or config.storage.enabled
-        ),
+    """Reuse Roboflow's bounded latest-frame capture with our ONNX-only detector."""
+    frames = iter_live_frames(
+        [resolve_camera_source(config.source)], stream_buffer=False
     )
+    try:
+        for batch in frames:
+            yield predictor.predict_frame(
+                batch[0],
+                threshold=(
+                    config.tracking.recovery_threshold
+                    if config.tracking.enabled
+                    else config.threshold
+                ),
+                include_source_image=(
+                    config.lpr.enabled
+                    or config.images.transport != "off"
+                    or config.storage.enabled
+                ),
+            )
+    finally:
+        frames.close()
 
 
 def run(config, max_frames=None):

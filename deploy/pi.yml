@@ -6,7 +6,7 @@ source: /dev/v4l/by-id/usb-REPLACE_WITH_YOUR_CAMERA-video-index0
 model_path: /opt/mqtt-camera-streamer/models/rfdetr-nano/rfdetr-nano.onnx
 threshold: 0.5
 max_fps: 1
-torch_threads: 2
+onnx_threads: 2
 stale_seconds: 60
 tracking:
   enabled: true

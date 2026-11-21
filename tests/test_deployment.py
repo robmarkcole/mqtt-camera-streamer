@@ -15,7 +15,7 @@ def test_pi_example_is_valid_and_uses_separate_secret_environment():
     assert config.model_path.is_absolute()
     assert config.mqtt.username_env == "MQTT_USERNAME"
     assert config.mqtt.password_env == "MQTT_PASSWORD"
-    assert config.torch_threads == 2
+    assert config.onnx_threads == 2
     assert not config.lpr.enabled
 
 
@@ -44,3 +44,14 @@ def test_legacy_mqtt_rejects_password_without_username(monkeypatch):
     monkeypatch.setenv("MQTT_PASSWORD", "dev_test_password")
     with pytest.raises(ValueError, match="without a username"):
         legacy_mqtt.get_mqtt_client()
+
+
+def test_old_thread_setting_is_a_migration_alias(config):
+    from onnx_camera import CameraConfig
+
+    data = config.model_dump()
+    data.pop("onnx_threads")
+    data["torch_threads"] = 3
+    migrated = CameraConfig.model_validate(data)
+    assert migrated.onnx_threads == 3
+    assert "torch_threads" not in migrated.model_dump()

@@ -2,9 +2,9 @@
 
 Target a **64-bit Raspberry Pi OS Lite** installation with a USB UVC/V4L2
 webcam. Start with RF-DETR Nano at a low inference rate, then benchmark on the
-actual board. The official RF-DETR package still includes PyTorch/TorchVision;
-allow space for the Python environment and model files. No desktop, Streamlit,
-Docker or Home Assistant installation is required on the Pi.
+actual board. The runtime uses ONNX Runtime with NumPy preprocessing; PyTorch,
+TorchVision, Transformers and the RF-DETR Python package are excluded. No desktop,
+Streamlit, Docker or Home Assistant installation is required on the Pi.
 
 The deployment files assume `/opt/mqtt-camera-streamer`, a dedicated
 `mqtt-camera` service user, and uv at `/usr/local/bin/uv`. The service's Python
@@ -50,15 +50,16 @@ cache paths. It accepts ordinary uv arguments. Build the environment on the Pi;
 an environment copied from macOS or another architecture is not portable.
 This locked runtime installation excludes development tools and optional viewers.
 Headless OpenCV is used, so Qt/X11 and `libGL` are not needed by this profile.
-The lockfile selects CPU-only PyTorch/TorchVision wheels on Linux to avoid
-installing CUDA libraries on the Pi.
+Do not enable the `export` extra on the Pi; it belongs on the model development
+computer. Torch-related entries remain in the lockfile for that optional extra,
+but are absent from this runtime installation.
 
 ## 3. Copy the exported model
 
 Export RF-DETR on the development computer rather than doing training on the Pi:
 
 ```sh
-uv run scripts/export-rfdetr-onnx.py
+uv run --extra export scripts/export-rfdetr-onnx.py
 scp models/rfdetr-nano/rfdetr-nano.onnx YOUR_ADMIN@YOUR_PI:/tmp/rfdetr-nano.onnx
 ```
 
@@ -100,8 +101,10 @@ by the Pi. The app and configuration are documented
 [here](https://github.com/home-assistant/app-mosquitto/blob/main/mosquitto/DOCS.md).
 
 The supplied example starts at 1 inference FPS with a 60-second stale timeout.
-`torch_threads` limits Torch/TorchVision preprocessing; the upstream RF-DETR
-adapter controls its own ONNX Runtime thread pool. LPR is off in the Pi example
+`onnx_threads` limits RF-DETR ONNX Runtime CPU inference threads; spinning is
+disabled to reduce idle CPU contention. Start by comparing 2 and 4 threads on
+a four-core Pi; a lower thread budget can reduce inference FPS. This setting is
+different from the previous Torch preprocessing limit. LPR is off in the example
 until it has been benchmarked; the local development configuration can differ.
 
 Enable MQTT discovery in Home Assistant. No code runs inside Home Assistant and

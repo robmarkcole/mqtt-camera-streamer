@@ -1,0 +1,5 @@
+RF-DETR helpers
+Copyright (c) 2025 Roboflow. All Rights Reserved.
+Licensed under the Apache License, Version 2.0; see LICENSE.
+Copied from RF-DETR 1.12.1. See PROVENANCE.json for source paths, checksums and modifications.
+These files are distributed under their upstream license, alongside this GPL project.

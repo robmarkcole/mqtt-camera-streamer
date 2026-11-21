@@ -1,4 +1,4 @@
-"""Download pretrained RF-DETR Nano and export ONNX with inference metadata."""
+"""Export pretrained RF-DETR Nano; run with `uv run --extra export` on a dev host."""
 
 import argparse
 from pathlib import Path

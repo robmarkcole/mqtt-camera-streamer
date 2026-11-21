@@ -161,14 +161,11 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
     peak_rss_mib = rss / (1024 * 1024 if platform.system() == "Darwin" else 1024)
     versions = {}
     for package in (
-        "rfdetr",
         "supervision",
         "trackers",
         "onnxruntime",
         "fast-alpr",
         "numpy",
-        "torch",
-        "torchvision",
         "opencv-python-headless",
         "av",
     ):
@@ -176,7 +173,9 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
     with config.model_path.open("rb") as artifact:
         model_sha256 = hashlib.file_digest(artifact, "sha256").hexdigest()
     return {
-        "schema_version": 1,
+        "schema_version": 2,
+        "detector_backend": "onnxruntime-direct",
+        "helpers_source": "rfdetr-1.12.1",
         "measured_at": datetime.now(UTC).isoformat(),
         "platform": {
             "system": platform.system(),
@@ -187,7 +186,7 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
         "source": source_description(config.source),
         "model": config.model_path.name,
         "model_sha256": model_sha256,
-        "torch_threads": config.torch_threads,
+        "onnx_threads": config.onnx_threads,
         "configured_max_fps": config.max_fps,
         "lpr_mode": lpr_mode,
         "lpr_enabled": config.lpr.enabled,

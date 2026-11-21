@@ -1,10 +1,11 @@
 # RF-DETR ONNX webcam detection with Home Assistant
 
-The detector reuses RF-DETR's ONNX prediction and live camera APIs and passes its
-Supervision `Detections` through class filtering and Roboflow ByteTrack tracking.
-It publishes predictions and
-Home Assistant MQTT discovery without needing a Roboflow account or API key.
-Model download/export needs internet access; inference uses the local ONNX file.
+The detector runs exported RF-DETR models directly through ONNX Runtime CPU.
+Small Apache-licensed NumPy preprocessing/decoding and bounded capture helpers
+are reused from RF-DETR 1.12.1, with attribution in `scripts/vendor/rfdetr`.
+Supervision detections feed class filtering, Roboflow ByteTrack and MQTT/HA.
+The default runtime does not install PyTorch, TorchVision, Transformers, RF-DETR
+or the ONNX Python/export package. No Roboflow account/API key is required.
 
 ## Install and export
 
@@ -14,14 +15,18 @@ uv manages Python, the `.venv` environment, and the dependencies in `uv.lock`:
 
 ```sh
 uv sync --locked
-uv run scripts/export-rfdetr-onnx.py
+uv run --extra export scripts/export-rfdetr-onnx.py
 ```
 
 The export script downloads pretrained RF-DETR Nano and writes
-`models/rfdetr-nano/rfdetr-nano.onnx`, including the metadata used by the official
-`RFDETRInference` API. Model files and virtual environments are ignored by Git.
-The upstream RF-DETR package currently also installs PyTorch, even though this
-service runs its exported model through ONNX Runtime on CPU.
+`models/rfdetr-nano/rfdetr-nano.onnx`, including embedded inference metadata for
+labels, input shape and decoding. Model files and virtual environments are ignored
+by Git.
+The optional `export` extra installs the official RF-DETR/PyTorch stack for model
+export and comparison on a development computer. It is not needed on the Pi.
+The runtime supports schema-1 detection exports with fixed spatial dimensions,
+batch one, NCHW RGB/grayscale and FP32/FP16 input. Segmentation/keypoint models
+and missing/unsupported metadata fail explicitly; class names are never guessed.
 
 ## Configure and run
 
@@ -29,7 +34,7 @@ Copy `config/onnx.yml` to `config/onnx.local.yml` and edit:
 
 - `source`: your external webcam index. Do not assume USB is always camera 0.
   On macOS, grant the launching application camera access in System Settings.
-  RF-DETR also accepts video paths and RTSP URLs. Paths/URLs containing credentials
+  Video paths and RTSP URLs are also accepted. Paths/URLs containing credentials
   should stay in the ignored local configuration.
 - `camera_id`: a stable, unique ID for this camera; use a different ID per service.
 - `mqtt.broker` and `mqtt.port`: the broker configured in Home Assistant's MQTT
@@ -38,8 +43,9 @@ Copy `config/onnx.yml` to `config/onnx.local.yml` and edit:
   vehicle groups. Unknown labels fail at startup rather than silently reporting 0.
 - `threshold`, `max_fps`, and `stale_seconds`: confidence, maximum publication /
   inference rate, and the time without results before entities become unavailable.
-- `torch_threads`: Torch/TorchVision CPU preprocessing threads. This does not set
-  the ONNX Runtime session's own thread pool.
+- `onnx_threads`: ONNX Runtime intra-op CPU inference threads (default 2).
+  The old `torch_threads` key is accepted as a migration alias, but now controls
+  ORT rather than Torch preprocessing; rebenchmark migrated configurations.
 - `tracking`: track confirmation, recovery time and low-confidence association.
 - `presence`: the default hold duration and optional overrides per entity group.
 

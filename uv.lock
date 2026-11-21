@@ -878,23 +878,26 @@ dependencies = [
     { name = "av" },
     { name = "fast-alpr", extra = ["onnx"] },
     { name = "numpy" },
+    { name = "onnxruntime" },
     { name = "opencv-python-headless" },
     { name = "paho-mqtt" },
     { name = "pillow" },
     { name = "pydantic" },
     { name = "pyyaml" },
-    { name = "rfdetr", extra = ["onnx"] },
     { name = "supervision" },
-    { name = "torch", version = "2.15.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux'" },
-    { name = "torch", version = "2.15.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
-    { name = "torchvision", version = "0.29.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux'" },
-    { name = "torchvision", version = "0.29.2+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
     { name = "trackers" },
 ]
 
 [package.optional-dependencies]
 database = [
     { name = "datasette" },
+]
+export = [
+    { name = "rfdetr", extra = ["onnx"] },
+    { name = "torch", version = "2.15.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux'" },
+    { name = "torch", version = "2.15.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
+    { name = "torchvision", version = "0.29.2", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux'" },
+    { name = "torchvision", version = "0.29.2+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "sys_platform == 'linux'" },
 ]
 legacy = [
     { name = "imutils" },
@@ -914,20 +917,21 @@ requires-dist = [
     { name = "fast-alpr", extras = ["onnx"], specifier = "==0.4.0" },
     { name = "imutils", marker = "extra == 'legacy'", specifier = ">=0.5.4,<0.6" },
     { name = "numpy", specifier = ">=2,<3" },
+    { name = "onnxruntime", specifier = ">=1.20,<2" },
     { name = "opencv-python-headless", specifier = ">=4.9,<6" },
     { name = "paho-mqtt", specifier = ">=2.1,<3" },
     { name = "pillow", specifier = ">=11,<13" },
     { name = "pydantic", specifier = ">=2,<3" },
     { name = "pyyaml", specifier = ">=6,<7" },
-    { name = "rfdetr", extras = ["onnx"], specifier = "==1.12.1" },
+    { name = "rfdetr", extras = ["onnx"], marker = "extra == 'export'", specifier = "==1.12.1" },
     { name = "supervision", specifier = "==0.32.0" },
-    { name = "torch", marker = "sys_platform != 'linux'", specifier = ">=2.2,<3" },
-    { name = "torch", marker = "sys_platform == 'linux'", specifier = ">=2.2,<3", index = "https://download.pytorch.org/whl/cpu" },
-    { name = "torchvision", marker = "sys_platform != 'linux'", specifier = ">=0.17,<1" },
-    { name = "torchvision", marker = "sys_platform == 'linux'", specifier = ">=0.17,<1", index = "https://download.pytorch.org/whl/cpu" },
+    { name = "torch", marker = "sys_platform == 'linux' and extra == 'export'", specifier = ">=2.2,<3", index = "https://download.pytorch.org/whl/cpu" },
+    { name = "torch", marker = "sys_platform != 'linux' and extra == 'export'", specifier = ">=2.2,<3" },
+    { name = "torchvision", marker = "sys_platform == 'linux' and extra == 'export'", specifier = ">=0.17,<1", index = "https://download.pytorch.org/whl/cpu" },
+    { name = "torchvision", marker = "sys_platform != 'linux' and extra == 'export'", specifier = ">=0.17,<1" },
     { name = "trackers", specifier = "==2.7.0" },
 ]
-provides-extras = ["legacy", "database"]
+provides-extras = ["export", "legacy", "database"]
 
 [package.metadata.requires-dev]
 dev = [
