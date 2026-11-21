@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "RF-DETR ONNX webcam predictions and Home Assistant MQTT discovery"
 requires-python = ">=3.12,<3.14"
 dependencies = [
+    "fast-alpr[onnx]==0.4.0",
     "numpy>=2,<3",
     "paho-mqtt>=2.1,<3",
     "pydantic>=2,<3",

@@ -61,7 +61,8 @@ The RF-DETR source generator keeps the latest live frame (`stream_buffer=False`)
 instead of queuing frames while inference runs. Lower `max_fps` reduces inference
 and MQTT load; it does not set the webcam's hardware capture rate. Raspberry Pi
 throughput is not established: use 64-bit Linux, start at a low rate, and measure
-on the target board. OCR is not implemented.
+on the target board. See [license plate detection and OCR](license-plates.md) to
+enable the optional pretrained plate pipeline and Home Assistant plate sensors.
 
 ## Tracking and presence hold times
 
@@ -120,8 +121,9 @@ Under `mqtt_camera/<camera_id>/` the service publishes:
 | `availability` | `online` or `offline` | Yes |
 
 `predicted_at` is UTC prediction completion time, not camera exposure time.
-`processing_ms` includes obtaining the next result and inference; it excludes
-the rate-limit sleep. Bounding boxes refer to original source-image pixels.
+`processing_ms` includes obtaining the next result and RF-DETR inference; it
+excludes the rate-limit sleep and optional plate stage. Bounding boxes refer to
+original source-image pixels.
 The schema carries `schema_version: 1`; `presence` and per-detection `tracker_id`
 are additive fields. A tracker ID is `null` when tracking is disabled. Frame
 sequence resets on service restart. Binary sensor discovery reads `presence`;

@@ -15,6 +15,7 @@ import numpy as np
 import supervision as sv
 import yaml
 from paho.mqtt import client as mqtt
+from plates import PlateConfig, PlateProcessor
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -75,6 +76,7 @@ class CameraConfig(BaseModel):
     classes: dict[str, list[str]]
     tracking: TrackingConfig = Field(default_factory=TrackingConfig)
     presence: PresenceConfig = Field(default_factory=PresenceConfig)
+    lpr: PlateConfig = Field(default_factory=PlateConfig)
     mqtt: BrokerConfig
 
     @model_validator(mode="after")
@@ -84,6 +86,19 @@ class CameraConfig(BaseModel):
         unknown = self.presence.hold_seconds_by_class.keys() - self.classes.keys()
         if unknown:
             raise ValueError(f"Unknown presence hold groups: {sorted(unknown)}")
+        if self.lpr.enabled:
+            period = max(self.lpr.interval_seconds, 1 / self.max_fps)
+            if self.lpr.lost_track_seconds <= period:
+                raise ValueError(
+                    "lpr.lost_track_seconds must exceed the scan/frame interval"
+                )
+            if self.lpr.interval_seconds >= self.stale_seconds:
+                raise ValueError("lpr.interval_seconds must be below stale_seconds")
+            if (
+                self.lpr.confirmation_window_seconds
+                < (self.lpr.minimum_readings - 1) * period
+            ):
+                raise ValueError("LPR confirmation window is too short for max_fps")
         return self
 
     @field_validator("source")
@@ -236,6 +251,7 @@ class HomeAssistantPublisher:
         self.stop = threading.Event()
         self.lock = threading.RLock()
         self.last_result = None
+        self.last_plate = None
         self.last_received = -math.inf
         self.online = False
         self.client = mqtt.Client(
@@ -306,6 +322,37 @@ class HomeAssistantPublisher:
                 )
                 yield topic, payload
 
+        if self.config.lpr.enabled:
+            plate_common = dict(common, state_topic=f"{self.base}/plate")
+            # These are historical observations, not live occupancy states.
+            plate_common.pop("expire_after")
+            for key, name, template, extra in (
+                ("last_plate", "Last plate", "{{ value_json.plate }}", {}),
+                (
+                    "plate_recognized_at",
+                    "Plate recognized at",
+                    "{{ value_json.recognized_at }}",
+                    {"device_class": "timestamp"},
+                ),
+                (
+                    "plate_confidence",
+                    "Plate confidence",
+                    "{{ (value_json.ocr_confidence * 100) | round(1) }}",
+                    {"unit_of_measurement": "%", "entity_category": "diagnostic"},
+                ),
+            ):
+                entity = f"{self.config.camera_id}_{key}"
+                yield (
+                    f"{self.config.mqtt.discovery_prefix}/sensor/{entity}/config",
+                    dict(
+                        plate_common,
+                        unique_id=f"mqtt_camera_{entity}",
+                        name=name,
+                        value_template=template,
+                        **extra,
+                    ),
+                )
+
     def _announce(self):
         for topic, payload in self.discovery():
             info = self.client.publish(topic, json.dumps(payload), qos=1, retain=True)
@@ -322,6 +369,8 @@ class HomeAssistantPublisher:
             self._announce()
             client.subscribe(self.config.mqtt.ha_status_topic, qos=1)
             self._publish("availability", "offline", retain=True, qos=1)
+            if self.last_plate is not None:
+                self._publish("plate", json.dumps(self.last_plate), retain=True, qos=1)
             self.online = False
             self.connected.set()
         LOG.info("Connected to MQTT broker")
@@ -363,6 +412,16 @@ class HomeAssistantPublisher:
                 self._publish("availability", "online", retain=True, qos=1)
                 self.online = True
 
+    def publish_plate(self, event):
+        """Retain the last confirmed observation; never replay transient plate events."""
+        with self.lock:
+            self.last_plate = dict(event, camera_id=self.config.camera_id)
+            if not self.connected.is_set():
+                return
+            payload = json.dumps(self.last_plate, allow_nan=False)
+            self._publish("plate", payload, retain=True, qos=1)
+            self._publish("plate/events", payload)
+
     def __enter__(self):
         self.client.connect_async(
             self.config.mqtt.broker, self.config.mqtt.port, keepalive=15
@@ -402,6 +461,11 @@ def run(config, max_frames=None):
     if missing := requested - supported:
         raise ValueError(f"Configured classes absent from model: {sorted(missing)}")
     processor = PredictionProcessor(config)
+    plates = (
+        PlateProcessor(config.lpr, stale_seconds=config.stale_seconds)
+        if config.lpr.enabled
+        else None
+    )
     results = predictor.predict(
         config.source,
         threshold=(
@@ -411,7 +475,7 @@ def run(config, max_frames=None):
         ),
         stream=True,
         stream_buffer=False,
-        include_source_image=False,
+        include_source_image=config.lpr.enabled,
     )
     try:
         with HomeAssistantPublisher(config) as publisher:
@@ -426,6 +490,14 @@ def run(config, max_frames=None):
                 sequence += 1
                 payload = processor.process(detections, sequence, processing_ms)
                 publisher.publish(payload)
+                if plates is not None:
+                    frame = detections.metadata.get("source_image")
+                    if frame is None:
+                        raise ValueError(
+                            "RF-DETR result is missing its RGB source_image"
+                        )
+                    for event in plates.process(frame):
+                        publisher.publish_plate(dict(event, frame_sequence=sequence))
                 LOG.info(
                     "Frame %s: %s (%.0f ms)", sequence, payload["counts"], processing_ms
                 )

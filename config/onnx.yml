@@ -14,6 +14,20 @@ tracking:
 presence:
   hold_seconds: 5
   hold_seconds_by_class: {} # e.g. {person: 10, vehicle: 15}
+lpr:
+  enabled: false # Enable local pretrained ONNX plate detection and OCR.
+  detector_model: yolo-v9-t-384-license-plate-end2end
+  ocr_model: cct-xs-v2-global-model
+  detection_threshold: 0.5
+  ocr_threshold: 0.8
+  interval_seconds: 1
+  lost_track_seconds: 5
+  minimum_readings: 2
+  agreement: 0.75
+  confirmation_window_seconds: 5
+  cooldown_seconds: 30
+  plate_pattern: '[A-Z0-9]{3,10}'
+  num_threads: 2
 # Entity keys map to model class names. Counts are confirmed objects in a frame.
 classes:
   person: [person]

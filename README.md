@@ -4,6 +4,8 @@
 publish predictions and automatically discovered presence/count entities to Home
 Assistant over MQTT. See the [ONNX and Home Assistant setup](docs/onnx-home-assistant.md).
 Use `uv sync --locked` and `uv run scripts/onnx_camera.py` for this workflow.
+Optional [pretrained license plate detection and OCR](docs/license-plates.md)
+publishes confirmed plates and Home Assistant sensors over MQTT.
 This is installed separately from the legacy frame streaming examples below.
 
 **Summary:** Publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit).
