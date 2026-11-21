@@ -103,3 +103,24 @@ def test_non_camera_device_is_rejected(monkeypatch):
     monkeypatch.setattr(Path, "resolve", lambda self, strict=False: Path("/dev/null"))
     with pytest.raises(ValueError, match="V4L2"):
         resolve_camera_source("/dev/null")
+
+
+@pytest.mark.parametrize("family", ["rfdetr", "yolox"])
+def test_quantization_report_reads_detector_family(setup, monkeypatch, family):
+    import json
+    from types import SimpleNamespace
+
+    details = {"mode": "static", "precision": "mixed-fp32-int8"}
+    predictor = SimpleNamespace(
+        family=family,
+        session=SimpleNamespace(
+            get_modelmeta=lambda: SimpleNamespace(
+                custom_metadata_map={family + "_quantization": json.dumps(details)}
+            )
+        ),
+    )
+    monkeypatch.setattr(module, "create_predictor", lambda config: predictor)
+    monkeypatch.setattr(module, "prediction_stream", lambda *args: Stream(2))
+    report = module.benchmark(setup, frames=1, warmup=1, lpr_mode="off")
+    assert report["quantization"] == details
+    assert report["detector_family"] == family

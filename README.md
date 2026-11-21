@@ -57,7 +57,7 @@ with local settings/weights are ignored by Git.
 | MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
 | Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
 | YOLOX Nano/Tiny, export and Pi comparisons | [YOLOX models](docs/yolox.md) |
-| INT8 quantization and Pi comparisons | [INT8 experiments](docs/int8.md) |
+| INT8 quantization and Pi comparisons | [RF-DETR INT8](docs/int8.md), [YOLOX INT8](docs/yolox-int8.md) |
 | Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 
 ## License plates

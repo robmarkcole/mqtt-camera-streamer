@@ -43,9 +43,10 @@ def image_list(path, limit=None):
 class ImageCalibrationReader:
     """Stream one image at a time using exactly the deployed NumPy preprocessing."""
 
-    def __init__(self, paths, metadata):
+    def __init__(self, paths, metadata, preprocess_fn=preprocess):
         self.paths = paths
         self.metadata = metadata
+        self.preprocess = preprocess_fn
         self.rewind()
 
     def get_next(self):
@@ -54,7 +55,7 @@ class ImageCalibrationReader:
             return None
         with Image.open(path) as image:
             rgb = np.array(image.convert("RGB"))
-        return {self.metadata.input_name: preprocess(rgb, self.metadata)}
+        return {self.metadata.input_name: self.preprocess(rgb, self.metadata)}
 
     def rewind(self):
         self.iterator = iter(self.paths)

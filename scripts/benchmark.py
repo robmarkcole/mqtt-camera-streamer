@@ -175,7 +175,8 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
     session = getattr(predictor, "session", None)
     quantization = None
     if session is not None:
-        raw = session.get_modelmeta().custom_metadata_map.get("rfdetr_quantization")
+        props = session.get_modelmeta().custom_metadata_map
+        raw = props.get(f"{getattr(predictor, 'family', 'rfdetr')}_quantization")
         quantization = json.loads(raw) if raw else None
     return {
         "schema_version": 2,

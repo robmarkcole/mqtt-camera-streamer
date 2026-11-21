@@ -90,7 +90,8 @@ The existing `max_fps` cap is still honored. Raise it only after measuring the
 full workload; a faster benchmark alone does not change the configured cap.
 
 No changes to the plate detector/OCR models are made. The existing INT8 generator
-is RF-DETR-specific; the YOLOX models compared here are FP32.
+is RF-DETR-specific; the YOLOX models compared here are FP32. For the separate
+Conv quantizer and measured tradeoffs, see [YOLOX INT8 experiments](yolox-int8.md).
 
 ## Physical Raspberry Pi comparison
 

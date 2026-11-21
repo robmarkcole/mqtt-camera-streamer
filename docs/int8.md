@@ -162,3 +162,6 @@ To try INT8 in the normal camera service, change only `model_path` in a separate
 local config and keep the original FP32 config for rollback. Existing thresholds,
 tracking and hold settings still apply, but should be checked against changed
 confidence scores. Do not enable a faster model solely on its file-size result.
+
+For Conv-based Nano/Tiny models, use the separate [YOLOX INT8 guide](yolox-int8.md).
+The RF-DETR linear-layer recipe described here does not apply to YOLOX.
