@@ -1,0 +1,22 @@
+[Unit]
+Description=ONNX camera predictions and plate recognition to Home Assistant MQTT
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=%h/mqtt-camera-streamer
+EnvironmentFile=%h/.config/mqtt-camera/mqtt.env
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=OMP_NUM_THREADS=2
+Environment=OPENBLAS_NUM_THREADS=2
+ExecStart=%h/.local/bin/uv run --offline --no-sync --no-dev scripts/onnx_camera.py --config %h/.config/mqtt-camera/config.yml
+Restart=always
+RestartSec=10
+KillMode=mixed
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

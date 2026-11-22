@@ -1,0 +1,26 @@
+# Optional RTSP server. Replace both passwords before enabling.
+logLevel: warn
+authMethod: internal
+authInternalUsers:
+  - user: publisher
+    pass: REPLACE_PUBLISH_PASSWORD
+    ips: ['127.0.0.1', '::1']
+    permissions:
+      - action: publish
+        path: camera
+  - user: viewer
+    pass: REPLACE_VIEW_PASSWORD
+    permissions:
+      - action: read
+        path: camera
+rtsp: true
+rtspAddress: 127.0.0.1:8554 # SSH preview by default; use :8554 for LAN readers.
+rtspTransports: [tcp]
+rtmp: false
+hls: false
+webrtc: false
+srt: false
+moq: false
+paths:
+  camera:
+    source: publisher

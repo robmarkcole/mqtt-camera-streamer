@@ -1,0 +1,241 @@
+{
+  "tested_at": "2026-11-22T06:03:01.764232+00:00",
+  "presets": {
+    "speed": "YOLOX Nano FP32",
+    "accuracy": "RF-DETR Nano static INT8"
+  },
+  "default_for_new_configs": "speed",
+  "legacy_explicit_model_paths_supported": true,
+  "shared_pipeline": [
+    "ONNX Runtime CPU",
+    "Supervision",
+    "Roboflow ByteTrack",
+    "presence hold timers",
+    "FastALPR plate consensus and suppression",
+    "Home Assistant MQTT",
+    "MQTT JPEG snapshots; optional RTSP and disk storage"
+  ],
+  "native_live_usb_smoke": {
+    "speed": {
+      "schema_version": 2,
+      "quantization": null,
+      "model_bytes": 3715036,
+      "detector_backend": "onnxruntime-direct",
+      "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+      "detector_family": "yolox",
+      "preset": "speed",
+      "measured_at": "2026-11-22T06:01:22.642130+00:00",
+      "platform": {
+        "system": "Linux",
+        "machine": "aarch64",
+        "python": "3.12.16"
+      },
+      "versions": {
+        "supervision": "0.32.0",
+        "trackers": "2.7.0",
+        "onnxruntime": "1.32.0",
+        "fast-alpr": "0.4.0",
+        "numpy": "2.5.5",
+        "opencv-python-headless": "5.1.0.95",
+        "av": "19.0.2"
+      },
+      "source": "/dev/v4l/by-id/usb-Alcor_Micro__Corp._USB_2.0_PC_Camera-video-index0",
+      "model": "yolox-nano.onnx",
+      "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+      "onnx_threads": 4,
+      "configured_max_fps": 1.0,
+      "lpr_mode": "off",
+      "lpr_enabled": false,
+      "lpr_models": null,
+      "warmup_frames": 2,
+      "measured_frames": 3,
+      "source_exhausted": false,
+      "detector_load_ms": 153.905,
+      "plate_load_ms": null,
+      "elapsed_seconds": 0.565,
+      "pipeline_fps": 5.309,
+      "cpu_seconds": 1.486,
+      "cpu_core_equivalents": 2.63,
+      "peak_process_rss_mib": 187.1,
+      "health_before": {
+        "temperature_c": 40.407,
+        "throttle_hex": "0x0"
+      },
+      "health_after": {
+        "temperature_c": 42.842,
+        "throttle_hex": "0x0"
+      },
+      "stages": {
+        "source_and_detection": {
+          "samples": 3,
+          "mean_ms": 186.833,
+          "p50_ms": 185.177,
+          "p95_ms": 193.589,
+          "min_ms": 180.798,
+          "max_ms": 194.524
+        },
+        "tracking": {
+          "samples": 3,
+          "mean_ms": 1.51,
+          "p50_ms": 1.535,
+          "p95_ms": 1.538,
+          "min_ms": 1.456,
+          "max_ms": 1.539
+        },
+        "lpr_scan": null,
+        "frame_total": {
+          "samples": 3,
+          "mean_ms": 188.348,
+          "p50_ms": 186.638,
+          "p95_ms": 195.122,
+          "min_ms": 182.342,
+          "max_ms": 196.064
+        }
+      },
+      "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+    },
+    "accuracy": {
+      "schema_version": 2,
+      "quantization": {
+        "mode": "static",
+        "precision": "mixed-fp32-int8",
+        "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+        "recipe": "rfdetr-1.12.1-linear-only"
+      },
+      "model_bytes": 33922625,
+      "detector_backend": "onnxruntime-direct",
+      "helpers_source": "rfdetr-1.12.1",
+      "detector_family": "rfdetr",
+      "preset": "accuracy",
+      "measured_at": "2026-11-22T06:01:35.295120+00:00",
+      "platform": {
+        "system": "Linux",
+        "machine": "aarch64",
+        "python": "3.12.16"
+      },
+      "versions": {
+        "supervision": "0.32.0",
+        "trackers": "2.7.0",
+        "onnxruntime": "1.32.0",
+        "fast-alpr": "0.4.0",
+        "numpy": "2.5.5",
+        "opencv-python-headless": "5.1.0.95",
+        "av": "19.0.2"
+      },
+      "source": "/dev/v4l/by-id/usb-Alcor_Micro__Corp._USB_2.0_PC_Camera-video-index0",
+      "model": "rfdetr-nano-int8-static.onnx",
+      "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+      "onnx_threads": 4,
+      "configured_max_fps": 1.0,
+      "lpr_mode": "off",
+      "lpr_enabled": false,
+      "lpr_models": null,
+      "warmup_frames": 2,
+      "measured_frames": 3,
+      "source_exhausted": false,
+      "detector_load_ms": 1026.903,
+      "plate_load_ms": null,
+      "elapsed_seconds": 4.297,
+      "pipeline_fps": 0.698,
+      "cpu_seconds": 12.676,
+      "cpu_core_equivalents": 2.95,
+      "peak_process_rss_mib": 315.4,
+      "health_before": {
+        "temperature_c": 40.894,
+        "throttle_hex": "0x0"
+      },
+      "health_after": {
+        "temperature_c": 44.79,
+        "throttle_hex": "0x0"
+      },
+      "stages": {
+        "source_and_detection": {
+          "samples": 3,
+          "mean_ms": 1430.709,
+          "p50_ms": 1443.975,
+          "p95_ms": 1448.6,
+          "min_ms": 1399.038,
+          "max_ms": 1449.114
+        },
+        "tracking": {
+          "samples": 3,
+          "mean_ms": 1.762,
+          "p50_ms": 1.565,
+          "p95_ms": 2.109,
+          "min_ms": 1.553,
+          "max_ms": 2.169
+        },
+        "lpr_scan": null,
+        "frame_total": {
+          "samples": 3,
+          "mean_ms": 1432.479,
+          "p50_ms": 1445.533,
+          "p95_ms": 1450.714,
+          "min_ms": 1400.614,
+          "max_ms": 1451.289
+        }
+      },
+      "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+    }
+  },
+  "native_mqtt_home_assistant": {
+    "speed": {
+      "mode": "sample",
+      "preset": "speed",
+      "ha_camera": "camera.raspberry_pi_camera_snapshot",
+      "image_format": "JPEG",
+      "resolution": [
+        518,
+        330
+      ],
+      "image_bytes": 35442,
+      "ha_plate": "5AU5341",
+      "ha_plate_timestamp": "2026-11-22T06:00:14+00:00",
+      "model": "yolox-nano.onnx",
+      "confirmed_track_ids": 4,
+      "predictions": 9,
+      "snapshots": 6,
+      "max_vehicle_count": 4,
+      "plate_events": 1
+    },
+    "accuracy": {
+      "mode": "sample",
+      "preset": "accuracy",
+      "ha_camera": "camera.raspberry_pi_camera_snapshot",
+      "image_format": "JPEG",
+      "resolution": [
+        518,
+        330
+      ],
+      "image_bytes": 35442,
+      "ha_plate": "5AU5341",
+      "ha_plate_timestamp": "2026-11-22T06:00:32+00:00",
+      "model": "rfdetr-nano-int8-static.onnx",
+      "confirmed_track_ids": 6,
+      "predictions": 9,
+      "snapshots": 9,
+      "max_vehicle_count": 6,
+      "plate_events": 1
+    }
+  },
+  "sample_plate_note": "5AU5341 is the public FastALPR image, not a live vehicle observation",
+  "same_models_as_archived_comparison": true,
+  "pi_runtime": {
+    "distributions": 42,
+    "training_and_export_dependencies_absent": true
+  },
+  "tests": {
+    "with_quantize_extra": 117,
+    "default_passed": 113,
+    "default_optional_skipped": 4
+  },
+  "archived_experiments": [
+    "docs/experiments/README.md",
+    "docs/experiments/results/2026-11-21-rfdetr-int8.json",
+    "docs/experiments/results/2026-11-21-yolox-fp32.json",
+    "docs/experiments/results/2026-11-21-yolox-int8.json"
+  ],
+  "experimental_quantizer": "scripts/experiments/quantize_yolox.py",
+  "boot_service_enabled": false,
+  "archive_note": "Preset implementation validation, 2026-11-22. Local checkout/home paths redacted; selected model hashes match the archived comparison."
+}

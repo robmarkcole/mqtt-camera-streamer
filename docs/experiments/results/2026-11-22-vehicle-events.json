@@ -1,0 +1,403 @@
+{
+  "tested_at": "2026-11-22T07:37:53.168533+00:00",
+  "reference_review": "https://github.com/robmarkcole/HASS-plate-recognizer/blob/main/custom_components/platerecognizer/image_processing.py",
+  "implemented_events": [
+    "vehicle_detected",
+    "vehicle_lost",
+    "plate_recognized",
+    "watched_plate_detected"
+  ],
+  "new_runtime_dependencies": false,
+  "runtime": {
+    "runtime_packages": 42,
+    "training_packages_absent": true,
+    "preset": "speed",
+    "demo": false,
+    "tracking_enabled": true,
+    "lpr_enabled": true,
+    "annotate": true,
+    "live_watchlist_unchanged": true,
+    "service": {
+      "NRestarts": "0",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+    "app_commit": "112854cf714e16ff34030a7259f8b619872cca1a"
+  },
+  "stock_sources": [
+    {
+      "file": "plate-sample.png",
+      "source": "https://github.com/ankandrew/fast-alpr/blob/master/assets/test_image.png",
+      "credit": "ankandrew / FastALPR",
+      "license": "MIT; see LICENSE.fast-alpr",
+      "changes": "unmodified input; Supervision annotations added to generated outputs",
+      "sha256": "c154c3e0873fa35076ecf4f611d345c092450217fe75737b2a77183018218255"
+    },
+    {
+      "file": "rome-parking.jpg",
+      "source": "https://commons.wikimedia.org/wiki/File:Parking.in.rome.arp.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Parking.in.rome.arp.jpg",
+      "credit": "Adrian Pingstone (Arpingstone), June 2007",
+      "license": "Public domain, released worldwide by its author",
+      "changes": "resized to 1280px wide for a small reproducible demonstration; annotations added to generated outputs",
+      "sha256": "33b945b750f76f778f6013c9a9464637110250c944d5eed4f9020b7016c1bfb9"
+    }
+  ],
+  "actual_pi_results": [
+    {
+      "demo": true,
+      "source": "plate-sample.png",
+      "source_sha256": "c154c3e0873fa35076ecf4f611d345c092450217fe75737b2a77183018218255",
+      "camera_id": "demo_0_plate_sample",
+      "name": "Stock plate demo",
+      "preset": "speed",
+      "model": "yolox-nano.onnx",
+      "prediction": {
+        "schema_version": 1,
+        "camera_id": "demo_0_plate_sample",
+        "sequence": 6,
+        "predicted_at": "2026-11-22T07:20:20.442427+00:00",
+        "model": "yolox-nano.onnx",
+        "preset": "speed",
+        "demo": true,
+        "processing_ms": 198.8,
+        "counts": {
+          "person": 0,
+          "vehicle": 4
+        },
+        "presence": {
+          "person": false,
+          "vehicle": true
+        },
+        "detections": [
+          {
+            "label": "truck",
+            "class_id": 7,
+            "confidence": 0.8862345218658447,
+            "box_xyxy": [
+              35.18840789794922,
+              43.2461051940918,
+              448.915771484375,
+              271.6161804199219
+            ],
+            "tracker_id": 0
+          },
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.786645770072937,
+            "box_xyxy": [
+              1.8846701383590698,
+              54.32387161254883,
+              147.80889892578125,
+              182.40110778808594
+            ],
+            "tracker_id": 1
+          },
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.7452902793884277,
+            "box_xyxy": [
+              412.2791748046875,
+              53.41230392456055,
+              517.155029296875,
+              258.2562561035156
+            ],
+            "tracker_id": 2
+          },
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.5544657111167908,
+            "box_xyxy": [
+              0.17534980177879333,
+              47.376834869384766,
+              56.1556282043457,
+              109.25395965576172
+            ],
+            "tracker_id": 3
+          }
+        ],
+        "events": []
+      },
+      "vehicle_events": [
+        {
+          "vehicle_type": "truck",
+          "vehicle_tracker_id": 0,
+          "vehicle_confidence": 0.8862345218658447,
+          "vehicle_box_xyxy": [
+            35.18840789794922,
+            43.2461051940918,
+            448.915771484375,
+            271.6161804199219
+          ],
+          "schema_version": 1,
+          "event_id": "db3f8a4a05634a4789e9ba1b9595bce0",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:17.447371+00:00"
+        },
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 1,
+          "vehicle_confidence": 0.786645770072937,
+          "vehicle_box_xyxy": [
+            1.8846701383590698,
+            54.32387161254883,
+            147.80889892578125,
+            182.40110778808594
+          ],
+          "schema_version": 1,
+          "event_id": "0d5d281ad0cc4c4b979e00bcd6fa45eb",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:17.447575+00:00"
+        },
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 2,
+          "vehicle_confidence": 0.7452902793884277,
+          "vehicle_box_xyxy": [
+            412.2791748046875,
+            53.41230392456055,
+            517.155029296875,
+            258.2562561035156
+          ],
+          "schema_version": 1,
+          "event_id": "899b8a87105344189ff4059ff48ec2b1",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:17.447643+00:00"
+        },
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 3,
+          "vehicle_confidence": 0.5544657111167908,
+          "vehicle_box_xyxy": [
+            0.17534980177879333,
+            47.376834869384766,
+            56.1556282043457,
+            109.25395965576172
+          ],
+          "schema_version": 1,
+          "event_id": "81c3d6ceff0940ef9c21e3f09f8cf401",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:17.447692+00:00"
+        }
+      ],
+      "plate_events": [
+        {
+          "schema_version": 1,
+          "event_id": "0cd51f38af9740d69eae86f2aea537a9",
+          "plate": "5AU5341",
+          "watched": true,
+          "plate_alias": "Demo sample",
+          "recognized_at": "2026-11-22T07:20:18.550900+00:00",
+          "tracker_id": 0,
+          "ocr_confidence": 0.9995214939117432,
+          "detection_confidence": 0.8434536457061768,
+          "box_xyxy": [
+            307.0,
+            187.0,
+            387.0,
+            210.0
+          ],
+          "matching_readings": 2,
+          "detector_model": "yolo-v9-t-384-license-plate-end2end",
+          "ocr_model": "cct-xs-v2-global-model",
+          "event_type": "plate_recognized",
+          "occurred_at": "2026-11-22T07:20:18.550900+00:00",
+          "confidence": 0.9995214939117432,
+          "box_x_centre": 347.0,
+          "box_y_centre": 198.5,
+          "box_centre_normalized": [
+            0.6698841698841699,
+            0.5996978851963746
+          ],
+          "vehicle_type": "truck",
+          "vehicle_tracker_id": 0,
+          "vehicle_confidence": 0.8862345218658447,
+          "vehicle_box_xyxy": [
+            35.18840789794922,
+            43.2461051940918,
+            448.915771484375,
+            271.6161804199219
+          ]
+        }
+      ],
+      "note": "Real inference on six repeated copies of a stock image, not a live vehicle arrival or movement"
+    },
+    {
+      "demo": true,
+      "source": "rome-parking.jpg",
+      "source_sha256": "33b945b750f76f778f6013c9a9464637110250c944d5eed4f9020b7016c1bfb9",
+      "camera_id": "demo_1_rome_parking",
+      "name": "Stock street demo 1",
+      "preset": "speed",
+      "model": "yolox-nano.onnx",
+      "prediction": {
+        "schema_version": 1,
+        "camera_id": "demo_1_rome_parking",
+        "sequence": 6,
+        "predicted_at": "2026-11-22T07:20:25.080932+00:00",
+        "model": "yolox-nano.onnx",
+        "preset": "speed",
+        "demo": true,
+        "processing_ms": 254.1,
+        "counts": {
+          "person": 0,
+          "vehicle": 3
+        },
+        "presence": {
+          "person": false,
+          "vehicle": true
+        },
+        "detections": [
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.9320763945579529,
+            "box_xyxy": [
+              0.0,
+              330.0290832519531,
+              322.8322448730469,
+              652.8125
+            ],
+            "tracker_id": 0
+          },
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.851301372051239,
+            "box_xyxy": [
+              372.5826110839844,
+              363.1717834472656,
+              1027.0416259765625,
+              636.215576171875
+            ],
+            "tracker_id": 1
+          },
+          {
+            "label": "car",
+            "class_id": 2,
+            "confidence": 0.6773154735565186,
+            "box_xyxy": [
+              1008.9576416015625,
+              392.9539794921875,
+              1277.8402099609375,
+              608.213623046875
+            ],
+            "tracker_id": 2
+          }
+        ],
+        "events": []
+      },
+      "vehicle_events": [
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 0,
+          "vehicle_confidence": 0.9320763945579529,
+          "vehicle_box_xyxy": [
+            0.0,
+            330.0290832519531,
+            322.8322448730469,
+            652.8125
+          ],
+          "schema_version": 1,
+          "event_id": "703803bce1fc4f8ba527e3aea9af1aa1",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:22.091464+00:00"
+        },
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 1,
+          "vehicle_confidence": 0.851301372051239,
+          "vehicle_box_xyxy": [
+            372.5826110839844,
+            363.1717834472656,
+            1027.0416259765625,
+            636.215576171875
+          ],
+          "schema_version": 1,
+          "event_id": "5644ad0be9d441448531799b86fcd7f5",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:22.091544+00:00"
+        },
+        {
+          "vehicle_type": "car",
+          "vehicle_tracker_id": 2,
+          "vehicle_confidence": 0.6773154735565186,
+          "vehicle_box_xyxy": [
+            1008.9576416015625,
+            392.9539794921875,
+            1277.8402099609375,
+            608.213623046875
+          ],
+          "schema_version": 1,
+          "event_id": "1d3157a462cb479482f4bb75d96767be",
+          "event_type": "vehicle_detected",
+          "occurred_at": "2026-11-22T07:20:22.091578+00:00"
+        }
+      ],
+      "plate_events": [],
+      "note": "Real inference on six repeated copies of a stock image, not a live vehicle arrival or movement"
+    }
+  ],
+  "home_assistant_event_counts": {
+    "event.stock_plate_demo_vehicle_events": {
+      "vehicle_detected": 4,
+      "plate_recognized": 1,
+      "watched_plate_detected": 1,
+      "vehicle_lost": 4
+    },
+    "event.stock_street_demo_1_vehicle_events": {
+      "vehicle_detected": 3,
+      "vehicle_lost": 3
+    }
+  },
+  "demo_event_ids_unique": true,
+  "demo_events_labelled": true,
+  "live_home_assistant_entities": [
+    {
+      "entity_id": "camera.raspberry_pi_camera_snapshot",
+      "state": "idle",
+      "demo": null
+    },
+    {
+      "entity_id": "sensor.raspberry_pi_camera_detections",
+      "state": "0",
+      "demo": false
+    },
+    {
+      "entity_id": "event.raspberry_pi_camera_vehicle_events",
+      "state": "unknown",
+      "demo": null
+    },
+    {
+      "entity_id": "sensor.raspberry_pi_camera_plate_alias",
+      "state": "unknown",
+      "demo": null
+    },
+    {
+      "entity_id": "sensor.raspberry_pi_camera_vehicle_type",
+      "state": "unknown",
+      "demo": null
+    }
+  ],
+  "tests": {
+    "passed_with_quantization_extra": 123
+  },
+  "screenshots": [
+    "docs/images/vehicle-demo/home-assistant-stock-demo.jpg",
+    "docs/images/vehicle-demo/home-assistant-events.jpg"
+  ],
+  "limitations": [
+    "Six repeated stock frames per scene are not a moving-vehicle test or accuracy benchmark",
+    "Foreground car was classified as truck by Nano; result retained unchanged",
+    "Region, colour, make/model and orientation are not inferred",
+    "Vehicle loss is a track timeout, not proof of physical departure"
+  ],
+  "live_service_left_running": true,
+  "temporary_inference_demo_finished": true,
+  "plate_annotated_sha256": "475388efa9e4dad91477b7133299feb0a07841b2a241a678a6ecb1efc411f74d",
+  "street_annotated_sha256": "bd3c4dac3e1227ce390d86b3e0cee5b41433c7826644bb81e4bf4fafa0ece1bf"
+}

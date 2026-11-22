@@ -1,0 +1,63 @@
+# Preset models live under the repository. Explicit model/storage paths are relative to this file.
+camera_id: usb_camera
+name: USB camera
+source: 0 # macOS camera indices can change; verify the external camera first
+preset: speed # speed: YOLOX Nano FP32; accuracy: RF-DETR Nano static INT8.
+threshold: 0.5
+max_fps: 2
+onnx_threads: 2 # ONNX Runtime CPU inference threads.
+stale_seconds: 30
+tracking:
+  enabled: true
+  minimum_consecutive_frames: 2
+  lost_track_seconds: 2
+  recovery_threshold: 0.1 # Weak detections may recover a track, but cannot start one.
+presence:
+  hold_seconds: 5
+  hold_seconds_by_class: {} # e.g. {person: 10, vehicle: 15}
+lpr:
+  enabled: false # Enable local pretrained ONNX plate detection and OCR.
+  detector_model: yolo-v9-t-384-license-plate-end2end
+  ocr_model: cct-xs-v2-global-model
+  detection_threshold: 0.5
+  ocr_threshold: 0.8
+  interval_seconds: 1
+  lost_track_seconds: 5
+  minimum_readings: 2
+  agreement: 0.75
+  confirmation_window_seconds: 5
+  cooldown_seconds: 30
+  plate_pattern: '[A-Z0-9]{3,10}'
+  num_threads: 2
+  watched_plates: {} # e.g. {AB12CDE: Family car}; exact normalized matches only.
+# Entity keys map to model class names. Counts are confirmed objects in a frame.
+classes:
+  person: [person]
+  vehicle: [car, motorcycle, bus, truck]
+mqtt:
+  broker: localhost # use the same broker as Home Assistant
+  port: 1883
+  topic_prefix: mqtt_camera
+  discovery_prefix: homeassistant
+  ha_status_topic: homeassistant/status
+  # Set these environment variables if the broker requires authentication.
+  username_env: MQTT_USERNAME
+  password_env: MQTT_PASSWORD
+  tls: false
+
+# Sparse JPEGs are the default; use rtsp (requires an RTSP server) or off.
+images:
+  annotate: true
+  transport: mqtt
+  interval_seconds: 1
+  jpeg_quality: 80
+  max_width: 960
+  rtsp_url_env: RTSP_PUBLISH_URL
+  rtsp_fps: 2
+# Optional snapshots on disk, indexed by relative path in records.db.
+storage:
+  enabled: false
+  directory: ../captures
+  interval_seconds: 5
+  max_files: 10000
+  max_age_days: 7

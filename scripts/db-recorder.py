@@ -1,91 +1,55 @@
-"""
-Modified version of save-captires.py that additionally saves image thumbnail to sqlite db.
+"""Record legacy MQTT images as JPEG files and relative paths in SQLite."""
 
-Ref https://towardsdev.com/storing-digital-files-in-remote-sql-databases-in-python-73494f09d39b
-"""
+import io
+import logging
 import os
-import time
-import sqlite3
+from datetime import UTC, datetime
+from pathlib import Path
 
-from helpers import (
-    byte_array_to_pil_image,
-    get_config,
-    get_now_string,
-    sqlite_connect,
-    convert_into_binary,
-    pil_image_to_byte_array,
-)
+from helpers import get_config
+from media import SnapshotStore, StorageConfig
 from mqtt import get_mqtt_client
+from PIL import Image
 
-CONFIG_FILE_PATH = os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml")
-CONFIG = get_config(CONFIG_FILE_PATH)
-
-MQTT_BROKER = CONFIG["mqtt"]["broker"]
-MQTT_PORT = CONFIG["mqtt"]["port"]
-MQTT_QOS = CONFIG["mqtt"]["QOS"]
-
-SAVE_TOPIC = CONFIG["save-captures"]["mqtt_topic"]
-CAPTURES_DIRECTORY = CONFIG["save-captures"]["captures_directory"]
-
-DB = CAPTURES_DIRECTORY + "/records.db"
-DB_TABLE = "mqtt_camera"
-
-CREATE_TABLE_DDL = """
-CREATE TABLE IF NOT EXISTS {table_name} (
-    name TEXT NOT NULL, data BLOB
-);
-"""
-THUMBNAIL_SIZE = (500, 200)
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    now = get_now_string()
-    print("message on " + str(msg.topic) + f" at {now}")
-
-    try:
-        image = byte_array_to_pil_image(msg.payload)
-        image = image.convert("RGB")
-
-        save_file_path = CAPTURES_DIRECTORY + f"capture_{now}.jpg"
-        image.save(save_file_path)
-
-        # Additional code to save thumbnail to db
-        db_conn = sqlite_connect(DB)
-        cursor = db_conn.cursor()
-
-        db_insert_blob = """
-        INSERT INTO {table_name} (name, data) VALUES (?, ?)
-        """.format(
-            table_name=DB_TABLE
-        )
-
-        image.thumbnail(size=THUMBNAIL_SIZE)
-        binary_data = pil_image_to_byte_array(image)
-        data_tuple = (save_file_path, binary_data)
-
-        # Execute the query
-        cursor.execute(db_insert_blob, data_tuple)
-        db_conn.commit()
-        print(f"Saved {save_file_path} and inserted to db")
-        cursor.close()
-
-    except Exception as exc:
-        print(exc)
+LOG = logging.getLogger(__name__)
 
 
 def main():
-    db_conn = sqlite_connect(DB)
-    cursor = db_conn.cursor()
-    cursor.execute(CREATE_TABLE_DDL.format(table_name=DB_TABLE))
-    db_conn.commit()
-    db_conn.close()
-
+    logging.basicConfig(level=logging.INFO)
+    config = get_config(os.getenv("MQTT_CAMERA_CONFIG", "./config/config.yml"))
+    capture = config["save-captures"]
+    storage = StorageConfig(enabled=True, directory=Path(capture["captures_directory"]))
+    store = SnapshotStore(storage)
     client = get_mqtt_client()
+
+    def on_connect(client, userdata, flags, reason, properties):
+        if not reason.is_failure:
+            client.subscribe(capture["mqtt_topic"], qos=config["mqtt"]["QOS"])
+
+    def on_message(client, userdata, message):
+        try:
+            with Image.open(io.BytesIO(message.payload)) as image:
+                output = io.BytesIO()
+                image.convert("RGB").save(output, format="JPEG", quality=80)
+            store.save(
+                output.getvalue(),
+                message.topic,
+                {
+                    "predicted_at": datetime.now(UTC).isoformat(),
+                    "mqtt_topic": message.topic,
+                },
+            )
+        except Exception:
+            LOG.exception("Could not record MQTT image")
+
+    client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(MQTT_BROKER, port=MQTT_PORT)
-    client.subscribe(SAVE_TOPIC)
-    time.sleep(4)  # Wait for connection setup to complete
-    client.loop_forever()
+    try:
+        client.connect(config["mqtt"]["broker"], config["mqtt"]["port"])
+        client.loop_forever()
+    finally:
+        client.disconnect()
+        store.close()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4459 @@
+{
+  "schema_version": 1,
+  "hardware": "Raspberry Pi 4 Model B Rev 1.2, 4 GB, 64-bit Debian 13.6; desktop and RetroArch left running",
+  "default_model_changed": false,
+  "runtime": "42 locked base packages on Pi, ONNX Runtime CPU; no PyTorch, TorchVision, RF-DETR/YOLOX training package, Transformers or ONNX Python",
+  "detection_tracking": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "off",
+    "frames_per_run": 20,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "895c7f9968e52fd5f2708bea064aef521fb8d928190b3c71bbd52ea2ef8908cd",
+    "source": "work/pi-test/people-walking.mp4",
+    "source_sha256": "822671fb20ed13ef9ead91d1f3678863b5aa078dd3b2ed45953fda39a61c979d",
+    "models": [
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.6545000000000001,
+        "median_frame_p95_ms": 1596.9755,
+        "max_peak_rss_mib": 433.5,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "measured_at": "2026-11-21T19:26:13.864652+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 1023.579,
+            "plate_load_ms": null,
+            "elapsed_seconds": 30.41,
+            "pipeline_fps": 0.658,
+            "cpu_seconds": 83.723,
+            "cpu_core_equivalents": 2.753,
+            "peak_process_rss_mib": 433.5,
+            "health_before": {
+              "temperature_c": 43.329,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 1513.473,
+                "p50_ms": 1510.732,
+                "p95_ms": 1561.056,
+                "min_ms": 1480.675,
+                "max_ms": 1616.04
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 6.994,
+                "p50_ms": 6.844,
+                "p95_ms": 7.913,
+                "min_ms": 5.961,
+                "max_ms": 8.274
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 1520.473,
+                "p50_ms": 1517.361,
+                "p95_ms": 1568.228,
+                "min_ms": 1487.554,
+                "max_ms": 1622.339
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "measured_at": "2026-11-21T19:28:34.642348+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 1064.902,
+            "plate_load_ms": null,
+            "elapsed_seconds": 30.72,
+            "pipeline_fps": 0.651,
+            "cpu_seconds": 83.984,
+            "cpu_core_equivalents": 2.734,
+            "peak_process_rss_mib": 432.7,
+            "health_before": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 52.582,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 1529.056,
+                "p50_ms": 1514.398,
+                "p95_ms": 1619.143,
+                "min_ms": 1466.406,
+                "max_ms": 1657.78
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 6.924,
+                "p50_ms": 6.814,
+                "p95_ms": 7.819,
+                "min_ms": 6.089,
+                "max_ms": 7.879
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 1535.986,
+                "p50_ms": 1521.674,
+                "p95_ms": 1625.723,
+                "min_ms": 1472.937,
+                "max_ms": 1663.972
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-nano.onnx",
+        "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "model_bytes": 3715036,
+        "quantization": null,
+        "median_fps": 4.3294999999999995,
+        "median_frame_p95_ms": 242.462,
+        "max_peak_rss_mib": 267.4,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:26:23.392314+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 153.058,
+            "plate_load_ms": null,
+            "elapsed_seconds": 4.596,
+            "pipeline_fps": 4.351,
+            "cpu_seconds": 11.349,
+            "cpu_core_equivalents": 2.469,
+            "peak_process_rss_mib": 267.3,
+            "health_before": {
+              "temperature_c": 46.738,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 48.686,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 221.525,
+                "p50_ms": 218.691,
+                "p95_ms": 233.943,
+                "min_ms": 211.397,
+                "max_ms": 234.707
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 8.285,
+                "p50_ms": 8.292,
+                "p95_ms": 9.192,
+                "min_ms": 7.032,
+                "max_ms": 9.723
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 229.814,
+                "p50_ms": 227.313,
+                "p95_ms": 242.84,
+                "min_ms": 219.712,
+                "max_ms": 243.384
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:27:54.186695+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 157.059,
+            "plate_load_ms": null,
+            "elapsed_seconds": 4.642,
+            "pipeline_fps": 4.308,
+            "cpu_seconds": 11.244,
+            "cpu_core_equivalents": 2.422,
+            "peak_process_rss_mib": 267.4,
+            "health_before": {
+              "temperature_c": 48.686,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 223.82,
+                "p50_ms": 225.117,
+                "p95_ms": 233.789,
+                "min_ms": 212.957,
+                "max_ms": 234.134
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 8.273,
+                "p50_ms": 8.213,
+                "p95_ms": 9.049,
+                "min_ms": 7.262,
+                "max_ms": 9.154
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 232.097,
+                "p50_ms": 233.373,
+                "p95_ms": 242.084,
+                "min_ms": 221.712,
+                "max_ms": 242.889
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-nano-int8-static.onnx",
+        "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+        "model_bytes": 1442737,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+          "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+        },
+        "median_fps": 3.8655,
+        "median_frame_p95_ms": 265.59000000000003,
+        "max_peak_rss_mib": 278.1,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 1442737,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:26:33.950895+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-nano-int8-static.onnx",
+            "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 645.12,
+            "plate_load_ms": null,
+            "elapsed_seconds": 5.188,
+            "pipeline_fps": 3.855,
+            "cpu_seconds": 11.236,
+            "cpu_core_equivalents": 2.166,
+            "peak_process_rss_mib": 278.0,
+            "health_before": {
+              "temperature_c": 46.251,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 253.062,
+                "p50_ms": 252.949,
+                "p95_ms": 262.78,
+                "min_ms": 245.08,
+                "max_ms": 263.029
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 6.317,
+                "p50_ms": 6.207,
+                "p95_ms": 7.406,
+                "min_ms": 5.11,
+                "max_ms": 7.801
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 259.383,
+                "p50_ms": 258.519,
+                "p95_ms": 268.936,
+                "min_ms": 250.664,
+                "max_ms": 268.958
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 1442737,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:27:44.596288+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-nano-int8-static.onnx",
+            "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 623.636,
+            "plate_load_ms": null,
+            "elapsed_seconds": 5.16,
+            "pipeline_fps": 3.876,
+            "cpu_seconds": 11.254,
+            "cpu_core_equivalents": 2.181,
+            "peak_process_rss_mib": 278.1,
+            "health_before": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 251.65,
+                "p50_ms": 251.529,
+                "p95_ms": 256.723,
+                "min_ms": 241.844,
+                "max_ms": 257.052
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 6.329,
+                "p50_ms": 6.509,
+                "p95_ms": 7.385,
+                "min_ms": 5.133,
+                "max_ms": 8.025
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 257.983,
+                "p50_ms": 257.539,
+                "p95_ms": 262.244,
+                "min_ms": 247.098,
+                "max_ms": 263.297
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-tiny.onnx",
+        "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+        "model_bytes": 20260224,
+        "quantization": null,
+        "median_fps": 1.8719999999999999,
+        "median_frame_p95_ms": 562.3915,
+        "max_peak_rss_mib": 295.5,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 20260224,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:26:50.561186+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-tiny.onnx",
+            "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 196.059,
+            "plate_load_ms": null,
+            "elapsed_seconds": 10.754,
+            "pipeline_fps": 1.86,
+            "cpu_seconds": 30.302,
+            "cpu_core_equivalents": 2.818,
+            "peak_process_rss_mib": 295.5,
+            "health_before": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 527.777,
+                "p50_ms": 515.781,
+                "p95_ms": 556.19,
+                "min_ms": 507.889,
+                "max_ms": 622.431
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 9.935,
+                "p50_ms": 10.046,
+                "p95_ms": 10.414,
+                "min_ms": 8.312,
+                "max_ms": 10.821
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 537.718,
+                "p50_ms": 525.955,
+                "p95_ms": 565.73,
+                "min_ms": 517.269,
+                "max_ms": 632.051
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 20260224,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:27:34.207645+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-tiny.onnx",
+            "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 188.621,
+            "plate_load_ms": null,
+            "elapsed_seconds": 10.613,
+            "pipeline_fps": 1.884,
+            "cpu_seconds": 30.121,
+            "cpu_core_equivalents": 2.838,
+            "peak_process_rss_mib": 294.7,
+            "health_before": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 51.121,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 520.672,
+                "p50_ms": 519.176,
+                "p95_ms": 549.799,
+                "min_ms": 489.912,
+                "max_ms": 555.888
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 9.97,
+                "p50_ms": 10.09,
+                "p95_ms": 10.803,
+                "min_ms": 8.264,
+                "max_ms": 10.86
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 530.647,
+                "p50_ms": 529.18,
+                "p95_ms": 559.053,
+                "min_ms": 500.012,
+                "max_ms": 566.156
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-tiny-int8-static.onnx",
+        "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+        "model_bytes": 5513571,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+          "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+        },
+        "median_fps": 2.5119999999999996,
+        "median_frame_p95_ms": 411.924,
+        "max_peak_rss_mib": 290.3,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 5513571,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:27:04.352379+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-tiny-int8-static.onnx",
+            "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 488.065,
+            "plate_load_ms": null,
+            "elapsed_seconds": 7.981,
+            "pipeline_fps": 2.506,
+            "cpu_seconds": 20.544,
+            "cpu_core_equivalents": 2.574,
+            "peak_process_rss_mib": 290.3,
+            "health_before": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 388.356,
+                "p50_ms": 385.865,
+                "p95_ms": 401.487,
+                "min_ms": 373.131,
+                "max_ms": 446.925
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 10.709,
+                "p50_ms": 10.407,
+                "p95_ms": 12.824,
+                "min_ms": 9.502,
+                "max_ms": 13.749
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 399.069,
+                "p50_ms": 395.495,
+                "p95_ms": 411.589,
+                "min_ms": 384.859,
+                "max_ms": 460.679
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 5513571,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:27:17.812507+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "yolox-tiny-int8-static.onnx",
+            "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 467.722,
+            "plate_load_ms": null,
+            "elapsed_seconds": 7.944,
+            "pipeline_fps": 2.518,
+            "cpu_seconds": 20.572,
+            "cpu_core_equivalents": 2.59,
+            "peak_process_rss_mib": 290.3,
+            "health_before": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 51.121,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 386.542,
+                "p50_ms": 385.23,
+                "p95_ms": 400.486,
+                "min_ms": 368.502,
+                "max_ms": 415.209
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 10.651,
+                "p50_ms": 10.574,
+                "p95_ms": 11.769,
+                "min_ms": 9.212,
+                "max_ms": 12.235
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 397.198,
+                "p50_ms": 396.405,
+                "p95_ms": 412.259,
+                "min_ms": 378.506,
+                "max_ms": 427.45
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "every_frame_alpr": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "every-frame",
+    "frames_per_run": 16,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "895c7f9968e52fd5f2708bea064aef521fb8d928190b3c71bbd52ea2ef8908cd",
+    "source": "work/pi-test/plate-video.mp4",
+    "source_sha256": "7c287de86d0f7adab277dfbfc9ec02e8592d988285b469a795193d69d6885370",
+    "models": [
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.573,
+        "median_frame_p95_ms": 1807.5365000000002,
+        "max_peak_rss_mib": 347.4,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "measured_at": "2026-11-21T19:29:13.515947+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 1022.087,
+            "plate_load_ms": 408.539,
+            "elapsed_seconds": 27.937,
+            "pipeline_fps": 0.573,
+            "cpu_seconds": 76.98,
+            "cpu_core_equivalents": 2.755,
+            "peak_process_rss_mib": 347.3,
+            "health_before": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 52.582,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 1381.934,
+                "p50_ms": 1375.455,
+                "p95_ms": 1436.883,
+                "min_ms": 1345.934,
+                "max_ms": 1489.491
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 4.469,
+                "p50_ms": 4.213,
+                "p95_ms": 5.566,
+                "min_ms": 3.92,
+                "max_ms": 7.528
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 359.655,
+                "p50_ms": 354.81,
+                "p95_ms": 383.811,
+                "min_ms": 346.102,
+                "max_ms": 441.789
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 1746.065,
+                "p50_ms": 1734.935,
+                "p95_ms": 1831.361,
+                "min_ms": 1701.468,
+                "max_ms": 1857.903
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "measured_at": "2026-11-21T19:32:15.077053+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 1023.913,
+            "plate_load_ms": 410.826,
+            "elapsed_seconds": 27.92,
+            "pipeline_fps": 0.573,
+            "cpu_seconds": 77.37,
+            "cpu_core_equivalents": 2.771,
+            "peak_process_rss_mib": 347.4,
+            "health_before": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 54.043,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 1380.609,
+                "p50_ms": 1373.564,
+                "p95_ms": 1421.848,
+                "min_ms": 1351.209,
+                "max_ms": 1470.977
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 4.28,
+                "p50_ms": 4.293,
+                "p95_ms": 4.72,
+                "min_ms": 3.774,
+                "max_ms": 4.814
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 360.069,
+                "p50_ms": 360.997,
+                "p95_ms": 368.327,
+                "min_ms": 350.586,
+                "max_ms": 368.655
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 1744.965,
+                "p50_ms": 1737.581,
+                "p95_ms": 1783.712,
+                "min_ms": 1718.819,
+                "max_ms": 1844.455
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-nano.onnx",
+        "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "model_bytes": 3715036,
+        "quantization": null,
+        "median_fps": 1.754,
+        "median_frame_p95_ms": 595.005,
+        "max_peak_rss_mib": 245.6,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:29:28.767240+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 152.743,
+            "plate_load_ms": 426.767,
+            "elapsed_seconds": 9.212,
+            "pipeline_fps": 1.737,
+            "cpu_seconds": 21.086,
+            "cpu_core_equivalents": 2.289,
+            "peak_process_rss_mib": 245.6,
+            "health_before": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 53.069,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 204.5,
+                "p50_ms": 204.058,
+                "p95_ms": 216.449,
+                "min_ms": 190.65,
+                "max_ms": 218.257
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.506,
+                "p50_ms": 3.331,
+                "p95_ms": 4.21,
+                "min_ms": 3.131,
+                "max_ms": 4.761
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 367.701,
+                "p50_ms": 365.409,
+                "p95_ms": 383.337,
+                "min_ms": 354.454,
+                "max_ms": 413.371
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 575.715,
+                "p50_ms": 572.41,
+                "p95_ms": 598.582,
+                "min_ms": 554.865,
+                "max_ms": 618.59
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:31:36.560268+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 160.583,
+            "plate_load_ms": 440.988,
+            "elapsed_seconds": 9.035,
+            "pipeline_fps": 1.771,
+            "cpu_seconds": 20.359,
+            "cpu_core_equivalents": 2.253,
+            "peak_process_rss_mib": 245.6,
+            "health_before": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 51.608,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 213.549,
+                "p50_ms": 211.637,
+                "p95_ms": 237.633,
+                "min_ms": 198.41,
+                "max_ms": 281.724
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.589,
+                "p50_ms": 3.486,
+                "p95_ms": 4.183,
+                "min_ms": 3.13,
+                "max_ms": 4.632
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 347.516,
+                "p50_ms": 347.941,
+                "p95_ms": 356.347,
+                "min_ms": 339.409,
+                "max_ms": 358.553
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 564.661,
+                "p50_ms": 561.023,
+                "p95_ms": 591.428,
+                "min_ms": 551.058,
+                "max_ms": 634.857
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-nano-int8-static.onnx",
+        "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+        "model_bytes": 1442737,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+          "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+        },
+        "median_fps": 1.6665,
+        "median_frame_p95_ms": 612.3074999999999,
+        "max_peak_rss_mib": 256.1,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 1442737,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:29:44.966137+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-nano-int8-static.onnx",
+            "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 651.478,
+            "plate_load_ms": 447.689,
+            "elapsed_seconds": 9.498,
+            "pipeline_fps": 1.685,
+            "cpu_seconds": 20.905,
+            "cpu_core_equivalents": 2.201,
+            "peak_process_rss_mib": 256.1,
+            "health_before": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 52.095,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 229.175,
+                "p50_ms": 228.76,
+                "p95_ms": 235.598,
+                "min_ms": 224.436,
+                "max_ms": 237.904
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.493,
+                "p50_ms": 3.305,
+                "p95_ms": 4.195,
+                "min_ms": 3.04,
+                "max_ms": 4.226
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 360.927,
+                "p50_ms": 359.747,
+                "p95_ms": 368.197,
+                "min_ms": 355.31,
+                "max_ms": 370.167
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 593.602,
+                "p50_ms": 592.138,
+                "p95_ms": 601.478,
+                "min_ms": 586.16,
+                "max_ms": 602.51
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 1442737,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:31:21.460374+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-nano-int8-static.onnx",
+            "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 620.701,
+            "plate_load_ms": 426.776,
+            "elapsed_seconds": 9.707,
+            "pipeline_fps": 1.648,
+            "cpu_seconds": 21.116,
+            "cpu_core_equivalents": 2.175,
+            "peak_process_rss_mib": 256.0,
+            "health_before": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 54.043,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 232.847,
+                "p50_ms": 229.804,
+                "p95_ms": 245.155,
+                "min_ms": 225.156,
+                "max_ms": 265.314
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.306,
+                "p50_ms": 3.29,
+                "p95_ms": 3.558,
+                "min_ms": 3.121,
+                "max_ms": 3.945
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 370.544,
+                "p50_ms": 369.085,
+                "p95_ms": 381.151,
+                "min_ms": 362.456,
+                "max_ms": 388.583
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 606.704,
+                "p50_ms": 603.141,
+                "p95_ms": 623.137,
+                "min_ms": 597.116,
+                "max_ms": 657.331
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-tiny.onnx",
+        "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+        "model_bytes": 20260224,
+        "quantization": null,
+        "median_fps": 1.1135000000000002,
+        "median_frame_p95_ms": 923.466,
+        "max_peak_rss_mib": 267.6,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 20260224,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:30:05.983427+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-tiny.onnx",
+            "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 186.926,
+            "plate_load_ms": 413.768,
+            "elapsed_seconds": 13.923,
+            "pipeline_fps": 1.149,
+            "cpu_seconds": 36.025,
+            "cpu_core_equivalents": 2.587,
+            "peak_process_rss_mib": 267.6,
+            "health_before": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 53.069,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 512.317,
+                "p50_ms": 503.864,
+                "p95_ms": 537.36,
+                "min_ms": 492.346,
+                "max_ms": 562.325
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.601,
+                "p50_ms": 3.555,
+                "p95_ms": 4.172,
+                "min_ms": 3.065,
+                "max_ms": 4.24
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 354.253,
+                "p50_ms": 353.217,
+                "p95_ms": 369.037,
+                "min_ms": 341.432,
+                "max_ms": 388.8
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 870.179,
+                "p50_ms": 864.341,
+                "p95_ms": 904.075,
+                "min_ms": 838.954,
+                "max_ms": 954.671
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 20260224,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:31:05.242188+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-tiny.onnx",
+            "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 185.549,
+            "plate_load_ms": 413.306,
+            "elapsed_seconds": 14.84,
+            "pipeline_fps": 1.078,
+            "cpu_seconds": 37.765,
+            "cpu_core_equivalents": 2.545,
+            "peak_process_rss_mib": 267.5,
+            "health_before": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 53.069,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 505.043,
+                "p50_ms": 505.713,
+                "p95_ms": 516.828,
+                "min_ms": 491.037,
+                "max_ms": 524.556
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.539,
+                "p50_ms": 3.424,
+                "p95_ms": 4.149,
+                "min_ms": 3.155,
+                "max_ms": 4.352
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 418.897,
+                "p50_ms": 418.577,
+                "p95_ms": 425.793,
+                "min_ms": 411.902,
+                "max_ms": 429.207
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 927.486,
+                "p50_ms": 927.045,
+                "p95_ms": 942.857,
+                "min_ms": 908.942,
+                "max_ms": 953.305
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "yolox-tiny-int8-static.onnx",
+        "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+        "model_bytes": 5513571,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+          "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+        },
+        "median_fps": 1.3530000000000002,
+        "median_frame_p95_ms": 753.3975,
+        "max_peak_rss_mib": 265.8,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 5513571,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:30:24.489910+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-tiny-int8-static.onnx",
+            "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 470.821,
+            "plate_load_ms": 416.978,
+            "elapsed_seconds": 11.729,
+            "pipeline_fps": 1.364,
+            "cpu_seconds": 28.463,
+            "cpu_core_equivalents": 2.427,
+            "peak_process_rss_mib": 265.8,
+            "health_before": {
+              "temperature_c": 51.121,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 53.069,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 354.89,
+                "p50_ms": 355.181,
+                "p95_ms": 359.155,
+                "min_ms": 348.209,
+                "max_ms": 360.319
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.529,
+                "p50_ms": 3.371,
+                "p95_ms": 4.267,
+                "min_ms": 3.137,
+                "max_ms": 4.393
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 374.609,
+                "p50_ms": 374.526,
+                "p95_ms": 381.526,
+                "min_ms": 367.055,
+                "max_ms": 381.901
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 733.035,
+                "p50_ms": 734.287,
+                "p95_ms": 741.078,
+                "min_ms": 721.285,
+                "max_ms": 745.954
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+              "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+            },
+            "model_bytes": 5513571,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "measured_at": "2026-11-21T19:30:43.247597+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "yolox-tiny-int8-static.onnx",
+            "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 470.368,
+            "plate_load_ms": 415.58,
+            "elapsed_seconds": 11.923,
+            "pipeline_fps": 1.342,
+            "cpu_seconds": 28.861,
+            "cpu_core_equivalents": 2.421,
+            "peak_process_rss_mib": 265.6,
+            "health_before": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 53.556,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 356.566,
+                "p50_ms": 355.01,
+                "p95_ms": 375.449,
+                "min_ms": 344.157,
+                "max_ms": 377.192
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 3.612,
+                "p50_ms": 3.59,
+                "p95_ms": 4.089,
+                "min_ms": 3.251,
+                "max_ms": 4.232
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 384.975,
+                "p50_ms": 384.031,
+                "p95_ms": 394.576,
+                "min_ms": 376.848,
+                "max_ms": 401.644
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 745.161,
+                "p50_ms": 742.622,
+                "p95_ms": 765.717,
+                "min_ms": 726.356,
+                "max_ms": 767.344
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "quality": {
+    "rfdetr-int8": {
+      "schema_version": 1,
+      "model": "rfdetr-nano-int8-static.onnx",
+      "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.8854845731270196,
+      "mAP50_95": 0.7221083892067734,
+      "person_vehicle_mAP50": 0.9169323966644778,
+      "person_vehicle_mAP50_95": 0.7423886135725378,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 10
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 7
+        }
+      ]
+    },
+    "nano-fp32": {
+      "schema_version": 1,
+      "model": "yolox-nano.onnx",
+      "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.6492068883002741,
+      "mAP50_95": 0.46911315623762223,
+      "person_vehicle_mAP50": 0.7533423601105662,
+      "person_vehicle_mAP50_95": 0.5888731165724521,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 5
+        }
+      ]
+    },
+    "nano": {
+      "schema_version": 1,
+      "model": "yolox-nano-int8-static.onnx",
+      "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.3909485743870599,
+      "mAP50_95": 0.27381376321758283,
+      "person_vehicle_mAP50": 0.6476094220755714,
+      "person_vehicle_mAP50_95": 0.48969359378708477,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 3
+        }
+      ],
+      "dataset_note": "Small labelled-image diagnostic; not a generalization guarantee"
+    },
+    "tiny-fp32": {
+      "schema_version": 1,
+      "model": "yolox-tiny.onnx",
+      "model_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.759558737336518,
+      "mAP50_95": 0.5637392994036454,
+      "person_vehicle_mAP50": 0.7678782307349219,
+      "person_vehicle_mAP50_95": 0.596432760896364,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 6
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 8
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 6
+        }
+      ]
+    },
+    "tiny": {
+      "schema_version": 1,
+      "model": "yolox-tiny-int8-static.onnx",
+      "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.7628637608341163,
+      "mAP50_95": 0.5573216696488308,
+      "person_vehicle_mAP50": 0.7554401042732862,
+      "person_vehicle_mAP50_95": 0.5869699509574635,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 7
+        }
+      ],
+      "dataset_note": "Small labelled-image diagnostic; not a generalization guarantee"
+    }
+  },
+  "quality_scope": "Development-host CPU ORT, same 32 COCO128 train2017 diagnostic images, separate from 96 calibration images; not held out from original detector training, not an independent final validation set. Calibration recipe variants compared on this diagnostic.",
+  "additional_nano_accuracy_experiments": {
+    "minmax": {
+      "schema_version": 1,
+      "model": "yolox-nano-int8-minmax.onnx",
+      "model_sha256": "4fe33523269774c174bac92ef3fc1057176179522d0962f742657f4ae47b319e",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.26669693902837294,
+      "mAP50_95": 0.19327569199093342,
+      "person_vehicle_mAP50": 0.6173574080653857,
+      "person_vehicle_mAP50_95": 0.41896055384843367,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 1
+        }
+      ],
+      "dataset_note": "Small labelled-image diagnostic; not a generalization guarantee"
+    },
+    "percentile_float_depthwise": {
+      "schema_version": 1,
+      "model": "yolox-nano-int8-float-depthwise.onnx",
+      "model_sha256": "fb8de50a4614ef2ae9216527e37cd002114329e353d11de053d547a82b27180d",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.42666076142958304,
+      "mAP50_95": 0.28462835795354713,
+      "person_vehicle_mAP50": 0.6554271667310507,
+      "person_vehicle_mAP50_95": 0.49299785540540625,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 3
+        }
+      ],
+      "dataset_note": "Small labelled-image diagnostic; not a generalization guarantee"
+    }
+  },
+  "recommendation": "Tiny INT8 is the useful candidate in these tests. Keep Nano FP32: tested Nano INT8 recipes lose accuracy and are slower. Validate on deployment footage before changing models.",
+  "functional": [
+    {
+      "model": "rfdetr-int8",
+      "family": "rfdetr",
+      "vehicle_counts": [
+        0,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "confirmed_track_ids": 6,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "training_packages_absent": true
+    },
+    {
+      "model": "yolox-nano",
+      "family": "yolox",
+      "vehicle_counts": [
+        0,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "confirmed_track_ids": 2,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "training_packages_absent": true
+    },
+    {
+      "model": "yolox-tiny",
+      "family": "yolox",
+      "vehicle_counts": [
+        0,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "confirmed_track_ids": 3,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "training_packages_absent": true
+    }
+  ],
+  "home_assistant": {
+    "nano": {
+      "mode": "sample",
+      "variant": "nano",
+      "ha_camera": "camera.raspberry_pi_camera_snapshot",
+      "image_format": "JPEG",
+      "resolution": [
+        518,
+        330
+      ],
+      "image_bytes": 35442,
+      "ha_plate": "5AU5341",
+      "ha_plate_timestamp": "2026-11-21T19:33:25+00:00",
+      "predictions": 9,
+      "snapshots": 6,
+      "max_vehicle_count": 3,
+      "plate_events": 1
+    },
+    "tiny": {
+      "mode": "sample",
+      "variant": "tiny",
+      "ha_camera": "camera.raspberry_pi_camera_snapshot",
+      "image_format": "JPEG",
+      "resolution": [
+        518,
+        330
+      ],
+      "image_bytes": 35442,
+      "ha_plate": "5AU5341",
+      "ha_plate_timestamp": "2026-11-21T19:33:39+00:00",
+      "predictions": 9,
+      "snapshots": 5,
+      "max_vehicle_count": 4,
+      "plate_events": 1
+    }
+  },
+  "live_usb": {
+    "nano": {
+      "schema_version": 2,
+      "quantization": {
+        "mode": "static",
+        "precision": "mixed-fp32-int8",
+        "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+      },
+      "model_bytes": 1442737,
+      "detector_backend": "onnxruntime-direct",
+      "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+      "detector_family": "yolox",
+      "measured_at": "2026-11-21T19:32:51.147010+00:00",
+      "platform": {
+        "system": "Linux",
+        "machine": "aarch64",
+        "python": "3.12.16"
+      },
+      "versions": {
+        "supervision": "0.32.0",
+        "trackers": "2.7.0",
+        "onnxruntime": "1.32.0",
+        "fast-alpr": "0.4.0",
+        "numpy": "2.5.5",
+        "opencv-python-headless": "5.1.0.95",
+        "av": "19.0.2"
+      },
+      "source": 0,
+      "model": "yolox-nano-int8-static.onnx",
+      "model_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+      "onnx_threads": 4,
+      "configured_max_fps": 1.0,
+      "lpr_mode": "off",
+      "lpr_enabled": false,
+      "lpr_models": null,
+      "warmup_frames": 3,
+      "measured_frames": 10,
+      "source_exhausted": false,
+      "detector_load_ms": 625.538,
+      "plate_load_ms": null,
+      "elapsed_seconds": 2.312,
+      "pipeline_fps": 4.325,
+      "cpu_seconds": 5.122,
+      "cpu_core_equivalents": 2.215,
+      "peak_process_rss_mib": 197.3,
+      "health_before": {
+        "temperature_c": 50.147,
+        "throttle_hex": "0x0"
+      },
+      "health_after": {
+        "temperature_c": 52.582,
+        "throttle_hex": "0x0"
+      },
+      "stages": {
+        "source_and_detection": {
+          "samples": 10,
+          "mean_ms": 229.362,
+          "p50_ms": 229.328,
+          "p95_ms": 234.357,
+          "min_ms": 224.624,
+          "max_ms": 236.038
+        },
+        "tracking": {
+          "samples": 10,
+          "mean_ms": 1.826,
+          "p50_ms": 1.714,
+          "p95_ms": 2.523,
+          "min_ms": 1.44,
+          "max_ms": 2.635
+        },
+        "lpr_scan": null,
+        "frame_total": {
+          "samples": 10,
+          "mean_ms": 231.193,
+          "p50_ms": 230.994,
+          "p95_ms": 235.998,
+          "min_ms": 226.589,
+          "max_ms": 237.518
+        }
+      },
+      "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+    },
+    "tiny": {
+      "schema_version": 2,
+      "quantization": {
+        "mode": "static",
+        "precision": "mixed-fp32-int8",
+        "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+        "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1"
+      },
+      "model_bytes": 5513571,
+      "detector_backend": "onnxruntime-direct",
+      "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+      "detector_family": "yolox",
+      "measured_at": "2026-11-21T19:33:00.469344+00:00",
+      "platform": {
+        "system": "Linux",
+        "machine": "aarch64",
+        "python": "3.12.16"
+      },
+      "versions": {
+        "supervision": "0.32.0",
+        "trackers": "2.7.0",
+        "onnxruntime": "1.32.0",
+        "fast-alpr": "0.4.0",
+        "numpy": "2.5.5",
+        "opencv-python-headless": "5.1.0.95",
+        "av": "19.0.2"
+      },
+      "source": 0,
+      "model": "yolox-tiny-int8-static.onnx",
+      "model_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+      "onnx_threads": 4,
+      "configured_max_fps": 1.0,
+      "lpr_mode": "off",
+      "lpr_enabled": false,
+      "lpr_models": null,
+      "warmup_frames": 3,
+      "measured_frames": 10,
+      "source_exhausted": false,
+      "detector_load_ms": 470.929,
+      "plate_load_ms": null,
+      "elapsed_seconds": 3.549,
+      "pipeline_fps": 2.818,
+      "cpu_seconds": 9.672,
+      "cpu_core_equivalents": 2.725,
+      "peak_process_rss_mib": 212.5,
+      "health_before": {
+        "temperature_c": 51.608,
+        "throttle_hex": "0x0"
+      },
+      "health_after": {
+        "temperature_c": 52.582,
+        "throttle_hex": "0x0"
+      },
+      "stages": {
+        "source_and_detection": {
+          "samples": 10,
+          "mean_ms": 353.164,
+          "p50_ms": 354.029,
+          "p95_ms": 358.983,
+          "min_ms": 343.59,
+          "max_ms": 359.718
+        },
+        "tracking": {
+          "samples": 10,
+          "mean_ms": 1.74,
+          "p50_ms": 1.417,
+          "p95_ms": 2.876,
+          "min_ms": 1.322,
+          "max_ms": 3.628
+        },
+        "lpr_scan": null,
+        "frame_total": {
+          "samples": 10,
+          "mean_ms": 354.908,
+          "p50_ms": 355.711,
+          "p95_ms": 360.542,
+          "min_ms": 345.029,
+          "max_ms": 361.096
+        }
+      },
+      "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+    }
+  },
+  "plate_sample": "5AU5341 is from the public FastALPR sample, not a live vehicle observation",
+  "tests": {
+    "with_quantize_extra": 110,
+    "default_passed": 106,
+    "default_optional_skipped": 4
+  },
+  "quantization_manifests": {
+    "nano": {
+      "schema_version": 1,
+      "family": "yolox",
+      "variant": "yolox-nano",
+      "mode": "static",
+      "precision": "mixed-fp32-int8",
+      "source_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+      "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1",
+      "weights_per_channel": true,
+      "calibration_method": "Percentile",
+      "calibration_percentile": 99.99,
+      "activation_type": "QInt8",
+      "weight_type": "QInt8",
+      "format": "QDQ",
+      "calibration_images": [
+        {
+          "name": "000000000071.jpg",
+          "sha256": "5393bf6575c435daa599c1272d9e61e99c099994ae4d3755311684663fed0917"
+        },
+        {
+          "name": "000000000508.jpg",
+          "sha256": "0fc73f660a10ed91c52f76a2b34b5fa252bf70ff84f7b2a35374726388528ca2"
+        },
+        {
+          "name": "000000000544.jpg",
+          "sha256": "f599082d9c87db6029fc3d6e468074d1294dc98a8755152ca7324811aa1d10cd"
+        },
+        {
+          "name": "000000000428.jpg",
+          "sha256": "49e87dbacfb3911d83fde336b7c01b79cc7bc77a021a601f2eb8d861f170a466"
+        },
+        {
+          "name": "000000000308.jpg",
+          "sha256": "07c410e96a812351bf385add8645b8dc2ed064902ff2ef01072be6351b428393"
+        },
+        {
+          "name": "000000000086.jpg",
+          "sha256": "f58a99916783cdf4a7619286dc46adedd4ea1143bcc2cd773c6504aa5280915a"
+        },
+        {
+          "name": "000000000360.jpg",
+          "sha256": "1a5d039418eacc09510efabcd466dc05701f0dac9ae0040b05a1b30b796ef96e"
+        },
+        {
+          "name": "000000000560.jpg",
+          "sha256": "96801af258ded041845af111c4535dcb12a512cf22f6fd9854e5723920532d60"
+        },
+        {
+          "name": "000000000562.jpg",
+          "sha256": "e31320272d768add7113d41a9c65407fd4868da1229f8658fc877e9b07c4c794"
+        },
+        {
+          "name": "000000000450.jpg",
+          "sha256": "3b1fe58cb414f373c61990a5fed4f1a6418a02b2e8a3ed3ecef613f4e7198068"
+        },
+        {
+          "name": "000000000294.jpg",
+          "sha256": "66bff049c25ed6498e69a51ac65b88d5fc800233fed0f89ee07ab178f7db766d"
+        },
+        {
+          "name": "000000000110.jpg",
+          "sha256": "39d967c7856965853e90b9283db4a6895a034eb17fe0c84581d17af4a59edcf2"
+        },
+        {
+          "name": "000000000149.jpg",
+          "sha256": "73a20e38429ba6c78f62a90df787360c4a9ae3d331b002b509a8ee15179788a4"
+        },
+        {
+          "name": "000000000620.jpg",
+          "sha256": "4c7d0e5b1ac23a287f95640c4aaab93a0e120c384558e3fff70b96f6f1eb80ce"
+        },
+        {
+          "name": "000000000154.jpg",
+          "sha256": "2938c94a9b07cacf10a8343c35949b065ae868190a11020f458f50450bd13552"
+        },
+        {
+          "name": "000000000309.jpg",
+          "sha256": "40087a8191fc80eba012c1ba4735402b4890aa0669a84ea0d3dac043ca543247"
+        },
+        {
+          "name": "000000000368.jpg",
+          "sha256": "a10be0a1beb5a34b50af22cc657dbf186a944db7ce8924e570295f35bd954036"
+        },
+        {
+          "name": "000000000634.jpg",
+          "sha256": "d769636e9b9d22fa6fd4dcc2e683b2c95a5a9c247b3cc95df7367b1dba52f9bc"
+        },
+        {
+          "name": "000000000529.jpg",
+          "sha256": "5d9958bdec3062b05090258293a19af01d231de69b943d1ff0bb4a7b943e6db3"
+        },
+        {
+          "name": "000000000092.jpg",
+          "sha256": "886950d096ad454f0bbb9a63167c795bd49eb9d4c0cb24a72888b3429d11900a"
+        },
+        {
+          "name": "000000000415.jpg",
+          "sha256": "cc75d90eac7419395e81ddd7e33c81dbec387892e086b40cbf12dc3fe09f8bb1"
+        },
+        {
+          "name": "000000000030.jpg",
+          "sha256": "4ec415419155289eefffa7a620ed77bdeee94f477225e87ceaa00cb5f2515fe7"
+        },
+        {
+          "name": "000000000384.jpg",
+          "sha256": "dfbae064fadcaa79bd319410903bc92052349472115e2d515e0ecf3c944d1048"
+        },
+        {
+          "name": "000000000443.jpg",
+          "sha256": "f6483d57885c348a27dcdc272e4bd5296c75596d7c64fe638b24dbb503209902"
+        },
+        {
+          "name": "000000000194.jpg",
+          "sha256": "0713bcf193a25769b047e4dde7820e7fa857bab06f9140a4a64c78d94ed9b4a1"
+        },
+        {
+          "name": "000000000472.jpg",
+          "sha256": "e86077ae0fa75248880ca12cdc9ef09bb68fa68083313ce280fd77082c780769"
+        },
+        {
+          "name": "000000000061.jpg",
+          "sha256": "a1a9ac88e4c5cfbdd1cd425a6d262b1e78bf32676a9c17a2861ca6a23a731955"
+        },
+        {
+          "name": "000000000025.jpg",
+          "sha256": "9f016b98f31e4fe826910e56ee39fa0c2889f48d38cc5f4f6b6421c8c5fc7214"
+        },
+        {
+          "name": "000000000486.jpg",
+          "sha256": "cb30e9ff9b1182fc9aa328f601f0ca640236eea29ec695b57edc11a572dfbfed"
+        },
+        {
+          "name": "000000000438.jpg",
+          "sha256": "ee66d39f65c8ce3421fda1ca85b1942f6dff29813c97b6fb4ea4ed015c3a822a"
+        },
+        {
+          "name": "000000000138.jpg",
+          "sha256": "0255bce78addf8d82e9f5d434ad2a98fccd5542cbb041980ce7ad00054a3227e"
+        },
+        {
+          "name": "000000000542.jpg",
+          "sha256": "ef93fd2248a41119a34a86d11478b87bd0c715ff3c2c65f3f5f54a3f31a3dedf"
+        },
+        {
+          "name": "000000000357.jpg",
+          "sha256": "939b5473ea4787a01c2293a3e62979442eea5c9b3dcaab8803c07a5b6d47e087"
+        },
+        {
+          "name": "000000000404.jpg",
+          "sha256": "c46b3242d195c8c81b6776f4bfa385ef886ff1e7cb814e2c29e03303b85403b2"
+        },
+        {
+          "name": "000000000520.jpg",
+          "sha256": "2b971302ba56e1049294f9e0b198f37316148c8257b8d7344002aed624c45844"
+        },
+        {
+          "name": "000000000349.jpg",
+          "sha256": "8ad9716416dc27aeff76bb09d936949f67627cb30948288b61c117df34501049"
+        },
+        {
+          "name": "000000000208.jpg",
+          "sha256": "5ef004c8572c1d3a5e7c92ed16edc47529892a5306c7f70216e332a6cd65ad2d"
+        },
+        {
+          "name": "000000000400.jpg",
+          "sha256": "7b78338d4c7a30f7c38eb3bf11a7623a195e10926359adfd7281d6ce99e42dcb"
+        },
+        {
+          "name": "000000000165.jpg",
+          "sha256": "2d3d9e0b4b165c0f783b97cd963097b13effa1af851c9576617fb7c910d63cd8"
+        },
+        {
+          "name": "000000000312.jpg",
+          "sha256": "cd2fac2dfdc17fb1af0d12228e344d2e828fbe28a7c1e32396a95cb0b129d096"
+        },
+        {
+          "name": "000000000359.jpg",
+          "sha256": "8da8a8320518a8adadbbd79615e066fd60b31c6025919665264ff9d0f746a5dd"
+        },
+        {
+          "name": "000000000201.jpg",
+          "sha256": "4efc7ce561df432c2d3d9a60040f62b1b8389b36b401269bfc6802065dfcb9d8"
+        },
+        {
+          "name": "000000000589.jpg",
+          "sha256": "b028805b2fb2c666ef72d4a7a01677bcf0ed56fb4d14cadc8646acdf379999c7"
+        },
+        {
+          "name": "000000000247.jpg",
+          "sha256": "a57c40ee95f73bb493e573bbbd593d037fdf176a02f1d3f6a3f437c8f78f805a"
+        },
+        {
+          "name": "000000000471.jpg",
+          "sha256": "8f473ca6e651f74a74efea3673445230f6bb7d6ae92f76bf3c1e523853ec3995"
+        },
+        {
+          "name": "000000000436.jpg",
+          "sha256": "84b778ac377b3fb394edee6f6c3e688c600a3ac440247b64942b1e6e116ff9a3"
+        },
+        {
+          "name": "000000000328.jpg",
+          "sha256": "8ba0ed80d34589221b1243e0764471d91716b3a267827cb37ecfc3cfae52cc90"
+        },
+        {
+          "name": "000000000250.jpg",
+          "sha256": "a4e4243da053d3a958a1f52fd8fe9cc264d39e07077266a7089b281597050a29"
+        },
+        {
+          "name": "000000000540.jpg",
+          "sha256": "32099f009fcb436bad1bd59b5d48b3e5620fa667a83db5a09879e158dd346103"
+        },
+        {
+          "name": "000000000113.jpg",
+          "sha256": "51d5f657eacbc0f37f0d847f903abc90bb33479fa0459fdc64ebbeb5cac34d99"
+        },
+        {
+          "name": "000000000315.jpg",
+          "sha256": "5804350236bc0d52715f9354498d52f8d260b0e3d8f965526cd85ca6a18b7caa"
+        },
+        {
+          "name": "000000000395.jpg",
+          "sha256": "8d823d141724cc8656ccd48b49d6e44556ca399fbbd8458cc488f0d9816809a4"
+        },
+        {
+          "name": "000000000127.jpg",
+          "sha256": "0ce2f02f39d5d49260d91762bc9a659f8f9d516d8e416c8120306330bfd58023"
+        },
+        {
+          "name": "000000000531.jpg",
+          "sha256": "111bb407e512f23fcc14bbc51ad4b312b0797332aab86ecd9373808286ed30b1"
+        },
+        {
+          "name": "000000000241.jpg",
+          "sha256": "14007b87745069ed85c6412dffc8ad11a22de98d5f5c9ae896523e12622961c5"
+        },
+        {
+          "name": "000000000569.jpg",
+          "sha256": "07655c58e2286ec5e8b74eee71a03841ccf732cbc502d6c380d894a14041ad5f"
+        },
+        {
+          "name": "000000000626.jpg",
+          "sha256": "47b4a3b3fe24c6b1f77a9d89aa2e5d1a3b410b7ba611f54c252c2e13e975afc8"
+        },
+        {
+          "name": "000000000387.jpg",
+          "sha256": "079af237aafcdddfe5a528ef5e40f38ca449fce9ad5a49fbdaaeef068fac7c76"
+        },
+        {
+          "name": "000000000049.jpg",
+          "sha256": "bc1482d2cba6e4db671c8eedbc7c8d86e0a31c927587a24297647f530349fe7b"
+        },
+        {
+          "name": "000000000326.jpg",
+          "sha256": "d8c9b6803795082707fcd62f2d1d38826709836504e330db3e7b4713c3316d59"
+        },
+        {
+          "name": "000000000078.jpg",
+          "sha256": "3139fdefaa9b4320c8a4eec2032c77306a0fd167dd88633bd73f66f952baf5a7"
+        },
+        {
+          "name": "000000000491.jpg",
+          "sha256": "9d5732e879b066bfe8a38e3fcad64836fa1a5ac9f507625082c4b14fe449f993"
+        },
+        {
+          "name": "000000000382.jpg",
+          "sha256": "9455b8af106ef7a2a3b6c4c7ceeda5f4e81b5e364a2aef8e6cf68abc1396f8bd"
+        },
+        {
+          "name": "000000000532.jpg",
+          "sha256": "60745e50cb857e4683d3622ac6c1e7ade63bd73ee458eb76a70455badaee2869"
+        },
+        {
+          "name": "000000000572.jpg",
+          "sha256": "b779e782a66c196373580de6ede5c4faacabf05fb521eab8df4d11b71d8d2770"
+        },
+        {
+          "name": "000000000612.jpg",
+          "sha256": "9ee977eaa2947ffa1508dfc8b6e3c179a9945ee3a55529f91ede04689f00e667"
+        },
+        {
+          "name": "000000000064.jpg",
+          "sha256": "406f84619f5197d416f60566d41ad4d58f1d10b0a182652bbda266eedbc3f1ab"
+        },
+        {
+          "name": "000000000133.jpg",
+          "sha256": "d8d2ea5e94c83ba74bef9dc52d58e0526e08d03355381683fb953db71ec529e6"
+        },
+        {
+          "name": "000000000283.jpg",
+          "sha256": "a668b293598b0097c9b38c136e54b8b43241df22d1c183f6f204a87eaf1f0724"
+        },
+        {
+          "name": "000000000196.jpg",
+          "sha256": "1e1d801e63ed90d34ee666845ebcc17b56edef1f864d048ff588ce7073bc94a2"
+        },
+        {
+          "name": "000000000072.jpg",
+          "sha256": "93d0d304967360bed3bfe2aafc701817e83f494c687e625fb8b765d2be54c9b2"
+        },
+        {
+          "name": "000000000446.jpg",
+          "sha256": "41f3d2ce74148a9628d29ac8ddb5eeed3a07394a55b72e75df5d418d5887ef50"
+        },
+        {
+          "name": "000000000081.jpg",
+          "sha256": "9f9dd4dcc774b81fcbb64531eb717859562ff162cf058e12f80c7b4630cbaa6b"
+        },
+        {
+          "name": "000000000389.jpg",
+          "sha256": "f6d313afba47fe0747d1d78cd342f420eb305de8faadb5cb164de428522b40d6"
+        },
+        {
+          "name": "000000000338.jpg",
+          "sha256": "fdf5b5b2f8227082a5542fbc33b5f8740b040d345653c33bec6158d835542d6b"
+        },
+        {
+          "name": "000000000042.jpg",
+          "sha256": "9008ddd846fc6002ec47ea6067cb92cf70f294773cc15765b6a14ffb392f52fa"
+        },
+        {
+          "name": "000000000164.jpg",
+          "sha256": "186a1427f32ce7e5cf17052f66d5ee7cd57d7f83762001891e16195a6bda586d"
+        },
+        {
+          "name": "000000000564.jpg",
+          "sha256": "1f67bf49851ff43dba866f0cd6cc1b6f1d35ee75255a6092483550548584f477"
+        },
+        {
+          "name": "000000000260.jpg",
+          "sha256": "f70992bbd14794773e27801c4cf4ba34ca4f453eb2efded62c2a558c40e3885b"
+        },
+        {
+          "name": "000000000263.jpg",
+          "sha256": "4abc27b830dedd072dab619c6b7f2467886f601e41b0cc8c2de888f57cf90d7b"
+        },
+        {
+          "name": "000000000074.jpg",
+          "sha256": "99d864809a7355862032b54283bd4808971da5a2b976b20467203e6c192e755d"
+        },
+        {
+          "name": "000000000307.jpg",
+          "sha256": "c839076b4fa14020f97c8a5909c84a1e85c912ca262a91c8c4648ebe27caf61f"
+        },
+        {
+          "name": "000000000581.jpg",
+          "sha256": "60ad7a794ae3032c302c4e1d5111099921ce7e8df23df4401f60bdc74dc83bf1"
+        },
+        {
+          "name": "000000000623.jpg",
+          "sha256": "c11d16bc49acabc2a52b990174110753dbe3a9a71eb7aa37af8f5fc4c616fb20"
+        },
+        {
+          "name": "000000000488.jpg",
+          "sha256": "9e1c9d4c88d38e6a2cd2f775bea82c137c14dc3b13f8430bcdadcb89ab0b7022"
+        },
+        {
+          "name": "000000000575.jpg",
+          "sha256": "839789fe6192bbd5776761d675aa76017b67810b556f3e25e2f3a31acffd86f3"
+        },
+        {
+          "name": "000000000094.jpg",
+          "sha256": "143779e4a70bb6b6e10232aa02c2ce99a9a1246d763da344b424aba4ca71cd9f"
+        },
+        {
+          "name": "000000000510.jpg",
+          "sha256": "c2fcc1d44e81016f4c53e7e610c44dc28a2ca1bc5e73f73623129d261bff15e2"
+        },
+        {
+          "name": "000000000257.jpg",
+          "sha256": "ae711135026cbd548fa1e04edc0ee96bce57162587e0238e7f76b4dc46cf4208"
+        },
+        {
+          "name": "000000000590.jpg",
+          "sha256": "dd687875b5ff4fd0a91dcc910690da36858271562ea908ff61661b4cec9b4cee"
+        },
+        {
+          "name": "000000000536.jpg",
+          "sha256": "745e538b3979ffa93f63bb294163e173d9a99413bce6cf3289215b541c9f1eb1"
+        },
+        {
+          "name": "000000000109.jpg",
+          "sha256": "69edeeca53763fb2a4ee51739e4f9a4f053584b4f3ca4ff9911c49fa52ed2762"
+        },
+        {
+          "name": "000000000009.jpg",
+          "sha256": "3b0bb6bebad60a3329f1e3484434872e86998aeb7750d779b308e4a064868c2c"
+        },
+        {
+          "name": "000000000636.jpg",
+          "sha256": "8e948d6888e7bf449e91883d3a2b0d61804308aada31fbf289add4da4dd978e8"
+        },
+        {
+          "name": "000000000595.jpg",
+          "sha256": "8152ff314326c47105e065ec16ef28e1baa9dd640f40475fe385b612d5e65cf1"
+        },
+        {
+          "name": "000000000332.jpg",
+          "sha256": "8d4946138c446940ed080738744214cd75948a98fd3a1933d0031bd14144f541"
+        }
+      ],
+      "excluded_nodes": [
+        "/head/cls_preds.0/Conv",
+        "/head/reg_preds.0/Conv",
+        "/head/obj_preds.0/Conv",
+        "/head/cls_preds.1/Conv",
+        "/head/reg_preds.1/Conv",
+        "/head/obj_preds.1/Conv",
+        "/head/cls_preds.2/Conv",
+        "/head/reg_preds.2/Conv",
+        "/head/obj_preds.2/Conv"
+      ],
+      "operator_counts": {
+        "Constant": 38,
+        "DequantizeLinear": 403,
+        "Slice": 9,
+        "Concat": 21,
+        "QuantizeLinear": 195,
+        "Conv": 113,
+        "Sigmoid": 110,
+        "Mul": 104,
+        "Add": 7,
+        "MaxPool": 3,
+        "Resize": 2,
+        "Shape": 3,
+        "Reshape": 3,
+        "Transpose": 1
+      },
+      "int8_weight_tensors": 104,
+      "versions": {
+        "onnx": "1.23.2",
+        "onnxruntime": "1.32.0",
+        "numpy": "2.5.5"
+      },
+      "output_sha256": "ff99bd76155b33578015645284bc93d0f62722f74d0ef53301f4cc90fc82ca6c",
+      "source_bytes": 3715036,
+      "output_bytes": 1442737,
+      "depthwise_kept_float": false
+    },
+    "tiny": {
+      "schema_version": 1,
+      "family": "yolox",
+      "variant": "yolox-tiny",
+      "mode": "static",
+      "precision": "mixed-fp32-int8",
+      "source_sha256": "614fe1f3c5a2a1de4aa5433fe391c5ade735e4e2f9e90cdc4a427ff61d898983",
+      "recipe": "yolox-conv-qdq-s8s8-float-output-heads-v1",
+      "weights_per_channel": true,
+      "calibration_method": "MinMax",
+      "activation_type": "QInt8",
+      "weight_type": "QInt8",
+      "format": "QDQ",
+      "calibration_images": [
+        {
+          "name": "000000000071.jpg",
+          "sha256": "5393bf6575c435daa599c1272d9e61e99c099994ae4d3755311684663fed0917"
+        },
+        {
+          "name": "000000000508.jpg",
+          "sha256": "0fc73f660a10ed91c52f76a2b34b5fa252bf70ff84f7b2a35374726388528ca2"
+        },
+        {
+          "name": "000000000544.jpg",
+          "sha256": "f599082d9c87db6029fc3d6e468074d1294dc98a8755152ca7324811aa1d10cd"
+        },
+        {
+          "name": "000000000428.jpg",
+          "sha256": "49e87dbacfb3911d83fde336b7c01b79cc7bc77a021a601f2eb8d861f170a466"
+        },
+        {
+          "name": "000000000308.jpg",
+          "sha256": "07c410e96a812351bf385add8645b8dc2ed064902ff2ef01072be6351b428393"
+        },
+        {
+          "name": "000000000086.jpg",
+          "sha256": "f58a99916783cdf4a7619286dc46adedd4ea1143bcc2cd773c6504aa5280915a"
+        },
+        {
+          "name": "000000000360.jpg",
+          "sha256": "1a5d039418eacc09510efabcd466dc05701f0dac9ae0040b05a1b30b796ef96e"
+        },
+        {
+          "name": "000000000560.jpg",
+          "sha256": "96801af258ded041845af111c4535dcb12a512cf22f6fd9854e5723920532d60"
+        },
+        {
+          "name": "000000000562.jpg",
+          "sha256": "e31320272d768add7113d41a9c65407fd4868da1229f8658fc877e9b07c4c794"
+        },
+        {
+          "name": "000000000450.jpg",
+          "sha256": "3b1fe58cb414f373c61990a5fed4f1a6418a02b2e8a3ed3ecef613f4e7198068"
+        },
+        {
+          "name": "000000000294.jpg",
+          "sha256": "66bff049c25ed6498e69a51ac65b88d5fc800233fed0f89ee07ab178f7db766d"
+        },
+        {
+          "name": "000000000110.jpg",
+          "sha256": "39d967c7856965853e90b9283db4a6895a034eb17fe0c84581d17af4a59edcf2"
+        },
+        {
+          "name": "000000000149.jpg",
+          "sha256": "73a20e38429ba6c78f62a90df787360c4a9ae3d331b002b509a8ee15179788a4"
+        },
+        {
+          "name": "000000000620.jpg",
+          "sha256": "4c7d0e5b1ac23a287f95640c4aaab93a0e120c384558e3fff70b96f6f1eb80ce"
+        },
+        {
+          "name": "000000000154.jpg",
+          "sha256": "2938c94a9b07cacf10a8343c35949b065ae868190a11020f458f50450bd13552"
+        },
+        {
+          "name": "000000000309.jpg",
+          "sha256": "40087a8191fc80eba012c1ba4735402b4890aa0669a84ea0d3dac043ca543247"
+        },
+        {
+          "name": "000000000368.jpg",
+          "sha256": "a10be0a1beb5a34b50af22cc657dbf186a944db7ce8924e570295f35bd954036"
+        },
+        {
+          "name": "000000000634.jpg",
+          "sha256": "d769636e9b9d22fa6fd4dcc2e683b2c95a5a9c247b3cc95df7367b1dba52f9bc"
+        },
+        {
+          "name": "000000000529.jpg",
+          "sha256": "5d9958bdec3062b05090258293a19af01d231de69b943d1ff0bb4a7b943e6db3"
+        },
+        {
+          "name": "000000000092.jpg",
+          "sha256": "886950d096ad454f0bbb9a63167c795bd49eb9d4c0cb24a72888b3429d11900a"
+        },
+        {
+          "name": "000000000415.jpg",
+          "sha256": "cc75d90eac7419395e81ddd7e33c81dbec387892e086b40cbf12dc3fe09f8bb1"
+        },
+        {
+          "name": "000000000030.jpg",
+          "sha256": "4ec415419155289eefffa7a620ed77bdeee94f477225e87ceaa00cb5f2515fe7"
+        },
+        {
+          "name": "000000000384.jpg",
+          "sha256": "dfbae064fadcaa79bd319410903bc92052349472115e2d515e0ecf3c944d1048"
+        },
+        {
+          "name": "000000000443.jpg",
+          "sha256": "f6483d57885c348a27dcdc272e4bd5296c75596d7c64fe638b24dbb503209902"
+        },
+        {
+          "name": "000000000194.jpg",
+          "sha256": "0713bcf193a25769b047e4dde7820e7fa857bab06f9140a4a64c78d94ed9b4a1"
+        },
+        {
+          "name": "000000000472.jpg",
+          "sha256": "e86077ae0fa75248880ca12cdc9ef09bb68fa68083313ce280fd77082c780769"
+        },
+        {
+          "name": "000000000061.jpg",
+          "sha256": "a1a9ac88e4c5cfbdd1cd425a6d262b1e78bf32676a9c17a2861ca6a23a731955"
+        },
+        {
+          "name": "000000000025.jpg",
+          "sha256": "9f016b98f31e4fe826910e56ee39fa0c2889f48d38cc5f4f6b6421c8c5fc7214"
+        },
+        {
+          "name": "000000000486.jpg",
+          "sha256": "cb30e9ff9b1182fc9aa328f601f0ca640236eea29ec695b57edc11a572dfbfed"
+        },
+        {
+          "name": "000000000438.jpg",
+          "sha256": "ee66d39f65c8ce3421fda1ca85b1942f6dff29813c97b6fb4ea4ed015c3a822a"
+        },
+        {
+          "name": "000000000138.jpg",
+          "sha256": "0255bce78addf8d82e9f5d434ad2a98fccd5542cbb041980ce7ad00054a3227e"
+        },
+        {
+          "name": "000000000542.jpg",
+          "sha256": "ef93fd2248a41119a34a86d11478b87bd0c715ff3c2c65f3f5f54a3f31a3dedf"
+        },
+        {
+          "name": "000000000357.jpg",
+          "sha256": "939b5473ea4787a01c2293a3e62979442eea5c9b3dcaab8803c07a5b6d47e087"
+        },
+        {
+          "name": "000000000404.jpg",
+          "sha256": "c46b3242d195c8c81b6776f4bfa385ef886ff1e7cb814e2c29e03303b85403b2"
+        },
+        {
+          "name": "000000000520.jpg",
+          "sha256": "2b971302ba56e1049294f9e0b198f37316148c8257b8d7344002aed624c45844"
+        },
+        {
+          "name": "000000000349.jpg",
+          "sha256": "8ad9716416dc27aeff76bb09d936949f67627cb30948288b61c117df34501049"
+        },
+        {
+          "name": "000000000208.jpg",
+          "sha256": "5ef004c8572c1d3a5e7c92ed16edc47529892a5306c7f70216e332a6cd65ad2d"
+        },
+        {
+          "name": "000000000400.jpg",
+          "sha256": "7b78338d4c7a30f7c38eb3bf11a7623a195e10926359adfd7281d6ce99e42dcb"
+        },
+        {
+          "name": "000000000165.jpg",
+          "sha256": "2d3d9e0b4b165c0f783b97cd963097b13effa1af851c9576617fb7c910d63cd8"
+        },
+        {
+          "name": "000000000312.jpg",
+          "sha256": "cd2fac2dfdc17fb1af0d12228e344d2e828fbe28a7c1e32396a95cb0b129d096"
+        },
+        {
+          "name": "000000000359.jpg",
+          "sha256": "8da8a8320518a8adadbbd79615e066fd60b31c6025919665264ff9d0f746a5dd"
+        },
+        {
+          "name": "000000000201.jpg",
+          "sha256": "4efc7ce561df432c2d3d9a60040f62b1b8389b36b401269bfc6802065dfcb9d8"
+        },
+        {
+          "name": "000000000589.jpg",
+          "sha256": "b028805b2fb2c666ef72d4a7a01677bcf0ed56fb4d14cadc8646acdf379999c7"
+        },
+        {
+          "name": "000000000247.jpg",
+          "sha256": "a57c40ee95f73bb493e573bbbd593d037fdf176a02f1d3f6a3f437c8f78f805a"
+        },
+        {
+          "name": "000000000471.jpg",
+          "sha256": "8f473ca6e651f74a74efea3673445230f6bb7d6ae92f76bf3c1e523853ec3995"
+        },
+        {
+          "name": "000000000436.jpg",
+          "sha256": "84b778ac377b3fb394edee6f6c3e688c600a3ac440247b64942b1e6e116ff9a3"
+        },
+        {
+          "name": "000000000328.jpg",
+          "sha256": "8ba0ed80d34589221b1243e0764471d91716b3a267827cb37ecfc3cfae52cc90"
+        },
+        {
+          "name": "000000000250.jpg",
+          "sha256": "a4e4243da053d3a958a1f52fd8fe9cc264d39e07077266a7089b281597050a29"
+        },
+        {
+          "name": "000000000540.jpg",
+          "sha256": "32099f009fcb436bad1bd59b5d48b3e5620fa667a83db5a09879e158dd346103"
+        },
+        {
+          "name": "000000000113.jpg",
+          "sha256": "51d5f657eacbc0f37f0d847f903abc90bb33479fa0459fdc64ebbeb5cac34d99"
+        },
+        {
+          "name": "000000000315.jpg",
+          "sha256": "5804350236bc0d52715f9354498d52f8d260b0e3d8f965526cd85ca6a18b7caa"
+        },
+        {
+          "name": "000000000395.jpg",
+          "sha256": "8d823d141724cc8656ccd48b49d6e44556ca399fbbd8458cc488f0d9816809a4"
+        },
+        {
+          "name": "000000000127.jpg",
+          "sha256": "0ce2f02f39d5d49260d91762bc9a659f8f9d516d8e416c8120306330bfd58023"
+        },
+        {
+          "name": "000000000531.jpg",
+          "sha256": "111bb407e512f23fcc14bbc51ad4b312b0797332aab86ecd9373808286ed30b1"
+        },
+        {
+          "name": "000000000241.jpg",
+          "sha256": "14007b87745069ed85c6412dffc8ad11a22de98d5f5c9ae896523e12622961c5"
+        },
+        {
+          "name": "000000000569.jpg",
+          "sha256": "07655c58e2286ec5e8b74eee71a03841ccf732cbc502d6c380d894a14041ad5f"
+        },
+        {
+          "name": "000000000626.jpg",
+          "sha256": "47b4a3b3fe24c6b1f77a9d89aa2e5d1a3b410b7ba611f54c252c2e13e975afc8"
+        },
+        {
+          "name": "000000000387.jpg",
+          "sha256": "079af237aafcdddfe5a528ef5e40f38ca449fce9ad5a49fbdaaeef068fac7c76"
+        },
+        {
+          "name": "000000000049.jpg",
+          "sha256": "bc1482d2cba6e4db671c8eedbc7c8d86e0a31c927587a24297647f530349fe7b"
+        },
+        {
+          "name": "000000000326.jpg",
+          "sha256": "d8c9b6803795082707fcd62f2d1d38826709836504e330db3e7b4713c3316d59"
+        },
+        {
+          "name": "000000000078.jpg",
+          "sha256": "3139fdefaa9b4320c8a4eec2032c77306a0fd167dd88633bd73f66f952baf5a7"
+        },
+        {
+          "name": "000000000491.jpg",
+          "sha256": "9d5732e879b066bfe8a38e3fcad64836fa1a5ac9f507625082c4b14fe449f993"
+        },
+        {
+          "name": "000000000382.jpg",
+          "sha256": "9455b8af106ef7a2a3b6c4c7ceeda5f4e81b5e364a2aef8e6cf68abc1396f8bd"
+        },
+        {
+          "name": "000000000532.jpg",
+          "sha256": "60745e50cb857e4683d3622ac6c1e7ade63bd73ee458eb76a70455badaee2869"
+        },
+        {
+          "name": "000000000572.jpg",
+          "sha256": "b779e782a66c196373580de6ede5c4faacabf05fb521eab8df4d11b71d8d2770"
+        },
+        {
+          "name": "000000000612.jpg",
+          "sha256": "9ee977eaa2947ffa1508dfc8b6e3c179a9945ee3a55529f91ede04689f00e667"
+        },
+        {
+          "name": "000000000064.jpg",
+          "sha256": "406f84619f5197d416f60566d41ad4d58f1d10b0a182652bbda266eedbc3f1ab"
+        },
+        {
+          "name": "000000000133.jpg",
+          "sha256": "d8d2ea5e94c83ba74bef9dc52d58e0526e08d03355381683fb953db71ec529e6"
+        },
+        {
+          "name": "000000000283.jpg",
+          "sha256": "a668b293598b0097c9b38c136e54b8b43241df22d1c183f6f204a87eaf1f0724"
+        },
+        {
+          "name": "000000000196.jpg",
+          "sha256": "1e1d801e63ed90d34ee666845ebcc17b56edef1f864d048ff588ce7073bc94a2"
+        },
+        {
+          "name": "000000000072.jpg",
+          "sha256": "93d0d304967360bed3bfe2aafc701817e83f494c687e625fb8b765d2be54c9b2"
+        },
+        {
+          "name": "000000000446.jpg",
+          "sha256": "41f3d2ce74148a9628d29ac8ddb5eeed3a07394a55b72e75df5d418d5887ef50"
+        },
+        {
+          "name": "000000000081.jpg",
+          "sha256": "9f9dd4dcc774b81fcbb64531eb717859562ff162cf058e12f80c7b4630cbaa6b"
+        },
+        {
+          "name": "000000000389.jpg",
+          "sha256": "f6d313afba47fe0747d1d78cd342f420eb305de8faadb5cb164de428522b40d6"
+        },
+        {
+          "name": "000000000338.jpg",
+          "sha256": "fdf5b5b2f8227082a5542fbc33b5f8740b040d345653c33bec6158d835542d6b"
+        },
+        {
+          "name": "000000000042.jpg",
+          "sha256": "9008ddd846fc6002ec47ea6067cb92cf70f294773cc15765b6a14ffb392f52fa"
+        },
+        {
+          "name": "000000000164.jpg",
+          "sha256": "186a1427f32ce7e5cf17052f66d5ee7cd57d7f83762001891e16195a6bda586d"
+        },
+        {
+          "name": "000000000564.jpg",
+          "sha256": "1f67bf49851ff43dba866f0cd6cc1b6f1d35ee75255a6092483550548584f477"
+        },
+        {
+          "name": "000000000260.jpg",
+          "sha256": "f70992bbd14794773e27801c4cf4ba34ca4f453eb2efded62c2a558c40e3885b"
+        },
+        {
+          "name": "000000000263.jpg",
+          "sha256": "4abc27b830dedd072dab619c6b7f2467886f601e41b0cc8c2de888f57cf90d7b"
+        },
+        {
+          "name": "000000000074.jpg",
+          "sha256": "99d864809a7355862032b54283bd4808971da5a2b976b20467203e6c192e755d"
+        },
+        {
+          "name": "000000000307.jpg",
+          "sha256": "c839076b4fa14020f97c8a5909c84a1e85c912ca262a91c8c4648ebe27caf61f"
+        },
+        {
+          "name": "000000000581.jpg",
+          "sha256": "60ad7a794ae3032c302c4e1d5111099921ce7e8df23df4401f60bdc74dc83bf1"
+        },
+        {
+          "name": "000000000623.jpg",
+          "sha256": "c11d16bc49acabc2a52b990174110753dbe3a9a71eb7aa37af8f5fc4c616fb20"
+        },
+        {
+          "name": "000000000488.jpg",
+          "sha256": "9e1c9d4c88d38e6a2cd2f775bea82c137c14dc3b13f8430bcdadcb89ab0b7022"
+        },
+        {
+          "name": "000000000575.jpg",
+          "sha256": "839789fe6192bbd5776761d675aa76017b67810b556f3e25e2f3a31acffd86f3"
+        },
+        {
+          "name": "000000000094.jpg",
+          "sha256": "143779e4a70bb6b6e10232aa02c2ce99a9a1246d763da344b424aba4ca71cd9f"
+        },
+        {
+          "name": "000000000510.jpg",
+          "sha256": "c2fcc1d44e81016f4c53e7e610c44dc28a2ca1bc5e73f73623129d261bff15e2"
+        },
+        {
+          "name": "000000000257.jpg",
+          "sha256": "ae711135026cbd548fa1e04edc0ee96bce57162587e0238e7f76b4dc46cf4208"
+        },
+        {
+          "name": "000000000590.jpg",
+          "sha256": "dd687875b5ff4fd0a91dcc910690da36858271562ea908ff61661b4cec9b4cee"
+        },
+        {
+          "name": "000000000536.jpg",
+          "sha256": "745e538b3979ffa93f63bb294163e173d9a99413bce6cf3289215b541c9f1eb1"
+        },
+        {
+          "name": "000000000109.jpg",
+          "sha256": "69edeeca53763fb2a4ee51739e4f9a4f053584b4f3ca4ff9911c49fa52ed2762"
+        },
+        {
+          "name": "000000000009.jpg",
+          "sha256": "3b0bb6bebad60a3329f1e3484434872e86998aeb7750d779b308e4a064868c2c"
+        },
+        {
+          "name": "000000000636.jpg",
+          "sha256": "8e948d6888e7bf449e91883d3a2b0d61804308aada31fbf289add4da4dd978e8"
+        },
+        {
+          "name": "000000000595.jpg",
+          "sha256": "8152ff314326c47105e065ec16ef28e1baa9dd640f40475fe385b612d5e65cf1"
+        },
+        {
+          "name": "000000000332.jpg",
+          "sha256": "8d4946138c446940ed080738744214cd75948a98fd3a1933d0031bd14144f541"
+        }
+      ],
+      "excluded_nodes": [
+        "/head/cls_preds.0/Conv",
+        "/head/reg_preds.0/Conv",
+        "/head/obj_preds.0/Conv",
+        "/head/cls_preds.1/Conv",
+        "/head/reg_preds.1/Conv",
+        "/head/obj_preds.1/Conv",
+        "/head/cls_preds.2/Conv",
+        "/head/reg_preds.2/Conv",
+        "/head/obj_preds.2/Conv"
+      ],
+      "operator_counts": {
+        "Constant": 38,
+        "DequantizeLinear": 283,
+        "Slice": 9,
+        "Concat": 21,
+        "QuantizeLinear": 135,
+        "Conv": 83,
+        "Sigmoid": 80,
+        "Mul": 74,
+        "Add": 7,
+        "MaxPool": 3,
+        "Resize": 2,
+        "Shape": 3,
+        "Reshape": 3,
+        "Transpose": 1
+      },
+      "int8_weight_tensors": 74,
+      "versions": {
+        "onnx": "1.23.2",
+        "onnxruntime": "1.32.0",
+        "numpy": "2.5.5"
+      },
+      "output_sha256": "6ecd9d963a2119cf03b97d68eb3c1134f81597a7910f6b546106a06c0b6a6341",
+      "source_bytes": 20260224,
+      "output_bytes": 5513571,
+      "calibration_percentile": null,
+      "depthwise_kept_float": false
+    }
+  },
+  "commit": "0c9df1cc3db6bd30e15735f4f6e8b1c66eeae91a",
+  "branch": "feat/onnx-home-assistant",
+  "temporary_mqtt_forwarding_stopped": true,
+  "archive_note": "Historical experiment. Absolute checkout/home paths redacted; scores, model/source/calibration hashes and run telemetry preserved. Recommendations/defaults reflect that experiment, not current presets."
+}

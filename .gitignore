@@ -75,9 +75,6 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
 # celery beat schedule file
 celerybeat-schedule
 
@@ -87,6 +84,10 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.venv-*/
+work/
+models/
+config/*.local.yml
 env/
 venv/
 ENV/
@@ -109,3 +110,6 @@ venv.bak/
 .db
 .jpg
 captures/records.db
+
+# Captured images and SQLite recordings
+captures/

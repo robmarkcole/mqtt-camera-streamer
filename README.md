@@ -1,168 +1,244 @@
 # mqtt-camera-streamer
-**Summary:** Publish frames from a connected camera or MJPEG/RTSP stream to an MQTT topic, and view the feed in a browser on another computer with [Streamlit](https://github.com/streamlit/streamlit).
 
-**Long introduction:** A typical task in IOT/science is that you have a camera connected to one computer and you want to view the camera feed on a second computer, and maybe preprocess the images before saving them to disk. I have always found this to be way more effort than expected. In particular, working with camera streams can get quite complicated and may lead you to experiment with tools like Gstreamer and ffmpeg that have a steep learning curve. In contrast, working with [MQTT](http://mqtt.org/) is very straightforward and is often familiar to anyone with an interest in IOT. This repo, `mqtt-camera-streamer` uses MQTT to send frames from a camera over a network at low frames-per-second (FPS). A viewer is provided for viewing the camera stream on any computer on the network. Frames can be saved to disk for further processing. Also it is possible to setup an image processing pipeline by linking MQTT topics together, using an `on_message(topic)` to do some processing and send the processed image downstream on another topic.
+The goal is simple: make useful camera data available over MQTT with as little
+setup, code and as few dependencies as practical, using hardware you already
+have. Configure a broker and camera, then run one headless Python process—no
+GPU, accelerator or separate inference server required. Keep the core small;
+tracking, plate recognition, RTSP and recording build on shared libraries rather
+than adding a separate service for each feature.
 
-**Note** that this is not a high FPS solution, and in practice I achieve around 1 FPS which is practical for IOT experiments and tasks such as preprocessing (cropping, rotating) images prior to viewing them. This code is written for simplicity and ease of use, not high performance.
+Turn a USB webcam or RTSP source into Home Assistant detections, vehicle events
+and local license-plate recognition. Configure an MQTT broker, choose a camera
+and run one headless Python process on available CPU hardware.
 
-## Installation
-Install system wide on an RPi, or on other OS use a venv to isolate your environment, and install the required dependencies:
-```
-$ (base) python3 -m venv venv
-$ (base) source venv/bin/activate
-$ (venv) pip3 install -r requirements.txt
-```
+| Preset | Model | Purpose |
+| --- | --- | --- |
+| **Speed** (default) | YOLOX Nano FP32 | Faster detection on a Raspberry Pi |
+| **Accuracy** | RF-DETR Nano static INT8 | Higher measured detection accuracy |
 
-## Listing cameras with OpenCV
-The `check-opencv-cameras.py` script assists in discovering which cameras OpenCV can connect to on your computer (does not work with RPi camera). If your laptop has a built-in webcam this will generally be listed as `VIDEO_SOURCE = 0`. If you plug in an external USB webcam this takes precedence over the built-in webcam, with the external camera becoming `VIDEO_SOURCE = 0` and the built-in webcam becoming `VIDEO_SOURCE = 1`.
+[Supervision](https://supervision.roboflow.com/) provides boxes and annotations;
+[Roboflow ByteTrack](https://trackers.roboflow.com/develop/trackers/bytetrack/)
+confirms and associates tracks, and this project's configurable holds stabilise
+presence. [FastALPR](https://github.com/ankandrew/fast-alpr) provides optional local
+plate detection/OCR and watched-plate matching.
+[Home Assistant's built-in MQTT integration](https://www.home-assistant.io/integrations/mqtt/)
+supplies the camera and sensor entities used by dashboards and automations.
+The Pi runtime uses **42 locked packages, without PyTorch/TorchVision**;
+these features add no new runtime dependency.
 
-To check which OpenCV cameras are detected run:
-```
-$ (venv) python3 scripts/check-opencv-cameras.py
-```
+Sparse annotated JPEGs over MQTT keep the original simple setup. RTSP and bounded,
+file-backed recording are optional. Model preparation stays on a development
+computer; the Pi runs ONNX Runtime CPU.
 
-## Configuration using `config.yml`
-Use the `config.yml` file in the `config` directory to configure your system. If your desired camera is listed as source 0 you will configure `video_source: 0`. Alternatively you can configure the video source as an MJPEG or RTSP stream. For example in `config.yml` you may configure something like `video_source: "rtsp://admin:password@192.168.1.94:554/11"` for a commercial RTSP camera. To configure a RPi camera running the `web_streaming.py` example you configure `video_source: http://pi_ip:8000/stream.mjpg`
+## See it working
 
-Validate the config can be loaded by running:
-```
-$ (venv) python3 scripts/validate-config.py
-```
+Actual Pi inference on public stock images, displayed in Home Assistant. The
+stock view is clearly separate from the live webcam: four tracked vehicles and
+plate **5AU5341** with an exact watchlist match, plus three vehicles in the Rome
+photo. The examples repeat still images to exercise confirmation and suppression.
+Nano labels the foreground car as `truck`; that prediction is shown unchanged.
 
-**Note** that this script does not check the accuracy of any of the values in `config.yml`, just that the file path is correct and the file structure is OK.
+![Home Assistant stock-image demonstration](docs/images/vehicle-demo/home-assistant-stock-demo.jpg)
 
-By default `scripts/opencv-camera.py` will look for the config file at `./config/config.yml` but an alternative path can be specified using the environment variable `MQTT_CAMERA_CONFIG`. You can set this using `export MQTT_CAMERA_CONFIG=/home/pi/github/mqtt-camera-streamer/config/config.yml`
+Vehicle, plate and watched-plate events arrive in Home Assistant's native event
+entity, once per confirmed track/reading rather than on every frame:
 
-## Publish camera frames
-To publish camera frames with OpenCV over MQTT:
-```
-$ (venv) python3 scripts/opencv-camera-publish.py
-```
+![Home Assistant MQTT vehicle event history](docs/images/vehicle-demo/home-assistant-events.jpg)
 
-## Camera display
-To view the camera stream with Streamlit:
-```
-$ (venv) streamlit run scripts/viewer.py
-```
+[Reproduce the demo](docs/stock-demo.md) · [Image credits and licenses](examples/images/README.md)
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/viewer_usage.png" width="500">
-</p>
+## Quick start with uv
 
-**Note:** if Streamlit becomes unresponsive, `ctrl-z` to pause Streamlit then `kill -9 %%`. Also note that the viewer can be run on any machine on your network.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+from the repository root. Python 3.12 is pinned in `.python-version`. Prepare or
+copy the chosen ONNX model using [model setup](docs/models.md).
 
-## Save frames
-To save frames to disk:
-```
-$ (venv) python3 scripts/save-captures.py
-```
-
-## Save frames to db
-As `save-captures.py` but in addition saving the frame thumbnail to a sqlite db:
-```
-$ (venv) python3 scripts/db-recorder.py
+```sh
+uv sync --locked --no-dev
+cp config/onnx.yml config/onnx.local.yml
 ```
 
-The images can be viewed using [sqlite browser](https://sqlitebrowser.org/)
+Edit `preset: speed` or `preset: accuracy`, camera source, broker host/port and
+camera ID in the local file. Verify the
+external webcam index rather than assuming it is `0`:
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/sqlite-browser.jpg" width="800">
-</p>
-
-If you wish to run a server with UI for browsing the images then [datasette](https://datasette.io/) with the [datasette-render-images](https://datasette.io/plugins/datasette-render-images) plugin can be used.
-
-```
-$ (venv) pip install datasette
-$ (venv) pip install datasette-render-images
-$ (venv) datasette captures/records.db
+```sh
+uv run --locked --no-dev scripts/check-opencv-cameras.py
 ```
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/datasette.jpg" width="800">
-</p>
+Set `MQTT_USERNAME` and `MQTT_PASSWORD` in the environment when authentication is
+required. These are broker credentials, not Home Assistant API tokens. The
+[Home Assistant Mosquitto app](https://github.com/home-assistant/app-mosquitto)
+requires credentials. Configure Home Assistant's MQTT integration on the same
+broker with discovery enabled.
 
-
-## Image processing pipeline
-To process a camera stream (the example rotates the image):
+```sh
+uv run --locked --no-dev scripts/onnx_camera.py --config config/onnx.local.yml
+# Stop after ten predictions for a smoke test:
+uv run --locked --no-dev scripts/onnx_camera.py --config config/onnx.local.yml --max-frames 10
 ```
-$ (venv) python3 scripts/processing.py
-```
 
-## Home Assistant
-You can view the camera feed using [Home Assistant](https://www.home-assistant.io/) and configuring an [MQTT camera](https://www.home-assistant.io/components/camera.mqtt/). Add to your `configuration.yaml`:
+One device per camera appears in Home Assistant with person/vehicle presence,
+count entities and a snapshot camera. Sparse JPEGs over MQTT are the default;
+RTSP output and local file-backed recording are optional. Two-frame track confirmation and configurable presence holds
+reduce flickering; counts remain instantaneous. Configuration and model files
+with local settings/weights are ignored by Git.
+
+## Guides
+
+| Task | Guide |
+| --- | --- |
+| Headless Raspberry Pi, uv and systemd | [Raspberry Pi deployment](docs/raspberry-pi.md) |
+| Configuration, tracking and MQTT discovery | [ONNX and Home Assistant](docs/onnx-home-assistant.md) |
+| MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
+| Vehicle events, watched plates and automations | [Vehicle events](docs/vehicle-events.md) |
+| Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
+| Public-image demo and dashboard configuration | [Stock demo](docs/stock-demo.md) |
+| Speed/Accuracy selection and model preparation | [Model presets](docs/models.md) |
+| All model and quantization experiments | [Experiment record](docs/experiments/README.md) |
+| Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
+| Original MQTT frame-streaming scripts | [Legacy examples](docs/legacy.md) |
+
+## Person present and person left
+
+Tracking lets automations react to changes in presence instead of triggering on
+every frame. By default, a person needs two consecutive observations to become a
+confirmed track. A configurable hold keeps presence on through brief detection
+gaps, reducing flicker and repeated notifications.
+
+For example, merge these settings into your camera configuration:
+
 ```yaml
-camera:
-  - platform: mqtt
-    topic: homie/mac_webcam/capture
-    name: mqtt_camera
-  - platform: mqtt
-    topic: homie/mac_webcam/capture/rotated
-    name: mqtt_camera_rotated
-  - platform: mjpeg # the raw mjpeg feed if using picamera
-    name: picamera
-    mjpeg_url: http://192.168.1.134:8000/stream.mjpg
+tracking:
+  enabled: true
+  minimum_consecutive_frames: 2
+presence:
+  hold_seconds_by_class:
+    person: 10
 ```
 
-<p align="center">
-<img src="https://github.com/robmarkcole/mqtt-camera-streamer/blob/master/docs/images/ha_usage.png" width="500">
-</p>
+Use the discovered person binary sensor in a Home Assistant automation, replacing
+the entity ID with your camera's actual ID:
 
-## MQTT
-Need an MQTT broker? If you have Docker installed I recommend [eclipse-mosquitto](https://hub.docker.com/_/eclipse-mosquitto). A basic broker can be run with:
-```
-docker run -p 1883:1883 -d eclipse-mosquitto
-```
-Note that I have structured the MQTT topics following the homie MQTT convention, linked in the references. This is not necessary but is best practice IMO.
-
-## OpenCV & streamlit on RPi
-OpenCV is used to read the images from a connected camera or MJPEG/RTSP stream. On a Raspberry pi (RPi) installing OpenCV can be troublesome, and I found it necessary to first `sudo apt-get install libatlas-base-dev libjasper-dev libqtgui4 python3-pyqt5 libqt4-test libilmbase-dev libopenexr-dev libgstreamer1.0-dev libavcodec58 libavformat58 libswscale5` before installing opencv using the instructions below. Likewise Streamlit can be challenging to install on an RPi, and if you dont need it then remove it from `requirements.txt`. If you do wish to install Streamlit on the RPi see [this thread](https://discuss.streamlit.io/t/raspberry-pi-streamlit/2900) for latest guidance. On 24/3/2021 I was able to install `opencv-python==4.5.1.48` but not streamlit on an RPi4 32bit.
-
-## RPi camera
-Use an official RPi camera and ensure [picamera](https://picamera.readthedocs.io/en/release-1.13/) is installed with `pip3 install picamera`. If you use the RPi in desktop mode you can check the camera feed using `raspistill -o image.jpg`. Use the official [web_streaming](https://github.com/waveform80/picamera/blob/master/docs/examples/web_streaming.py) example which creates an mjpeg stream on `http://pi_ip:8000/stream.mjpg`. This mjpeg stream can be configured as a source with `mqtt-camera-streamer` to translate the mjepg stream to an mqtt stream.
-
-## RPi service
-You can run any of the scripts as a [service](https://www.raspberrypi.org/documentation/linux/usage/systemd.md), which means they will automatically start on RPi boot, and can be easily started & stopped. Create the service file in the appropriate location on the RPi using:
-
-```sudo nano /etc/systemd/system/my_script.service```
-
-Entering the following (adapted for your `script.py` file location and args, assumes you are using system python3):
-```
-[Unit]
-Description=Service for mqtt-camera-publish
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/python3 -u opencv-camera-publish.py
-WorkingDirectory=/home/pi/github/mqtt-camera-streamer/scripts
-StandardOutput=inherit
-StandardError=inherit
-Restart=always
-User=pi
-
-[Install]
-WantedBy=multi-user.target
+```yaml
+alias: Camera person presence changed
+triggers:
+  - trigger: state
+    entity_id: binary_sensor.usb_camera_person_detected
+    from: "off"
+    to: "on"
+    id: present
+  - trigger: state
+    entity_id: binary_sensor.usb_camera_person_detected
+    from: "on"
+    to: "off"
+    id: left
+actions:
+  - action: persistent_notification.create
+    data:
+      title: Camera
+      message: "{{ 'Person present' if trigger.id == 'present' else 'Person left' }}"
 ```
 
-Once this file has been created you can to start the service using:
-```sudo systemctl start my_script.service```
+This notifies once when confirmed presence starts, then once when no confirmed
+person has been seen for ten seconds (evaluated on the next processed frame).
+Another person or a recovered track extends the same presence episode. “Person
+left” means no person is currently observed after that hold, not verified physical
+departure or identification of a particular person. Camera outages become
+`unavailable`; the explicit `on` → `off` trigger does not label them as departures.
+MQTT state continues to refresh normally; these notifications come from Home
+Assistant state changes, not dedicated person event messages. See
+[tracking and hold-time details](docs/onnx-home-assistant.md#tracking-and-presence-hold-times).
 
-View the status and logs with:
-```sudo systemctl status my_script.service```
+## Vehicle events and plates
 
-Stop the service with:
-```sudo systemctl stop my_script.service```
+Cache the pretrained ONNX models, enable `lpr.enabled` in the local configuration,
+and run the same service:
 
-Restart the service with:
-```sudo systemctl restart my_script.service```
+```sh
+uv run --locked --no-dev scripts/download-plate-models.py --config config/onnx.local.yml
+uv run --locked --no-dev scripts/onnx_camera.py --config config/onnx.local.yml
+```
 
-You can have the service auto-start on rpi boot by using:
-```sudo systemctl enable my_script.service```
+Home Assistant automatically discovers the snapshot camera, counts, held presence,
+object details, historical plate readings and a vehicle event entity.
 
-You can disable auto-start using:
-```sudo systemctl disable my_script.service```
+| Event | Meaning |
+| --- | --- |
+| `vehicle_detected` | New confirmed vehicle track |
+| `vehicle_lost` | Track no longer observed for the configured timeout |
+| `plate_recognized` | Repeated matching OCR confirmed a plate |
+| `watched_plate_detected` | Confirmed plate exactly matched a configured alias |
 
-### References
-* [imageZMQ](https://github.com/jeffbass/imagezmq) -> inspired this project, but uses ZMQ. [Discussion on ZMQ vs MQTT here](https://github.com/jeffbass/imagezmq/issues/5)
-* [homie MQTT convention](https://homieiot.github.io/) -> convention for structuring MQTT topics
-* [yolocam_mqtt](https://github.com/LarsAC/yolocam_mqtt/blob/master/yolo_mqtt_server.py) -> another source of ideas
-* [In-depth review and comparison of the Raspberry Pi High Quality Camera](https://medium.com/@alexellisuk/in-depth-review-and-comparison-of-the-raspberry-pi-high-quality-camera-806490c4aeb7)
+Events are transient MQTT messages under `mqtt_camera/<camera_id>/events`.
+Confirmed plates also retain the existing `plate/events` topic and latest `plate`
+state. Plate events include confidence, box centre and a vehicle type/track link
+when a containing vehicle box is available. Region, make/model, colour and
+orientation are not inferred by the current local models.
+
+```yaml
+lpr:
+  enabled: true
+  watched_plates:
+    AB12CDE: Family car
+images:
+  transport: mqtt
+  annotate: true
+```
+
+Read [event payloads and automation examples](docs/vehicle-events.md). Vehicle loss
+is not proof of physical departure; held presence is a separate signal. OCR
+consensus, exact watchlist matching and cooldown prevent repeated plate triggers.
+
+## Benchmark
+
+The recorded inference-speed benchmarks were measured on a **Raspberry Pi 4
+Model B (4 GB)** running 64-bit Debian 13.6, with four ONNX Runtime CPU threads.
+They are short tests on a shared machine, not performance guarantees for every
+Pi or workload. The reported mAP scores were evaluated separately on the
+development computer using a small diagnostic dataset. See the
+[comparison table and test conditions](docs/experiments/README.md#latest-matched-comparison).
+
+Use a representative recording to compare machines without opening a webcam or
+requiring an MQTT broker:
+
+```sh
+uv run --locked --no-dev scripts/benchmark.py --config config/onnx.local.yml \
+  --source /path/to/recording.mp4 --warmup 5 --frames 100 \
+  --lpr off --output work/benchmark-detection.json
+uv run --locked --no-dev scripts/benchmark.py --config config/onnx.local.yml \
+  --source /path/to/recording.mp4 --warmup 5 --frames 100 \
+  --lpr every-frame --output work/benchmark-plates.json
+```
+
+Reports include warm steady-state p50/p95 stage latency, observed pipeline FPS,
+model load time, model hash, versions, CPU time and peak process RSS. Pi telemetry
+is included when available. This measures capture/decode plus inference and
+tracking, with optional plate scans; MQTT, JPEG encoding, recording, RTSP output
+and the service's rate-limit sleep are excluded. These results are not model-only FPS or a promise of Pi performance.
+
+## Development
+
+```sh
+uv sync --locked
+uv run pytest -q
+uv run ruff check scripts/onnx_camera.py scripts/onnx_detector.py scripts/yolox_detector.py scripts/plates.py scripts/media.py scripts/vehicle_events.py scripts/demo.py scripts/benchmark.py tests
+```
+
+Dependencies live in `pyproject.toml` and `uv.lock`. Use `uv add`, `uv remove` or
+`uv lock` to change them and commit the lockfile. `uv sync --locked --no-dev`
+prepares a runtime environment; repeat `--no-dev` with `uv run` on that host.
+Imutils and Datasette remain opt-in legacy/workstation extras. No web viewer,
+screen capture or YouTube download package is required by the runtime.
+Install model export extras only when exporting or comparing models; use
+`uv sync --locked --no-dev` on the Pi to exclude them and development tools.
+RTSP output reuses PyAV (already used by Supervision), with no FFmpeg executable
+required; it needs an RTSP server such as the optional standalone MediaMTX binary.
+
+## License
+
+Project code is licensed under the [MIT License](LICENSE). Vendored RF-DETR and
+YOLOX helpers retain their Apache-2.0 licenses and notices; stock images retain
+their [documented licenses and credits](examples/images/README.md). Dependencies
+and pretrained models retain their own licenses. Model provenance and upstream
+links are in the plate and dependency guides.

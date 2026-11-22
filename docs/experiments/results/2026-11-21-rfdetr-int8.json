@@ -1,0 +1,2420 @@
+{
+  "tested_at": "2026-11-21",
+  "code_commit": "27d24b2c33699cead6e94af82c1895f29c273d92",
+  "hardware": "Raspberry Pi 4 Model B, 4 GB, 64-bit Debian 13.6, desktop/RetroArch left running",
+  "runtime_packages": 42,
+  "training_and_quantization_tools_absent_on_pi": true,
+  "preferred_experimental_candidate": "static INT8",
+  "fp32_default_retained": true,
+  "native_detection_comparison": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "off",
+    "frames_per_run": 12,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "895c7f9968e52fd5f2708bea064aef521fb8d928190b3c71bbd52ea2ef8908cd",
+    "source": "work/pi-test/people-walking.mp4",
+    "source_sha256": "822671fb20ed13ef9ead91d1f3678863b5aa078dd3b2ed45953fda39a61c979d",
+    "models": [
+      {
+        "model": "rfdetr-nano.onnx",
+        "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+        "model_bytes": 107826617,
+        "quantization": null,
+        "median_fps": 0.454,
+        "median_frame_p95_ms": 2238.9579999999996,
+        "max_peak_rss_mib": 494.9,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 107826617,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:15:03.274744+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano.onnx",
+            "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 1523.833,
+            "plate_load_ms": null,
+            "elapsed_seconds": 26.242,
+            "pipeline_fps": 0.457,
+            "cpu_seconds": 77.17,
+            "cpu_core_equivalents": 2.941,
+            "peak_process_rss_mib": 494.6,
+            "health_before": {
+              "temperature_c": 42.355,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 2179.779,
+                "p50_ms": 2173.199,
+                "p95_ms": 2218.378,
+                "min_ms": 2155.155,
+                "max_ms": 2229.639
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 7.065,
+                "p50_ms": 7.008,
+                "p95_ms": 7.762,
+                "min_ms": 6.487,
+                "max_ms": 8.14
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 2186.849,
+                "p50_ms": 2179.791,
+                "p95_ms": 2225.548,
+                "min_ms": 2162.467,
+                "max_ms": 2236.458
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 107826617,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:17:34.315038+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano.onnx",
+            "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 1411.055,
+            "plate_load_ms": null,
+            "elapsed_seconds": 26.597,
+            "pipeline_fps": 0.451,
+            "cpu_seconds": 77.598,
+            "cpu_core_equivalents": 2.918,
+            "peak_process_rss_mib": 494.9,
+            "health_before": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 2209.409,
+                "p50_ms": 2203.085,
+                "p95_ms": 2245.823,
+                "min_ms": 2181.863,
+                "max_ms": 2262.608
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 7.019,
+                "p50_ms": 7.01,
+                "p95_ms": 7.692,
+                "min_ms": 6.374,
+                "max_ms": 7.924
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 2216.433,
+                "p50_ms": 2210.043,
+                "p95_ms": 2252.368,
+                "min_ms": 2189.368,
+                "max_ms": 2269.303
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.6565000000000001,
+        "median_frame_p95_ms": 1551.3020000000001,
+        "max_peak_rss_mib": 431.1,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:15:31.404526+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 1033.694,
+            "plate_load_ms": null,
+            "elapsed_seconds": 18.289,
+            "pipeline_fps": 0.656,
+            "cpu_seconds": 50.356,
+            "cpu_core_equivalents": 2.753,
+            "peak_process_rss_mib": 430.5,
+            "health_before": {
+              "temperature_c": 46.738,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 1517.237,
+                "p50_ms": 1516.72,
+                "p95_ms": 1552.176,
+                "min_ms": 1468.824,
+                "max_ms": 1552.512
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 6.848,
+                "p50_ms": 6.858,
+                "p95_ms": 7.678,
+                "min_ms": 6.084,
+                "max_ms": 7.867
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 1524.09,
+                "p50_ms": 1523.387,
+                "p95_ms": 1559.125,
+                "min_ms": 1476.696,
+                "max_ms": 1559.592
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:16:54.927101+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 1029.793,
+            "plate_load_ms": null,
+            "elapsed_seconds": 18.257,
+            "pipeline_fps": 0.657,
+            "cpu_seconds": 50.388,
+            "cpu_core_equivalents": 2.76,
+            "peak_process_rss_mib": 431.1,
+            "health_before": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.147,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 1514.843,
+                "p50_ms": 1520.106,
+                "p95_ms": 1536.817,
+                "min_ms": 1481.948,
+                "max_ms": 1547.311
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 6.56,
+                "p50_ms": 6.519,
+                "p95_ms": 7.113,
+                "min_ms": 6.069,
+                "max_ms": 7.139
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 1521.408,
+                "p50_ms": 1526.584,
+                "p95_ms": 1543.479,
+                "min_ms": 1488.467,
+                "max_ms": 1553.384
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-dynamic.onnx",
+        "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+        "model_bytes": 33814675,
+        "quantization": {
+          "mode": "dynamic",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.6615,
+        "median_frame_p95_ms": 1553.893,
+        "max_peak_rss_mib": 429.4,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "dynamic",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33814675,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:15:59.378164+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-dynamic.onnx",
+            "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 890.078,
+            "plate_load_ms": null,
+            "elapsed_seconds": 18.277,
+            "pipeline_fps": 0.657,
+            "cpu_seconds": 50.678,
+            "cpu_core_equivalents": 2.773,
+            "peak_process_rss_mib": 429.4,
+            "health_before": {
+              "temperature_c": 46.251,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 1515.883,
+                "p50_ms": 1504.565,
+                "p95_ms": 1566.93,
+                "min_ms": 1484.996,
+                "max_ms": 1606.313
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 7.178,
+                "p50_ms": 7.219,
+                "p95_ms": 7.759,
+                "min_ms": 6.391,
+                "max_ms": 7.88
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 1523.067,
+                "p50_ms": 1512.076,
+                "p95_ms": 1573.428,
+                "min_ms": 1492.462,
+                "max_ms": 1612.937
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "dynamic",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33814675,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:16:26.978786+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/people-walking.mp4",
+            "model": "rfdetr-nano-int8-dynamic.onnx",
+            "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 12,
+            "source_exhausted": false,
+            "detector_load_ms": 891.5,
+            "plate_load_ms": null,
+            "elapsed_seconds": 18.016,
+            "pipeline_fps": 0.666,
+            "cpu_seconds": 50.485,
+            "cpu_core_equivalents": 2.802,
+            "peak_process_rss_mib": 429.4,
+            "health_before": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.147,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 12,
+                "mean_ms": 1494.343,
+                "p50_ms": 1498.383,
+                "p95_ms": 1527.222,
+                "min_ms": 1464.413,
+                "max_ms": 1544.229
+              },
+              "tracking": {
+                "samples": 12,
+                "mean_ms": 6.968,
+                "p50_ms": 6.985,
+                "p95_ms": 7.632,
+                "min_ms": 6.253,
+                "max_ms": 7.741
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 12,
+                "mean_ms": 1501.316,
+                "p50_ms": 1505.422,
+                "p95_ms": 1534.358,
+                "min_ms": 1471.406,
+                "max_ms": 1550.862
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "native_every_frame_alpr_comparison": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "every-frame",
+    "frames_per_run": 8,
+    "warmup_per_run": 2,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "895c7f9968e52fd5f2708bea064aef521fb8d928190b3c71bbd52ea2ef8908cd",
+    "source": "work/pi-test/plate-video.mp4",
+    "source_sha256": "7c287de86d0f7adab277dfbfc9ec02e8592d988285b469a795193d69d6885370",
+    "models": [
+      {
+        "model": "rfdetr-nano.onnx",
+        "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+        "model_bytes": 107826617,
+        "quantization": null,
+        "median_fps": 0.421,
+        "median_frame_p95_ms": 2393.768,
+        "max_peak_rss_mib": 405.7,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 107826617,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:19:12.730592+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano.onnx",
+            "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 1392.732,
+            "plate_load_ms": 409.327,
+            "elapsed_seconds": 19.064,
+            "pipeline_fps": 0.42,
+            "cpu_seconds": 56.173,
+            "cpu_core_equivalents": 2.947,
+            "peak_process_rss_mib": 404.1,
+            "health_before": {
+              "temperature_c": 44.79,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 2030.308,
+                "p50_ms": 2028.118,
+                "p95_ms": 2050.284,
+                "min_ms": 2014.032,
+                "max_ms": 2056.403
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.594,
+                "p50_ms": 4.476,
+                "p95_ms": 5.584,
+                "min_ms": 3.929,
+                "max_ms": 5.655
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 348.12,
+                "p50_ms": 351.235,
+                "p95_ms": 354.856,
+                "min_ms": 339.696,
+                "max_ms": 355.669
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 2383.032,
+                "p50_ms": 2381.044,
+                "p95_ms": 2398.614,
+                "min_ms": 2371.267,
+                "max_ms": 2400.133
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 107826617,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:21:13.947175+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano.onnx",
+            "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 1439.889,
+            "plate_load_ms": 462.384,
+            "elapsed_seconds": 18.973,
+            "pipeline_fps": 0.422,
+            "cpu_seconds": 56.16,
+            "cpu_core_equivalents": 2.96,
+            "peak_process_rss_mib": 405.7,
+            "health_before": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 52.582,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 2023.069,
+                "p50_ms": 2023.371,
+                "p95_ms": 2042.457,
+                "min_ms": 1995.279,
+                "max_ms": 2042.9
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.282,
+                "p50_ms": 4.145,
+                "p95_ms": 4.886,
+                "min_ms": 3.954,
+                "max_ms": 4.979
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 344.208,
+                "p50_ms": 342.968,
+                "p95_ms": 350.199,
+                "min_ms": 340.819,
+                "max_ms": 351.531
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 2371.569,
+                "p50_ms": 2376.363,
+                "p95_ms": 2388.922,
+                "min_ms": 2340.159,
+                "max_ms": 2389.365
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.577,
+        "median_frame_p95_ms": 1759.759,
+        "max_peak_rss_mib": 347.2,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:19:35.378316+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 1023.259,
+            "plate_load_ms": 414.485,
+            "elapsed_seconds": 13.797,
+            "pipeline_fps": 0.58,
+            "cpu_seconds": 38.535,
+            "cpu_core_equivalents": 2.793,
+            "peak_process_rss_mib": 346.7,
+            "health_before": {
+              "temperature_c": 47.225,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 49.66,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 1355.568,
+                "p50_ms": 1354.087,
+                "p95_ms": 1384.032,
+                "min_ms": 1316.772,
+                "max_ms": 1390.909
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.266,
+                "p50_ms": 4.015,
+                "p95_ms": 4.803,
+                "min_ms": 3.894,
+                "max_ms": 4.839
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 364.799,
+                "p50_ms": 365.055,
+                "p95_ms": 369.639,
+                "min_ms": 359.053,
+                "max_ms": 370.642
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 1724.641,
+                "p50_ms": 1725.948,
+                "p95_ms": 1751.677,
+                "min_ms": 1688.328,
+                "max_ms": 1756.333
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:20:43.585526+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 1062.04,
+            "plate_load_ms": 429.052,
+            "elapsed_seconds": 13.941,
+            "pipeline_fps": 0.574,
+            "cpu_seconds": 38.698,
+            "cpu_core_equivalents": 2.776,
+            "peak_process_rss_mib": 347.2,
+            "health_before": {
+              "temperature_c": 49.173,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 51.121,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 1375.852,
+                "p50_ms": 1375.936,
+                "p95_ms": 1403.958,
+                "min_ms": 1344.339,
+                "max_ms": 1413.428
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.194,
+                "p50_ms": 4.144,
+                "p95_ms": 4.412,
+                "min_ms": 4.041,
+                "max_ms": 4.485
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 362.524,
+                "p50_ms": 360.371,
+                "p95_ms": 371.026,
+                "min_ms": 354.809,
+                "max_ms": 371.799
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 1742.576,
+                "p50_ms": 1742.862,
+                "p95_ms": 1767.841,
+                "min_ms": 1720.273,
+                "max_ms": 1777.621
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-dynamic.onnx",
+        "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+        "model_bytes": 33814675,
+        "quantization": {
+          "mode": "dynamic",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.5834999999999999,
+        "median_frame_p95_ms": 1740.994,
+        "max_peak_rss_mib": 344.2,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "dynamic",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33814675,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:19:58.056452+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-dynamic.onnx",
+            "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 940.077,
+            "plate_load_ms": 427.388,
+            "elapsed_seconds": 13.703,
+            "pipeline_fps": 0.584,
+            "cpu_seconds": 38.568,
+            "cpu_core_equivalents": 2.815,
+            "peak_process_rss_mib": 344.2,
+            "health_before": {
+              "temperature_c": 48.199,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 52.095,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 1351.76,
+                "p50_ms": 1356.839,
+                "p95_ms": 1379.565,
+                "min_ms": 1321.157,
+                "max_ms": 1388.895
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.239,
+                "p50_ms": 4.197,
+                "p95_ms": 4.727,
+                "min_ms": 3.846,
+                "max_ms": 4.775
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 356.821,
+                "p50_ms": 356.172,
+                "p95_ms": 362.43,
+                "min_ms": 353.008,
+                "max_ms": 362.935
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 1712.827,
+                "p50_ms": 1716.746,
+                "p95_ms": 1742.734,
+                "min_ms": 1678.367,
+                "max_ms": 1750.016
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "dynamic",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33814675,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "measured_at": "2026-11-21T18:20:20.621626+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi-test/plate-video.mp4",
+            "model": "rfdetr-nano-int8-dynamic.onnx",
+            "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 2,
+            "measured_frames": 8,
+            "source_exhausted": false,
+            "detector_load_ms": 920.936,
+            "plate_load_ms": 427.665,
+            "elapsed_seconds": 13.716,
+            "pipeline_fps": 0.583,
+            "cpu_seconds": 38.479,
+            "cpu_core_equivalents": 2.805,
+            "peak_process_rss_mib": 344.1,
+            "health_before": {
+              "temperature_c": 47.712,
+              "throttle_hex": "0x0"
+            },
+            "health_after": {
+              "temperature_c": 50.634,
+              "throttle_hex": "0x0"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 8,
+                "mean_ms": 1361.382,
+                "p50_ms": 1363.218,
+                "p95_ms": 1385.901,
+                "min_ms": 1335.434,
+                "max_ms": 1386.859
+              },
+              "tracking": {
+                "samples": 8,
+                "mean_ms": 4.22,
+                "p50_ms": 4.117,
+                "p95_ms": 4.758,
+                "min_ms": 3.906,
+                "max_ms": 4.76
+              },
+              "lpr_scan": {
+                "samples": 8,
+                "mean_ms": 348.906,
+                "p50_ms": 349.731,
+                "p95_ms": 350.99,
+                "min_ms": 345.555,
+                "max_ms": 351.001
+              },
+              "frame_total": {
+                "samples": 8,
+                "mean_ms": 1714.516,
+                "p50_ms": 1717.487,
+                "p95_ms": 1739.254,
+                "min_ms": 1685.721,
+                "max_ms": 1739.303
+              }
+            },
+            "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "native_live_webcam_static_int8": {
+    "schema_version": 2,
+    "quantization": {
+      "mode": "static",
+      "precision": "mixed-fp32-int8",
+      "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+      "recipe": "rfdetr-1.12.1-linear-only"
+    },
+    "model_bytes": 33922625,
+    "detector_backend": "onnxruntime-direct",
+    "helpers_source": "rfdetr-1.12.1",
+    "measured_at": "2026-11-21T18:25:26.330919+00:00",
+    "platform": {
+      "system": "Linux",
+      "machine": "aarch64",
+      "python": "3.12.16"
+    },
+    "versions": {
+      "supervision": "0.32.0",
+      "trackers": "2.7.0",
+      "onnxruntime": "1.32.0",
+      "fast-alpr": "0.4.0",
+      "numpy": "2.5.5",
+      "opencv-python-headless": "5.1.0.95",
+      "av": "19.0.2"
+    },
+    "source": 0,
+    "model": "rfdetr-nano-int8-static.onnx",
+    "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+    "onnx_threads": 4,
+    "configured_max_fps": 1.0,
+    "lpr_mode": "off",
+    "lpr_enabled": false,
+    "lpr_models": null,
+    "warmup_frames": 2,
+    "measured_frames": 8,
+    "source_exhausted": false,
+    "detector_load_ms": 1019.038,
+    "plate_load_ms": null,
+    "elapsed_seconds": 11.505,
+    "pipeline_fps": 0.695,
+    "cpu_seconds": 33.945,
+    "cpu_core_equivalents": 2.95,
+    "peak_process_rss_mib": 317.8,
+    "health_before": {
+      "temperature_c": 45.277,
+      "throttle_hex": "0x0"
+    },
+    "health_after": {
+      "temperature_c": 49.66,
+      "throttle_hex": "0x0"
+    },
+    "stages": {
+      "source_and_detection": {
+        "samples": 8,
+        "mean_ms": 1436.303,
+        "p50_ms": 1431.399,
+        "p95_ms": 1471.739,
+        "min_ms": 1409.859,
+        "max_ms": 1479.652
+      },
+      "tracking": {
+        "samples": 8,
+        "mean_ms": 1.795,
+        "p50_ms": 1.687,
+        "p95_ms": 2.341,
+        "min_ms": 1.367,
+        "max_ms": 2.502
+      },
+      "lpr_scan": null,
+      "frame_total": {
+        "samples": 8,
+        "mean_ms": 1438.103,
+        "p50_ms": 1433.156,
+        "p95_ms": 1473.642,
+        "min_ms": 1411.651,
+        "max_ms": 1481.231
+      }
+    },
+    "scope": "capture/decode + RF-DETR preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+  },
+  "native_tracking_plate_functional": [
+    {
+      "mode": "fp32",
+      "max_vehicle_count": 6,
+      "confirmed_track_ids": 6,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "export_stack_absent": true
+    },
+    {
+      "mode": "static",
+      "max_vehicle_count": 6,
+      "confirmed_track_ids": 6,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "export_stack_absent": true
+    },
+    {
+      "mode": "dynamic",
+      "max_vehicle_count": 6,
+      "confirmed_track_ids": 6,
+      "plate_events": 1,
+      "plate": "5AU5341",
+      "export_stack_absent": true
+    }
+  ],
+  "native_home_assistant_static_int8": {
+    "mode": "sample",
+    "ha_camera": "camera.raspberry_pi_camera_snapshot",
+    "image_format": "JPEG",
+    "resolution": [
+      518,
+      330
+    ],
+    "image_bytes": 35442,
+    "ha_plate": "5AU5341",
+    "ha_plate_timestamp": "2026-11-21T18:22:43+00:00",
+    "predictions": 9,
+    "snapshots": 9,
+    "max_vehicle_count": 6,
+    "plate_events": 1
+  },
+  "quality_checks_on_development_host": {
+    "fp32": {
+      "schema_version": 1,
+      "model": "rfdetr-nano.onnx",
+      "model_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.896401710678381,
+      "mAP50_95": 0.7349249939772802,
+      "person_vehicle_mAP50": 0.9114398743846629,
+      "person_vehicle_mAP50_95": 0.7122509898608642,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 10
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 6
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 6
+        }
+      ],
+      "dataset_note": "32 COCO128 train2017 images held out from quantization calibration, not original model training"
+    },
+    "static": {
+      "schema_version": 1,
+      "model": "rfdetr-nano-int8-static.onnx",
+      "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.8854845731270196,
+      "mAP50_95": 0.7221083892067734,
+      "person_vehicle_mAP50": 0.9169323966644778,
+      "person_vehicle_mAP50_95": 0.7423886135725378,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 10
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 7
+        }
+      ],
+      "dataset_note": "32 COCO128 train2017 images held out from quantization calibration, not original model training"
+    },
+    "dynamic": {
+      "schema_version": 1,
+      "model": "rfdetr-nano-int8-dynamic.onnx",
+      "model_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+      "images": 32,
+      "minimum_confidence": 0.001,
+      "mAP50": 0.8700663119356469,
+      "mAP50_95": 0.7178462467493719,
+      "person_vehicle_mAP50": 0.8827673241053478,
+      "person_vehicle_mAP50_95": 0.727170552034853,
+      "per_image": [
+        {
+          "image": "000000000629.jpg",
+          "sha256": "be76e3e5bed8c8a9a0d8081844bfca7ce013093e746b66aad13922373644ad32",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000321.jpg",
+          "sha256": "60f0acad099ad5cf55f44968cea66e125e0beb7eb20a1d78888ee9db34e28cd8",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000599.jpg",
+          "sha256": "9d924b4353cca7295c149e3659866a18e78234f0dc701df119191152f4a31fec",
+          "targets": 5,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000490.jpg",
+          "sha256": "1274c3c4010d45ddd84faf1c56f7c997c0c2533e4f25c6ccea25e8233e5684e5",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000459.jpg",
+          "sha256": "9dac859e6bc3eaf091e94593a005735f9c3c3e71c1c40a708b4c24da99b2e06c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000502.jpg",
+          "sha256": "f7ce0feeb7699cd56886c64ac4ea923c76be97b34ee3a2ea0909c45e08411ec0",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000136.jpg",
+          "sha256": "e20c569a1e6174fd845a434a3fe3d50fb4f8a0e275fb348cc2c9b42a11600ccc",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000397.jpg",
+          "sha256": "5011e5e9eac564d30fa652281a7fd1d7693545077971741a241f400611e4c33e",
+          "targets": 7,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000584.jpg",
+          "sha256": "f1ae69b71470e4d4e88e342b69fa47187fe5c7a56882eac0e548107075f4716f",
+          "targets": 14,
+          "predictions_at_0_5": 10
+        },
+        {
+          "image": "000000000431.jpg",
+          "sha256": "1ecf0c6810ad0972f867b0f53f94c03d3398fc6958af4cac60dde350533f7b8c",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000370.jpg",
+          "sha256": "0d3719ec6f6f54229f498f7b01b113a864cd1eeccac196086741d98e23ae2455",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000144.jpg",
+          "sha256": "6740b5472043073062f46b253399a6bc2fe68ca77d429f652ad956c03d51b0fa",
+          "targets": 3,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000142.jpg",
+          "sha256": "3c852dc71abcf6cf06ed58202d1b2c850bb783553f05c63cd6ca511936b431aa",
+          "targets": 4,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000605.jpg",
+          "sha256": "9135dd0723240d2d4f64ce2173901a0f23a222dea98b72e1259c28f28fa2aab6",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000643.jpg",
+          "sha256": "53d61e69ccf08b42a1cefa414c69a1c03d72aba2852e1fde35c4da3df8753b3f",
+          "targets": 20,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000036.jpg",
+          "sha256": "2bb515b26d250fcdf16effa3a7280babe32ae9b6f7608563e53cd01f5cd66ad4",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000322.jpg",
+          "sha256": "4dddb450ab0a84a458c3da0cfa868a42b9b146de1cda3dd13c34b3599c7b80d3",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000419.jpg",
+          "sha256": "4b4e5c24a3aafa6d591ab385cc3756f90a804212a8e060ba374d1658b69b308e",
+          "targets": 7,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000073.jpg",
+          "sha256": "4a17dd87b487b4b6432d3aa60f6026a5349c8708834a3cae141ff16e0539a32c",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000394.jpg",
+          "sha256": "2cf78c1cfa98714d2ed8a643f931c39511bbb6085fddf157b27ed709089e0343",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000597.jpg",
+          "sha256": "f611f233ff6657baa61f32f573a213ef1b1af031e892f8b4e287c21a856497e7",
+          "targets": 7,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000625.jpg",
+          "sha256": "0938276afa762c367dac4968bc9a3d4abf9d83db1f4bea67262bff976568e24c",
+          "targets": 4,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000474.jpg",
+          "sha256": "e5a6b72ea2fda1cd1ea969018036e6da16fa491f9a2ac974a7361b539b00a155",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000077.jpg",
+          "sha256": "e07c725d9941691ac87386f0f4edd44f62a232696288bf95fb5ddef9384347b1",
+          "targets": 8,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000641.jpg",
+          "sha256": "8eae4239a000d602acb4c58801a3c070e4bf3da608e57e7a3dcbd5ef719895cc",
+          "targets": 12,
+          "predictions_at_0_5": 4
+        },
+        {
+          "image": "000000000089.jpg",
+          "sha256": "cc548c7e669fefde96bdb7b1454c90cf518d414b85eb36827cc78f488d622e5a",
+          "targets": 10,
+          "predictions_at_0_5": 7
+        },
+        {
+          "image": "000000000650.jpg",
+          "sha256": "9bb45795336c1d05189fe51a77e04270cd1da8929d62060926798f3dd2d25204",
+          "targets": 2,
+          "predictions_at_0_5": 2
+        },
+        {
+          "image": "000000000151.jpg",
+          "sha256": "b92d7d249e574fbd4ad8ba2fbc2c1879ca281b779f1276ac3daa0304b80039e4",
+          "targets": 3,
+          "predictions_at_0_5": 3
+        },
+        {
+          "image": "000000000192.jpg",
+          "sha256": "93a9d9132aefccbb1f1bfb51198b5b427d1cf4a977ef259c9d0507ee5b0df732",
+          "targets": 5,
+          "predictions_at_0_5": 5
+        },
+        {
+          "image": "000000000514.jpg",
+          "sha256": "073520d67d44551b4e0bc24d4eb3a6bb68bf00481a8b15d9f34479e787d2cba9",
+          "targets": 1,
+          "predictions_at_0_5": 0
+        },
+        {
+          "image": "000000000034.jpg",
+          "sha256": "0e67e637241ac2fbf132aa2b6cc9775b474b520e1c9a99dbef377063a5a48b85",
+          "targets": 1,
+          "predictions_at_0_5": 1
+        },
+        {
+          "image": "000000000143.jpg",
+          "sha256": "03d4d20019d5abdf6f9314a166f8f8cf582f1d0d2167beef7ec2400d0f1b629e",
+          "targets": 8,
+          "predictions_at_0_5": 8
+        }
+      ],
+      "dataset_note": "32 COCO128 train2017 images held out from quantization calibration, not original model training"
+    }
+  },
+  "dataset": {
+    "name": "COCO128 train2017",
+    "source": "https://github.com/ultralytics/assets/releases/download/v0.0.0/coco128.zip",
+    "zip_sha256": "61e5e3028863d8ffc3b81d6a514603954889f0edd5e4b44c4ce60b2da99aeb8e",
+    "split_seed": 42,
+    "calibration_images": 96,
+    "evaluation_images": 32,
+    "caveat": "Evaluation held out from quantization calibration, not original detector training; small diagnostic, not production-camera validation"
+  },
+  "quantization_manifests": {
+    "static": {
+      "schema_version": 1,
+      "mode": "static",
+      "precision": "mixed-fp32-int8",
+      "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+      "recipe": "rfdetr-1.12.1-linear-only",
+      "weights_per_channel": false,
+      "calibration_method": "MinMax",
+      "calibration_images": [
+        {
+          "name": "000000000071.jpg",
+          "sha256": "5393bf6575c435daa599c1272d9e61e99c099994ae4d3755311684663fed0917"
+        },
+        {
+          "name": "000000000508.jpg",
+          "sha256": "0fc73f660a10ed91c52f76a2b34b5fa252bf70ff84f7b2a35374726388528ca2"
+        },
+        {
+          "name": "000000000544.jpg",
+          "sha256": "f599082d9c87db6029fc3d6e468074d1294dc98a8755152ca7324811aa1d10cd"
+        },
+        {
+          "name": "000000000428.jpg",
+          "sha256": "49e87dbacfb3911d83fde336b7c01b79cc7bc77a021a601f2eb8d861f170a466"
+        },
+        {
+          "name": "000000000308.jpg",
+          "sha256": "07c410e96a812351bf385add8645b8dc2ed064902ff2ef01072be6351b428393"
+        },
+        {
+          "name": "000000000086.jpg",
+          "sha256": "f58a99916783cdf4a7619286dc46adedd4ea1143bcc2cd773c6504aa5280915a"
+        },
+        {
+          "name": "000000000360.jpg",
+          "sha256": "1a5d039418eacc09510efabcd466dc05701f0dac9ae0040b05a1b30b796ef96e"
+        },
+        {
+          "name": "000000000560.jpg",
+          "sha256": "96801af258ded041845af111c4535dcb12a512cf22f6fd9854e5723920532d60"
+        },
+        {
+          "name": "000000000562.jpg",
+          "sha256": "e31320272d768add7113d41a9c65407fd4868da1229f8658fc877e9b07c4c794"
+        },
+        {
+          "name": "000000000450.jpg",
+          "sha256": "3b1fe58cb414f373c61990a5fed4f1a6418a02b2e8a3ed3ecef613f4e7198068"
+        },
+        {
+          "name": "000000000294.jpg",
+          "sha256": "66bff049c25ed6498e69a51ac65b88d5fc800233fed0f89ee07ab178f7db766d"
+        },
+        {
+          "name": "000000000110.jpg",
+          "sha256": "39d967c7856965853e90b9283db4a6895a034eb17fe0c84581d17af4a59edcf2"
+        },
+        {
+          "name": "000000000149.jpg",
+          "sha256": "73a20e38429ba6c78f62a90df787360c4a9ae3d331b002b509a8ee15179788a4"
+        },
+        {
+          "name": "000000000620.jpg",
+          "sha256": "4c7d0e5b1ac23a287f95640c4aaab93a0e120c384558e3fff70b96f6f1eb80ce"
+        },
+        {
+          "name": "000000000154.jpg",
+          "sha256": "2938c94a9b07cacf10a8343c35949b065ae868190a11020f458f50450bd13552"
+        },
+        {
+          "name": "000000000309.jpg",
+          "sha256": "40087a8191fc80eba012c1ba4735402b4890aa0669a84ea0d3dac043ca543247"
+        },
+        {
+          "name": "000000000368.jpg",
+          "sha256": "a10be0a1beb5a34b50af22cc657dbf186a944db7ce8924e570295f35bd954036"
+        },
+        {
+          "name": "000000000634.jpg",
+          "sha256": "d769636e9b9d22fa6fd4dcc2e683b2c95a5a9c247b3cc95df7367b1dba52f9bc"
+        },
+        {
+          "name": "000000000529.jpg",
+          "sha256": "5d9958bdec3062b05090258293a19af01d231de69b943d1ff0bb4a7b943e6db3"
+        },
+        {
+          "name": "000000000092.jpg",
+          "sha256": "886950d096ad454f0bbb9a63167c795bd49eb9d4c0cb24a72888b3429d11900a"
+        },
+        {
+          "name": "000000000415.jpg",
+          "sha256": "cc75d90eac7419395e81ddd7e33c81dbec387892e086b40cbf12dc3fe09f8bb1"
+        },
+        {
+          "name": "000000000030.jpg",
+          "sha256": "4ec415419155289eefffa7a620ed77bdeee94f477225e87ceaa00cb5f2515fe7"
+        },
+        {
+          "name": "000000000384.jpg",
+          "sha256": "dfbae064fadcaa79bd319410903bc92052349472115e2d515e0ecf3c944d1048"
+        },
+        {
+          "name": "000000000443.jpg",
+          "sha256": "f6483d57885c348a27dcdc272e4bd5296c75596d7c64fe638b24dbb503209902"
+        },
+        {
+          "name": "000000000194.jpg",
+          "sha256": "0713bcf193a25769b047e4dde7820e7fa857bab06f9140a4a64c78d94ed9b4a1"
+        },
+        {
+          "name": "000000000472.jpg",
+          "sha256": "e86077ae0fa75248880ca12cdc9ef09bb68fa68083313ce280fd77082c780769"
+        },
+        {
+          "name": "000000000061.jpg",
+          "sha256": "a1a9ac88e4c5cfbdd1cd425a6d262b1e78bf32676a9c17a2861ca6a23a731955"
+        },
+        {
+          "name": "000000000025.jpg",
+          "sha256": "9f016b98f31e4fe826910e56ee39fa0c2889f48d38cc5f4f6b6421c8c5fc7214"
+        },
+        {
+          "name": "000000000486.jpg",
+          "sha256": "cb30e9ff9b1182fc9aa328f601f0ca640236eea29ec695b57edc11a572dfbfed"
+        },
+        {
+          "name": "000000000438.jpg",
+          "sha256": "ee66d39f65c8ce3421fda1ca85b1942f6dff29813c97b6fb4ea4ed015c3a822a"
+        },
+        {
+          "name": "000000000138.jpg",
+          "sha256": "0255bce78addf8d82e9f5d434ad2a98fccd5542cbb041980ce7ad00054a3227e"
+        },
+        {
+          "name": "000000000542.jpg",
+          "sha256": "ef93fd2248a41119a34a86d11478b87bd0c715ff3c2c65f3f5f54a3f31a3dedf"
+        },
+        {
+          "name": "000000000357.jpg",
+          "sha256": "939b5473ea4787a01c2293a3e62979442eea5c9b3dcaab8803c07a5b6d47e087"
+        },
+        {
+          "name": "000000000404.jpg",
+          "sha256": "c46b3242d195c8c81b6776f4bfa385ef886ff1e7cb814e2c29e03303b85403b2"
+        },
+        {
+          "name": "000000000520.jpg",
+          "sha256": "2b971302ba56e1049294f9e0b198f37316148c8257b8d7344002aed624c45844"
+        },
+        {
+          "name": "000000000349.jpg",
+          "sha256": "8ad9716416dc27aeff76bb09d936949f67627cb30948288b61c117df34501049"
+        },
+        {
+          "name": "000000000208.jpg",
+          "sha256": "5ef004c8572c1d3a5e7c92ed16edc47529892a5306c7f70216e332a6cd65ad2d"
+        },
+        {
+          "name": "000000000400.jpg",
+          "sha256": "7b78338d4c7a30f7c38eb3bf11a7623a195e10926359adfd7281d6ce99e42dcb"
+        },
+        {
+          "name": "000000000165.jpg",
+          "sha256": "2d3d9e0b4b165c0f783b97cd963097b13effa1af851c9576617fb7c910d63cd8"
+        },
+        {
+          "name": "000000000312.jpg",
+          "sha256": "cd2fac2dfdc17fb1af0d12228e344d2e828fbe28a7c1e32396a95cb0b129d096"
+        },
+        {
+          "name": "000000000359.jpg",
+          "sha256": "8da8a8320518a8adadbbd79615e066fd60b31c6025919665264ff9d0f746a5dd"
+        },
+        {
+          "name": "000000000201.jpg",
+          "sha256": "4efc7ce561df432c2d3d9a60040f62b1b8389b36b401269bfc6802065dfcb9d8"
+        },
+        {
+          "name": "000000000589.jpg",
+          "sha256": "b028805b2fb2c666ef72d4a7a01677bcf0ed56fb4d14cadc8646acdf379999c7"
+        },
+        {
+          "name": "000000000247.jpg",
+          "sha256": "a57c40ee95f73bb493e573bbbd593d037fdf176a02f1d3f6a3f437c8f78f805a"
+        },
+        {
+          "name": "000000000471.jpg",
+          "sha256": "8f473ca6e651f74a74efea3673445230f6bb7d6ae92f76bf3c1e523853ec3995"
+        },
+        {
+          "name": "000000000436.jpg",
+          "sha256": "84b778ac377b3fb394edee6f6c3e688c600a3ac440247b64942b1e6e116ff9a3"
+        },
+        {
+          "name": "000000000328.jpg",
+          "sha256": "8ba0ed80d34589221b1243e0764471d91716b3a267827cb37ecfc3cfae52cc90"
+        },
+        {
+          "name": "000000000250.jpg",
+          "sha256": "a4e4243da053d3a958a1f52fd8fe9cc264d39e07077266a7089b281597050a29"
+        },
+        {
+          "name": "000000000540.jpg",
+          "sha256": "32099f009fcb436bad1bd59b5d48b3e5620fa667a83db5a09879e158dd346103"
+        },
+        {
+          "name": "000000000113.jpg",
+          "sha256": "51d5f657eacbc0f37f0d847f903abc90bb33479fa0459fdc64ebbeb5cac34d99"
+        },
+        {
+          "name": "000000000315.jpg",
+          "sha256": "5804350236bc0d52715f9354498d52f8d260b0e3d8f965526cd85ca6a18b7caa"
+        },
+        {
+          "name": "000000000395.jpg",
+          "sha256": "8d823d141724cc8656ccd48b49d6e44556ca399fbbd8458cc488f0d9816809a4"
+        },
+        {
+          "name": "000000000127.jpg",
+          "sha256": "0ce2f02f39d5d49260d91762bc9a659f8f9d516d8e416c8120306330bfd58023"
+        },
+        {
+          "name": "000000000531.jpg",
+          "sha256": "111bb407e512f23fcc14bbc51ad4b312b0797332aab86ecd9373808286ed30b1"
+        },
+        {
+          "name": "000000000241.jpg",
+          "sha256": "14007b87745069ed85c6412dffc8ad11a22de98d5f5c9ae896523e12622961c5"
+        },
+        {
+          "name": "000000000569.jpg",
+          "sha256": "07655c58e2286ec5e8b74eee71a03841ccf732cbc502d6c380d894a14041ad5f"
+        },
+        {
+          "name": "000000000626.jpg",
+          "sha256": "47b4a3b3fe24c6b1f77a9d89aa2e5d1a3b410b7ba611f54c252c2e13e975afc8"
+        },
+        {
+          "name": "000000000387.jpg",
+          "sha256": "079af237aafcdddfe5a528ef5e40f38ca449fce9ad5a49fbdaaeef068fac7c76"
+        },
+        {
+          "name": "000000000049.jpg",
+          "sha256": "bc1482d2cba6e4db671c8eedbc7c8d86e0a31c927587a24297647f530349fe7b"
+        },
+        {
+          "name": "000000000326.jpg",
+          "sha256": "d8c9b6803795082707fcd62f2d1d38826709836504e330db3e7b4713c3316d59"
+        },
+        {
+          "name": "000000000078.jpg",
+          "sha256": "3139fdefaa9b4320c8a4eec2032c77306a0fd167dd88633bd73f66f952baf5a7"
+        },
+        {
+          "name": "000000000491.jpg",
+          "sha256": "9d5732e879b066bfe8a38e3fcad64836fa1a5ac9f507625082c4b14fe449f993"
+        },
+        {
+          "name": "000000000382.jpg",
+          "sha256": "9455b8af106ef7a2a3b6c4c7ceeda5f4e81b5e364a2aef8e6cf68abc1396f8bd"
+        },
+        {
+          "name": "000000000532.jpg",
+          "sha256": "60745e50cb857e4683d3622ac6c1e7ade63bd73ee458eb76a70455badaee2869"
+        },
+        {
+          "name": "000000000572.jpg",
+          "sha256": "b779e782a66c196373580de6ede5c4faacabf05fb521eab8df4d11b71d8d2770"
+        },
+        {
+          "name": "000000000612.jpg",
+          "sha256": "9ee977eaa2947ffa1508dfc8b6e3c179a9945ee3a55529f91ede04689f00e667"
+        },
+        {
+          "name": "000000000064.jpg",
+          "sha256": "406f84619f5197d416f60566d41ad4d58f1d10b0a182652bbda266eedbc3f1ab"
+        },
+        {
+          "name": "000000000133.jpg",
+          "sha256": "d8d2ea5e94c83ba74bef9dc52d58e0526e08d03355381683fb953db71ec529e6"
+        },
+        {
+          "name": "000000000283.jpg",
+          "sha256": "a668b293598b0097c9b38c136e54b8b43241df22d1c183f6f204a87eaf1f0724"
+        },
+        {
+          "name": "000000000196.jpg",
+          "sha256": "1e1d801e63ed90d34ee666845ebcc17b56edef1f864d048ff588ce7073bc94a2"
+        },
+        {
+          "name": "000000000072.jpg",
+          "sha256": "93d0d304967360bed3bfe2aafc701817e83f494c687e625fb8b765d2be54c9b2"
+        },
+        {
+          "name": "000000000446.jpg",
+          "sha256": "41f3d2ce74148a9628d29ac8ddb5eeed3a07394a55b72e75df5d418d5887ef50"
+        },
+        {
+          "name": "000000000081.jpg",
+          "sha256": "9f9dd4dcc774b81fcbb64531eb717859562ff162cf058e12f80c7b4630cbaa6b"
+        },
+        {
+          "name": "000000000389.jpg",
+          "sha256": "f6d313afba47fe0747d1d78cd342f420eb305de8faadb5cb164de428522b40d6"
+        },
+        {
+          "name": "000000000338.jpg",
+          "sha256": "fdf5b5b2f8227082a5542fbc33b5f8740b040d345653c33bec6158d835542d6b"
+        },
+        {
+          "name": "000000000042.jpg",
+          "sha256": "9008ddd846fc6002ec47ea6067cb92cf70f294773cc15765b6a14ffb392f52fa"
+        },
+        {
+          "name": "000000000164.jpg",
+          "sha256": "186a1427f32ce7e5cf17052f66d5ee7cd57d7f83762001891e16195a6bda586d"
+        },
+        {
+          "name": "000000000564.jpg",
+          "sha256": "1f67bf49851ff43dba866f0cd6cc1b6f1d35ee75255a6092483550548584f477"
+        },
+        {
+          "name": "000000000260.jpg",
+          "sha256": "f70992bbd14794773e27801c4cf4ba34ca4f453eb2efded62c2a558c40e3885b"
+        },
+        {
+          "name": "000000000263.jpg",
+          "sha256": "4abc27b830dedd072dab619c6b7f2467886f601e41b0cc8c2de888f57cf90d7b"
+        },
+        {
+          "name": "000000000074.jpg",
+          "sha256": "99d864809a7355862032b54283bd4808971da5a2b976b20467203e6c192e755d"
+        },
+        {
+          "name": "000000000307.jpg",
+          "sha256": "c839076b4fa14020f97c8a5909c84a1e85c912ca262a91c8c4648ebe27caf61f"
+        },
+        {
+          "name": "000000000581.jpg",
+          "sha256": "60ad7a794ae3032c302c4e1d5111099921ce7e8df23df4401f60bdc74dc83bf1"
+        },
+        {
+          "name": "000000000623.jpg",
+          "sha256": "c11d16bc49acabc2a52b990174110753dbe3a9a71eb7aa37af8f5fc4c616fb20"
+        },
+        {
+          "name": "000000000488.jpg",
+          "sha256": "9e1c9d4c88d38e6a2cd2f775bea82c137c14dc3b13f8430bcdadcb89ab0b7022"
+        },
+        {
+          "name": "000000000575.jpg",
+          "sha256": "839789fe6192bbd5776761d675aa76017b67810b556f3e25e2f3a31acffd86f3"
+        },
+        {
+          "name": "000000000094.jpg",
+          "sha256": "143779e4a70bb6b6e10232aa02c2ce99a9a1246d763da344b424aba4ca71cd9f"
+        },
+        {
+          "name": "000000000510.jpg",
+          "sha256": "c2fcc1d44e81016f4c53e7e610c44dc28a2ca1bc5e73f73623129d261bff15e2"
+        },
+        {
+          "name": "000000000257.jpg",
+          "sha256": "ae711135026cbd548fa1e04edc0ee96bce57162587e0238e7f76b4dc46cf4208"
+        },
+        {
+          "name": "000000000590.jpg",
+          "sha256": "dd687875b5ff4fd0a91dcc910690da36858271562ea908ff61661b4cec9b4cee"
+        },
+        {
+          "name": "000000000536.jpg",
+          "sha256": "745e538b3979ffa93f63bb294163e173d9a99413bce6cf3289215b541c9f1eb1"
+        },
+        {
+          "name": "000000000109.jpg",
+          "sha256": "69edeeca53763fb2a4ee51739e4f9a4f053584b4f3ca4ff9911c49fa52ed2762"
+        },
+        {
+          "name": "000000000009.jpg",
+          "sha256": "3b0bb6bebad60a3329f1e3484434872e86998aeb7750d779b308e4a064868c2c"
+        },
+        {
+          "name": "000000000636.jpg",
+          "sha256": "8e948d6888e7bf449e91883d3a2b0d61804308aada31fbf289add4da4dd978e8"
+        },
+        {
+          "name": "000000000595.jpg",
+          "sha256": "8152ff314326c47105e065ec16ef28e1baa9dd640f40475fe385b612d5e65cf1"
+        },
+        {
+          "name": "000000000332.jpg",
+          "sha256": "8d4946138c446940ed080738744214cd75948a98fd3a1933d0031bd14144f541"
+        }
+      ],
+      "excluded_nodes": [
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.0/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.1/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.10/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.11/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.2/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.3/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.4/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.5/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.6/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.7/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.8/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.9/attention/attention/MatMul",
+        "/bbox_embed/layers.2/MatMul/MatMulAddFusion",
+        "/class_embed/MatMul/MatMulAddFusion",
+        "/transformer/decoder/layers.0/self_attn/MatMul_3",
+        "/transformer/decoder/layers.1/self_attn/MatMul_3"
+      ],
+      "operator_counts": {
+        "DequantizeLinear": 328,
+        "Conv": 9,
+        "Reshape": 230,
+        "Transpose": 92,
+        "Concat": 12,
+        "Add": 52,
+        "Slice": 29,
+        "Tile": 2,
+        "LayerNormalization": 46,
+        "QuantizeLinear": 127,
+        "Gemm": 102,
+        "Mul": 102,
+        "MatMul": 28,
+        "Softmax": 16,
+        "Div": 18,
+        "Erf": 12,
+        "Sigmoid": 8,
+        "Split": 1,
+        "Where": 1,
+        "ReduceMax": 1,
+        "TopK": 1,
+        "Unsqueeze": 15,
+        "Expand": 2,
+        "GatherElements": 2,
+        "Relu": 7,
+        "Exp": 2,
+        "Gather": 4,
+        "Cos": 4,
+        "Sin": 4,
+        "Sub": 2,
+        "GridSample": 2,
+        "ReduceSum": 2
+      },
+      "versions": {
+        "onnx": "1.23.2",
+        "onnxruntime": "1.32.0",
+        "numpy": "2.5.5"
+      },
+      "output_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+      "source_bytes": 107826617,
+      "output_bytes": 33922625
+    },
+    "dynamic": {
+      "schema_version": 1,
+      "mode": "dynamic",
+      "precision": "mixed-fp32-int8",
+      "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+      "recipe": "rfdetr-1.12.1-linear-only",
+      "weights_per_channel": false,
+      "calibration_method": null,
+      "calibration_images": [],
+      "excluded_nodes": [
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.0/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.1/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.10/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.11/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.2/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.3/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.4/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.5/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.6/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.7/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.8/attention/attention/MatMul",
+        "/backbone/backbone.0/encoder/encoder/encoder/layer.9/attention/attention/MatMul",
+        "/bbox_embed/layers.2/MatMul/MatMulAddFusion",
+        "/class_embed/MatMul/MatMulAddFusion",
+        "/transformer/decoder/layers.0/self_attn/MatMul_3",
+        "/transformer/decoder/layers.1/self_attn/MatMul_3"
+      ],
+      "operator_counts": {
+        "Conv": 9,
+        "Reshape": 230,
+        "Transpose": 92,
+        "Concat": 12,
+        "Add": 154,
+        "Slice": 29,
+        "Tile": 2,
+        "LayerNormalization": 46,
+        "DynamicQuantizeLinear": 103,
+        "Mul": 308,
+        "MatMulInteger": 103,
+        "Cast": 103,
+        "MatMul": 27,
+        "Softmax": 16,
+        "Div": 18,
+        "Erf": 12,
+        "Sigmoid": 8,
+        "Split": 1,
+        "Where": 1,
+        "ReduceMax": 1,
+        "TopK": 1,
+        "Unsqueeze": 15,
+        "Expand": 2,
+        "GatherElements": 2,
+        "Relu": 7,
+        "Exp": 2,
+        "Gather": 4,
+        "Cos": 4,
+        "Sin": 4,
+        "Sub": 2,
+        "GridSample": 2,
+        "ReduceSum": 2
+      },
+      "versions": {
+        "onnx": "1.23.2",
+        "onnxruntime": "1.32.0",
+        "numpy": "2.5.5"
+      },
+      "output_sha256": "2ec48734450fa6171fd51c85bfcbfddb0114d2d951729e3bb7e601c289a5dbff",
+      "source_bytes": 107826617,
+      "output_bytes": 33814675
+    }
+  },
+  "rejected_variant": {
+    "mode": "dynamic per-channel",
+    "reason": "CPU DynamicQuantizeMatMul B zero-point shape unsupported; no rejected artifact deployed"
+  },
+  "native_static_int8_config": "config/pi-int8-static.local.yml",
+  "archive_note": "Historical experiment. Absolute checkout/home paths redacted; scores, model/source/calibration hashes and run telemetry preserved. Recommendations/defaults reflect that experiment, not current presets."
+}

@@ -1,0 +1,54 @@
+# Copy to /etc/mqtt-camera/config.yml and edit for this Pi and MQTT broker.
+camera_id: pi_camera
+name: Pi camera
+# Replace using `v4l2-ctl --list-devices` and `ls -l /dev/v4l/by-id/`.
+source: /dev/v4l/by-id/usb-REPLACE_WITH_YOUR_CAMERA-video-index0
+preset: speed # speed: YOLOX Nano FP32; accuracy: RF-DETR Nano static INT8.
+threshold: 0.5
+max_fps: 1
+onnx_threads: 2
+stale_seconds: 60
+tracking:
+  enabled: true
+  minimum_consecutive_frames: 2
+  lost_track_seconds: 3
+  recovery_threshold: 0.1
+presence:
+  hold_seconds: 10
+  hold_seconds_by_class: {}
+classes:
+  person: [person]
+  vehicle: [car, motorcycle, bus, truck]
+lpr:
+  enabled: false # Enable after benchmarking on the target Pi.
+  interval_seconds: 2
+  lost_track_seconds: 10
+  minimum_readings: 2
+  confirmation_window_seconds: 10
+  num_threads: 2
+mqtt:
+  broker: 192.168.1.10 # Replace with Home Assistant's LAN IP/DNS name, not its URL.
+  port: 1883 # MQTT port, not Home Assistant's web port 8123.
+  topic_prefix: mqtt_camera
+  discovery_prefix: homeassistant
+  ha_status_topic: homeassistant/status
+  username_env: MQTT_USERNAME
+  password_env: MQTT_PASSWORD
+  tls: false # Use port 8883 and true when the broker has a trusted TLS certificate.
+
+# Sparse JPEGs are the default; use rtsp (requires an RTSP server) or off.
+images:
+  annotate: true
+  transport: mqtt
+  interval_seconds: 1
+  jpeg_quality: 80
+  max_width: 960
+  rtsp_url_env: RTSP_PUBLISH_URL
+  rtsp_fps: 2
+# Optional snapshots on disk, indexed by relative path in records.db.
+storage:
+  enabled: false
+  directory: /var/lib/mqtt-camera/captures
+  interval_seconds: 5
+  max_files: 10000
+  max_age_days: 7

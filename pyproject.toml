@@ -1,0 +1,75 @@
+[project]
+name = "mqtt-camera-streamer"
+version = "0.1.0"
+description = "RF-DETR and YOLOX ONNX camera predictions with Home Assistant MQTT"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "av>=19,<20",
+    "fast-alpr[onnx]==0.4.0",
+    "numpy>=2,<3",
+    "onnxruntime>=1.20,<2",
+    "opencv-python-headless>=4.9,<6",
+    "paho-mqtt>=2.1,<3",
+    "pillow>=11,<13",
+    "pydantic>=2,<3",
+    "PyYAML>=6,<7",
+    "supervision==0.32.0",
+    "trackers==2.7.0",
+]
+
+[project.optional-dependencies]
+yolox-export = ["torch>=2.2,<3", "torchvision>=0.17,<1", "onnx>=1.17,<2", "loguru>=0.7,<1", "tabulate>=0.9,<1", "psutil>=5,<8"]
+quantize = ["onnx>=1.17,<2", "sympy>=1.13,<2"]
+export = ["rfdetr[onnx]==1.12.1", "torch>=2.2,<3", "torchvision>=0.17,<1"]
+legacy = ["imutils>=0.5.4,<0.6"]
+database = ["datasette>=0.65,<1"]
+
+[dependency-groups]
+dev = ["amqtt>=0.12,<0.13", "pytest>=8,<10", "ruff>=0.9"]
+
+[tool.uv]
+package = false
+
+# Only optional model-export extras need Torch; no training stack is installed on Pi.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+torchvision = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+extend-exclude = ["scripts/vendor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+# Trackers 2.7.0 requests GUI OpenCV. Replace only that requirement with the
+# headless distribution; all other published requirements are preserved.
+[[tool.uv.dependency-metadata]]
+name = "trackers"
+version = "2.7.0"
+requires-dist = [
+    "numpy>=2.0.2",
+    "supervision>=0.31.0",
+    "scipy>=1.13.1",
+    "opencv-python-headless>=4.8.0",
+    "rich>=13.0.0",
+    "requests>=2.28.0",
+    "jsonargparse<5,>=4.48.0",
+    "pydeprecate>=0.8.0",
+    "inference-models>=0.36.0; extra == \"detection\"",
+    "optuna>=3.0.0; extra == \"tune\"",
+    "reid==0.1.0; extra == \"reid\"",
+    "matplotlib>=3.7.0; extra == \"reid\"",
+    "torch; extra == \"mask\"",
+    "torchvision; extra == \"mask\"",
+    "rf-segment-anything>=1.0; extra == \"mask\"",
+    "rf-cutie[inference]>=1.0.0; extra == \"mask\"",
+]

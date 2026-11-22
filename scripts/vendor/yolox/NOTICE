@@ -1,0 +1,6 @@
+YOLOX inference helpers
+Copyright (c) Megvii, Inc. and its affiliates.
+Copyright (c) Megvii Inc. All rights reserved.
+Apache License 2.0; see LICENSE.
+Selected preprocessing, decoding, NMS and COCO label helpers.
+See PROVENANCE.json for the exact source revision and extraction changes.

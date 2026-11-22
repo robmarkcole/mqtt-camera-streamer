@@ -1,0 +1,38 @@
+{
+  "package": "rfdetr",
+  "version": "1.12.1",
+  "source": "https://github.com/roboflow/rf-detr",
+  "modifications": [
+    "Local imports replace package imports in decode.py",
+    "Standard-library logging replaces RF-DETR logger in decode.py and streams.py",
+    "streams.py finite-source prefetch is reduced from 30 to 2 frames for bounded Pi RAM",
+    "streams.py missing-OpenCV guidance points to the locked runtime install",
+    "quantization.py extracts only graph-selection helpers; package/calibration/execution imports omitted"
+  ],
+  "files": {
+    "_resize.py": {
+      "upstream_path": "src/rfdetr/export/_resize.py",
+      "upstream_sha256": "bc06ec30f04fe3583b7bf6888b322a9f04d627fb3d6408b8fe5c12023d4bc876"
+    },
+    "_topk.py": {
+      "upstream_path": "src/rfdetr/export/_topk.py",
+      "upstream_sha256": "999f285cabbd7dab4834b106129b82c32cd03a82eb4038bd843e7b5ab3468b3e"
+    },
+    "_class_layout.py": {
+      "upstream_path": "src/rfdetr/export/_class_layout.py",
+      "upstream_sha256": "d3a22ad21e8744b4d98b0561943bb7102575d486eec8a8a0187e1918be5d796b"
+    },
+    "decode.py": {
+      "upstream_path": "src/rfdetr/export/_runtime/decode.py",
+      "upstream_sha256": "b7e89b7b024ce1c569183b06894e4712336620e16575ebda2c5943d245725507"
+    },
+    "streams.py": {
+      "upstream_path": "src/rfdetr/_prediction/streams.py",
+      "upstream_sha256": "6186529a4524c0d6702a7c1368e4e90749cb7ac2f5265561312e1d6903d6cf79"
+    },
+    "quantization.py": {
+      "upstream_path": "src/rfdetr/export/_onnx/quantize.py",
+      "upstream_sha256": "36a4e1b4cbee2ee75cea5c56110feff23001a59f9cc2d9087495f7723278c703"
+    }
+  }
+}
