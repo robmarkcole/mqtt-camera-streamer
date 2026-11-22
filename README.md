@@ -29,6 +29,8 @@ these features add no new runtime dependency.
 Sparse annotated JPEGs over MQTT keep the original simple setup. RTSP and bounded,
 file-backed recording are optional. Model preparation stays on a development
 computer; the Pi runs ONNX Runtime CPU.
+Use `images.transport: both` to add an annotated RTSP preview while retaining MQTT
+snapshots; see [RTSP setup](docs/images-and-rtsp.md#optional-rtsp-using-existing-pyav-libraries).
 
 ## See it working
 

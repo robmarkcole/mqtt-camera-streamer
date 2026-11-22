@@ -48,7 +48,7 @@ mqtt:
 # Sparse JPEGs are the default; use rtsp (requires an RTSP server) or off.
 images:
   annotate: true
-  transport: mqtt
+  transport: mqtt # mqtt, rtsp, both, or off
   interval_seconds: 1
   jpeg_quality: 80
   max_width: 960

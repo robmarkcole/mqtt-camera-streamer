@@ -22,7 +22,7 @@ LOG = logging.getLogger(__name__)
 
 class ImageConfig(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
-    transport: Literal["mqtt", "rtsp", "off"] = "mqtt"
+    transport: Literal["mqtt", "rtsp", "both", "off"] = "mqtt"
     annotate: bool = True
     interval_seconds: float = Field(default=1, gt=0)
     jpeg_quality: int = Field(default=80, ge=1, le=95)
@@ -279,7 +279,7 @@ class MediaOutputs:
         try:
             if self.config.storage.enabled:
                 self.store = SnapshotStore(self.config.storage)
-            if self.config.images.transport == "rtsp":
+            if self.config.images.transport in ("rtsp", "both"):
                 self.rtsp = RTSPOutput(self.config.images, self.config.stale_seconds)
             return self
         except BaseException:
@@ -292,7 +292,7 @@ class MediaOutputs:
                 raise ValueError("Detector result is missing its RGB source_image")
             return
         now = time.monotonic()
-        publish = self.config.images.transport == "mqtt" and (
+        publish = self.config.images.transport in ("mqtt", "both") and (
             bool(plates)
             or now - self.snapshot_at >= self.config.images.interval_seconds
         )

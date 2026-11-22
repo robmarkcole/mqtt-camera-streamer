@@ -376,7 +376,7 @@ class HomeAssistantPublisher:
         )
         camera_topic = f"{self.config.mqtt.discovery_prefix}/camera/{self.config.camera_id}_snapshot/config"
         camera_payload = None
-        if self.config.images.transport == "mqtt":
+        if self.config.images.transport in ("mqtt", "both"):
             camera_payload = {
                 "name": "Snapshot",
                 "unique_id": f"mqtt_camera_{self.config.camera_id}_snapshot",

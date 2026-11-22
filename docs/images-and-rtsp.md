@@ -10,7 +10,7 @@ needed. This uses Home Assistant's [MQTT camera](https://www.home-assistant.io/i
 
 ```yaml
 images:
-  transport: mqtt       # mqtt (default), rtsp, or off
+  transport: mqtt       # mqtt (default), rtsp, both, or off
   interval_seconds: 1   # maximum snapshot cadence; also limited by inference FPS
   max_width: 960
   jpeg_quality: 80
@@ -50,7 +50,12 @@ images:
 Set `RTSP_PUBLISH_URL` in the process environment (the systemd `mqtt.env` file on
 the Pi), for example `rtsp://publisher:YOUR_PASSWORD@127.0.0.1:8554/camera`.
 URL-encode special characters in URL credentials. MQTT still carries predictions,
-presence and plate events; this mode sends **no MQTT images**. Configure Home
+presence and plate events; `rtsp` mode sends **no MQTT images**. Use
+`images.transport: both` to keep the discovered MQTT Snapshot camera while also
+publishing the same annotated frames over RTSP. Both outputs share the existing
+capture/inference pipeline; this does not open the webcam a second time or add
+Python dependencies. MQTT snapshot cadence and RTSP output FPS remain separate.
+Configure Home
 Assistant's [Generic Camera](https://www.home-assistant.io/integrations/generic/)
 with the RTSP read URL if desired. An RTSP camera is not created by MQTT discovery.
 
@@ -89,6 +94,21 @@ protocols are disabled. To allow LAN readers such as Home Assistant, change
 from MQTT authentication. Plain RTSP is intended for a trusted LAN or SSH tunnel;
 use an appropriate encrypted deployment for other networks.
 
+For the home-directory/user-service deployment, install the same ARM64 binary at
+`~/.local/bin/mediamtx`, save its private configuration at
+`~/.config/mqtt-camera/mediamtx.yml`, and install the supplied user unit:
+
+```sh
+install -m 0644 deploy/mediamtx-user.service ~/.config/systemd/user/mediamtx.service
+systemctl --user daemon-reload
+systemctl --user enable --now mediamtx.service
+```
+
+Keep the publisher restricted to loopback, use a separate authenticated reader
+for Home Assistant, and store URL credentials in private environment/configuration
+files. The same lingering setup described in the Pi guide applies to this unit.
+Choose `both` in the camera configuration to retain MQTT snapshots alongside RTSP.
+
 ### Preview through SSH
 
 On your **laptop**, keep this forwarding session open:
@@ -111,7 +131,7 @@ the Pi is needed. VLC's [RTSP input implementation](https://github.com/videolan/
 supports this transport option. The default MQTT mode can instead be previewed
 using Home Assistant's Snapshot camera, without installing MediaMTX.
 
-## Optional file-backed recording, for either transport
+## Optional file-backed recording, for any image transport
 
 ```yaml
 storage:

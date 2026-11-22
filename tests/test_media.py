@@ -91,6 +91,25 @@ def test_rtsp_mode_sends_no_mqtt_images_and_can_record(config, tmp_path, monkeyp
     assert len(list(tmp_path.rglob("*.jpg"))) == 1
 
 
+def test_both_transports_keep_mqtt_camera_and_share_latest_frames(config, monkeypatch):
+    config.images = ImageConfig(transport="both", interval_seconds=60)
+    rtsp = Mock()
+    monkeypatch.setattr("media.RTSPOutput", Mock(return_value=rtsp))
+    publisher = Mock()
+    frame = np.zeros((20, 40, 3), dtype=np.uint8)
+    with MediaOutputs(config, publisher) as output:
+        output.process(frame, {"predicted_at": "now"})
+        output.process(frame, {"predicted_at": "now"})
+    assert rtsp.submit.call_count == 2
+    rtsp.close.assert_called_once()
+    publisher.publish_snapshot.assert_called_once()
+    with Image.open(io.BytesIO(publisher.publish_snapshot.call_args.args[0])) as image:
+        assert image.format == "JPEG"
+    discovery = dict(HomeAssistantPublisher(config).discovery())
+    camera = discovery["homeassistant/camera/test_camera_snapshot/config"]
+    assert camera["topic"] == "mqtt_camera/test_camera/snapshot"
+
+
 def test_mqtt_snapshot_retention_and_discovery_cleanup(config, broker_port):
     config.mqtt.port = broker_port
     jpeg = jpeg_image(np.zeros((20, 40, 3), dtype=np.uint8), config.images)

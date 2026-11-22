@@ -1,0 +1,13 @@
+[Unit]
+Description=Camera RTSP server
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=%h/.local/bin/mediamtx %h/.config/mqtt-camera/mediamtx.yml
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+UMask=0077
+
+[Install]
+WantedBy=default.target
