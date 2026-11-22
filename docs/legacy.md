@@ -35,4 +35,3 @@ uv run --extra database datasette captures/records.db
 Stop these foreground commands with Ctrl-C. A CSI camera requires its own modern
 Picamera2/libcamera capture path or a compatible network stream; this project
 does not directly implement CSI capture. The Pi guide covers USB V4L2 webcams.
-

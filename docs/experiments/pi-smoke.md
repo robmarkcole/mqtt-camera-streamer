@@ -52,4 +52,3 @@ was about 32 MiB versus 103 MiB FP32, with a 1.28-point mAP50–95 loss on the s
 calibration-disjoint diagnostic. FP32 remains the default pending evaluation on
 representative deployment footage; the guide includes quantization and comparison
 commands that keep all development tools off the Pi.
-
