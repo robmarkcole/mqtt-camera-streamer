@@ -237,5 +237,8 @@ required; it needs an RTSP server such as the optional standalone MediaMTX binar
 
 ## License
 
-See [LICENSE](LICENSE). Pretrained model provenance and upstream links are in the
-plate and dependency guides.
+Project code is licensed under the [MIT License](LICENSE). Vendored RF-DETR and
+YOLOX helpers retain their Apache-2.0 licenses and notices; stock images retain
+their [documented licenses and credits](examples/images/README.md). Dependencies
+and pretrained models retain their own licenses. Model provenance and upstream
+links are in the plate and dependency guides.

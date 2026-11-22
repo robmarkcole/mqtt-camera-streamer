@@ -2,6 +2,8 @@
 name = "mqtt-camera-streamer"
 version = "0.1.0"
 description = "RF-DETR and YOLOX ONNX camera predictions with Home Assistant MQTT"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "av>=19,<20",
