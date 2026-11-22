@@ -1,0 +1,19 @@
+[
+  {
+    "file": "plate-sample.png",
+    "source": "https://github.com/ankandrew/fast-alpr/blob/master/assets/test_image.png",
+    "credit": "ankandrew / FastALPR",
+    "license": "MIT; see LICENSE.fast-alpr",
+    "changes": "unmodified input; Supervision annotations added to generated outputs",
+    "sha256": "c154c3e0873fa35076ecf4f611d345c092450217fe75737b2a77183018218255"
+  },
+  {
+    "file": "rome-parking.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Parking.in.rome.arp.jpg",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Parking.in.rome.arp.jpg",
+    "credit": "Adrian Pingstone (Arpingstone), June 2007",
+    "license": "Public domain, released worldwide by its author",
+    "changes": "resized to 1280px wide for a small reproducible demonstration; annotations added to generated outputs",
+    "sha256": "33b945b750f76f778f6013c9a9464637110250c944d5eed4f9020b7016c1bfb9"
+  }
+]

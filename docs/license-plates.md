@@ -10,8 +10,9 @@ The optional plate stage uses pretrained ONNX models on CPU:
 The selected Speed or Accuracy preset provides person/vehicle detection. The plate stage scans the
 same original-resolution RGB source frame, converts it to FastALPR's BGR input,
 and does not depend on a vehicle being detected first. Plate tracker IDs are
-separate from person/vehicle tracker IDs; no vehicle-to-plate association is
-claimed. Images and crops are not uploaded or saved by this stage.
+separate from person/vehicle tracker IDs. Confirmed plate events now include a
+conservative vehicle link when their centre lies inside a confirmed vehicle box;
+otherwise the link/type is null. Images and crops are not uploaded or saved by this stage.
 
 ## Enable
 
@@ -88,15 +89,17 @@ provided.
 
 ## Home Assistant and MQTT
 
-When enabled, discovery adds three sensors to the existing camera device:
+When enabled, discovery adds five historical sensors to the existing camera device:
 
+- **Plate alias:** the exact watchlist alias, when matched.
+- **Vehicle type:** the associated general detector label, when available.
 - **Last plate:** the last confirmed plate text.
 - **Plate recognized at:** UTC confirmation timestamp.
 - **Plate confidence:** confidence percentage (diagnostic entity).
 
 The entities are initially unknown until a confirmed reading exists. These are
-historical observations: an empty frame does not clear the last plate. They use
-camera availability but do not have the occupancy sensors' state expiry.
+historical observations: an empty frame does not clear the last plate. They do not expire with occupancy or become unavailable merely because the camera
+is offline; the timestamp identifies how old the observation is.
 
 | Topic under `mqtt_camera/<camera_id>/` | Contents | Retained / QoS |
 | --- | --- | --- |
@@ -142,3 +145,5 @@ device entities if you also want to remove the historical plate sensors.
 
 The upstream projects describe their model training, available alternatives and
 licenses. Model files are cached rather than committed to this repository.
+
+Plate confirmations now also publish native MQTT events with optional exact watchlist aliases and conservative vehicle links. See [vehicle events](vehicle-events.md) for fields, discovery and automations.

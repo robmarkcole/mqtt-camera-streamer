@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Literal
 
 import numpy as np
+import supervision as sv
 from PIL import Image
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -22,11 +23,36 @@ LOG = logging.getLogger(__name__)
 class ImageConfig(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     transport: Literal["mqtt", "rtsp", "off"] = "mqtt"
+    annotate: bool = True
     interval_seconds: float = Field(default=1, gt=0)
     jpeg_quality: int = Field(default=80, ge=1, le=95)
     max_width: int = Field(default=960, ge=2)
     rtsp_url_env: str = "RTSP_PUBLISH_URL"
     rtsp_fps: float = Field(default=2, gt=0, le=30)
+
+
+def annotated_image(rgb, payload, plates):
+    """Reuse Supervision on a copy; inference and OCR always keep original RGB."""
+    objects = payload.get("detections", [])
+    boxes = [d["box_xyxy"] for d in objects]
+    labels = [f"{d['label']} #{d['tracker_id']} {d['confidence']:.0%}" for d in objects]
+    for event in plates:
+        if "box_xyxy" in event:
+            boxes.append(event["box_xyxy"])
+            labels.append(f"{event['plate']} {event.get('ocr_confidence', 0):.0%}")
+    if not boxes:
+        return rgb
+    detections = sv.Detections(
+        xyxy=np.asarray(boxes, dtype=np.float32), class_id=np.arange(len(boxes))
+    )
+    bgr = np.ascontiguousarray(rgb[:, :, ::-1])
+    bgr = sv.BoxAnnotator(thickness=max(2, round(rgb.shape[1] / 480))).annotate(
+        bgr, detections
+    )
+    bgr = sv.LabelAnnotator(
+        text_scale=max(0.4, rgb.shape[1] / 1600), text_padding=3
+    ).annotate(bgr, detections, labels)
+    return np.ascontiguousarray(bgr[:, :, ::-1])
 
 
 class StorageConfig(BaseModel):
@@ -263,7 +289,7 @@ class MediaOutputs:
     def process(self, rgb, payload, plates=()):
         if rgb is None:
             if self.config.images.transport != "off" or self.store:
-                raise ValueError("RF-DETR result is missing its RGB source_image")
+                raise ValueError("Detector result is missing its RGB source_image")
             return
         now = time.monotonic()
         publish = self.config.images.transport == "mqtt" and (
@@ -273,10 +299,15 @@ class MediaOutputs:
         save = self.store is not None and (
             bool(plates) or now - self.saved_at >= self.config.storage.interval_seconds
         )
+        display = (
+            annotated_image(rgb, payload, plates)
+            if self.config.images.annotate and (publish or save or self.rtsp)
+            else rgb
+        )
         if self.rtsp:
-            self.rtsp.submit(rgb)
+            self.rtsp.submit(display)
         if publish or save:
-            jpeg = jpeg_image(rgb, self.config.images)
+            jpeg = jpeg_image(display, self.config.images)
             if publish:
                 self.publisher.publish_snapshot(jpeg)
                 self.snapshot_at = now

@@ -110,6 +110,10 @@ Under `mqtt_camera/<camera_id>/` the service publishes:
 | --- | --- | --- |
 | `predictions` | JSON confirmed detections, tracker IDs, labels, scores and pixel `box_xyxy` coordinates | No |
 | `state` | JSON instantaneous counts, held presence, sequence, model filename, prediction time, processing duration | No |
+| `events` | Transient vehicle/plate/watchlist events for the native HA event entity | No |
+| `vehicle/events` | Vehicle detected/lost events | No |
+| `plate/events` | Consensus-confirmed plate observations | No |
+| `plate` | Latest historical plate observation | Yes |
 | `availability` | `online` or `offline` | Yes |
 
 `predicted_at` is UTC prediction completion time, not camera exposure time.
@@ -123,8 +127,10 @@ sequence resets on service restart. Binary sensor discovery reads `presence`;
 count sensors continue to read `counts`. Existing entity IDs stay the same.
 Transient predictions use QoS 0 to avoid replaying obsolete observations after
 broker outages. Discovery and availability use QoS 1. State is periodically
-refreshed even when unchanged. Per-frame boxes stay out of entity attributes and
-Home Assistant's recorder.
+refreshed even when unchanged. Counts and presence use compact state. The discovered Detections sensor carries
+the per-frame object list and timestamp for the dashboard. For a live-only view,
+exclude this sensor from HA Recorder to avoid storing every prediction; retain
+count/presence/event history separately. See [vehicle events](vehicle-events.md).
 
 Discovery configurations are retained under `homeassistant/.../config`, have
 stable unique IDs, and are republished on MQTT reconnect and HA's `online` birth

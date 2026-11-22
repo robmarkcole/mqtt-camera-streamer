@@ -31,6 +31,7 @@ class PlateConfig(BaseModel):
     cooldown_seconds: float = Field(default=30, ge=0)
     plate_pattern: str = Field(default=r"[A-Z0-9]{3,10}", min_length=1)
     num_threads: int = Field(default=2, ge=1)
+    watched_plates: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def valid_timing(self):
@@ -44,6 +45,23 @@ class PlateConfig(BaseModel):
                 "lpr.confirmation_window_seconds is too short for minimum_readings"
             )
         return self
+
+    @field_validator("watched_plates")
+    @classmethod
+    def valid_watched_plates(cls, values):
+        normalized = {}
+        for plate, name in values.items():
+            key = re.sub(r"[\s-]+", "", plate.upper())
+            if (
+                not re.fullmatch(r"[A-Z0-9]{3,10}", key)
+                or not name.strip()
+                or key in normalized
+            ):
+                raise ValueError(
+                    "watched_plates needs distinct normalized plates and nonempty aliases"
+                )
+            normalized[key] = name.strip()
+        return normalized
 
     @field_validator("plate_pattern")
     @classmethod
@@ -156,7 +174,7 @@ class PlateProcessor:
             elif not force and now - self.last_scan_at < self.config.interval_seconds:
                 return []
         self.last_scan_at = now
-        # RF-DETR source_image is RGB; FastALPR expects OpenCV-style BGR input.
+        # The detector source_image is RGB; FastALPR expects OpenCV-style BGR input.
         results = self.engine.predict(np.ascontiguousarray(rgb_frame[:, :, ::-1]))
         tracked = self.tracker.update(self._detections(results), timestamp=now)
         self.histories = {
@@ -205,6 +223,8 @@ class PlateProcessor:
                     "schema_version": 1,
                     "event_id": uuid.uuid4().hex,
                     "plate": winner,
+                    "watched": winner in self.config.watched_plates,
+                    "plate_alias": self.config.watched_plates.get(winner),
                     "recognized_at": datetime.now(UTC).isoformat(),
                     "tracker_id": tracker_id,
                     "ocr_confidence": max(

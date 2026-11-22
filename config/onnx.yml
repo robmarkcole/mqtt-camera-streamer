@@ -29,6 +29,7 @@ lpr:
   cooldown_seconds: 30
   plate_pattern: '[A-Z0-9]{3,10}'
   num_threads: 2
+  watched_plates: {} # e.g. {AB12CDE: Family car}; exact normalized matches only.
 # Entity keys map to model class names. Counts are confirmed objects in a frame.
 classes:
   person: [person]
@@ -46,6 +47,7 @@ mqtt:
 
 # Sparse JPEGs are the default; use rtsp (requires an RTSP server) or off.
 images:
+  annotate: true
   transport: mqtt
   interval_seconds: 1
   jpeg_quality: 80

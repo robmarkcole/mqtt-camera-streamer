@@ -1,0 +1,234 @@
+# Home Assistant raw dashboard configuration. Adjust live entity IDs for your camera name.
+# Stock-demo images: copy generated demo JPEGs into /config/www/mqtt-camera-demo/.
+title: Camera
+views:
+- title: Live
+  path: overview
+  icon: mdi:cctv
+  type: sections
+  max_columns: 2
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Raspberry Pi camera
+      heading_style: title
+      icon: mdi:cctv
+    - type: picture-entity
+      entity: camera.raspberry_pi_camera_snapshot
+      name: Live camera · MQTT snapshots
+      show_name: true
+      show_state: false
+      camera_view: auto
+      aspect_ratio: '4:3'
+      tap_action:
+        action: more-info
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: markdown
+      content: '**{{ (state_attr(''sensor.raspberry_pi_camera_detections'', ''preset'')
+        or ''speed'') | title }} preset · Local ONNX inference**
+
+
+        Live MQTT snapshots, confirmed tracks and held presence. Annotated boxes appear
+        when objects are detected.'
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: markdown
+      title: Objects in the current frame
+      content: '{% set objects = state_attr(''sensor.raspberry_pi_camera_detections'',
+        ''detections'') or [] %}
+
+        {% if is_state(''sensor.raspberry_pi_camera_detections'', ''unavailable'')
+        %}
+
+        Camera offline — waiting for new predictions.
+
+        {% elif objects | length == 0 %}
+
+        No confirmed objects in the current frame.
+
+        {% else %}
+
+        | Object | Confidence | Track ID |
+
+        |:--|--:|--:|
+
+        {% for obj in objects %}| {{ obj.label | title }} | {{ (obj.confidence * 100)
+        | round(1) }}% | {{ obj.tracker_id if obj.tracker_id is defined else ''—''
+        }} |
+
+        {% endfor %}
+
+        {% endif %}
+
+
+        {% set seen = state_attr(''sensor.raspberry_pi_camera_detections'', ''predicted_at'')
+        %}
+
+        {% if seen %}Last prediction: **{{ as_timestamp(seen) | timestamp_custom(''%H:%M:%S'')
+        }}**{% endif %}'
+      grid_options:
+        columns: 12
+        rows: auto
+  - type: grid
+    cards:
+    - type: heading
+      heading: Detections
+      heading_style: title
+      icon: mdi:radar
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: binary_sensor.raspberry_pi_camera_person_detected
+        name: Person presence
+      - entity: sensor.raspberry_pi_camera_person_count
+        name: People now
+      - entity: binary_sensor.raspberry_pi_camera_vehicle_detected
+        name: Vehicle presence
+      - entity: sensor.raspberry_pi_camera_vehicle_count
+        name: Vehicles now
+      - entity: sensor.raspberry_pi_camera_detections
+        name: Confirmed objects now
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: entities
+      title: Vehicle events
+      entities:
+      - entity: event.raspberry_pi_camera_vehicle_events
+        name: Latest event
+      grid_options: &id001
+        columns: 12
+        rows: auto
+    - type: heading
+      heading: License plates
+      icon: mdi:card-text-outline
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: sensor.raspberry_pi_camera_last_plate
+        name: Last recognised plate
+      - entity: sensor.raspberry_pi_camera_plate_recognized_at
+        name: Recognised at
+      - entity: sensor.raspberry_pi_camera_plate_confidence
+        name: OCR confidence
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: conditional
+      conditions:
+      - entity: sensor.raspberry_pi_camera_plate_recognized_at
+        state: '2026-11-22T06:00:32+00:00'
+      card:
+        type: markdown
+        content: '**Earlier test result:** 5AU5341 came from the public test image,
+          not a live vehicle observation. New live readings will replace it.'
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: history-graph
+      title: Presence · last 3 hours
+      hours_to_show: 3
+      entities:
+      - entity: binary_sensor.raspberry_pi_camera_person_detected
+        name: Person
+      - entity: binary_sensor.raspberry_pi_camera_vehicle_detected
+        name: Vehicle
+      grid_options:
+        columns: 12
+        rows: auto
+- title: Stock demo
+  path: stock-demo
+  icon: mdi:flask-outline
+  type: sections
+  max_columns: 2
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Plate recognition & watchlist
+      heading_style: title
+      icon: mdi:flask-outline
+    - type: picture
+      image: /local/mqtt-camera-demo/plate_sample.jpg
+      tap_action:
+        action: none
+      grid_options: *id001
+    - type: markdown
+      content: '**Recorded stock-image demo — not live camera data.**
+
+
+        Processed on the Raspberry Pi with Speed (YOLOX Nano FP32), Supervision tracking
+        and local OCR. Six repeated copies of each still exercise confirmation; they
+        do not show real movement.
+
+
+        | Result | Observed |
+
+        |:--|:--|
+
+        | Confirmed vehicles | **4** |
+
+        | Vehicle detection events | 4, one per confirmed track |
+
+        | Recognised plate | **5AU5341** |
+
+        | OCR confidence | 99.95% |
+
+        | Linked vehicle | truck · track 0 |
+
+        | Watchlist alias | **Demo sample** |
+
+        | Plate / watch events | 1 each; repeat readings suppressed |
+
+
+        Source: ankandrew / FastALPR sample, MIT.'
+      grid_options: *id001
+    - type: entities
+      title: MQTT event received by Home Assistant
+      entities:
+      - entity: event.stock_plate_demo_vehicle_events
+        name: Latest demo event
+      grid_options: *id001
+  - type: grid
+    cards:
+    - type: heading
+      heading: Vehicle detection & tracking
+      heading_style: title
+      icon: mdi:flask-outline
+    - type: picture
+      image: /local/mqtt-camera-demo/rome_parking.jpg
+      tap_action:
+        action: none
+      grid_options: *id001
+    - type: markdown
+      content: '**Recorded stock-image demo — not live camera data.**
+
+
+        Processed on the Raspberry Pi with Speed (YOLOX Nano FP32), Supervision tracking
+        and local OCR. Six repeated copies of each still exercise confirmation; they
+        do not show real movement.
+
+
+        | Result | Observed |
+
+        |:--|:--|
+
+        | Confirmed vehicles | **3** |
+
+        | Vehicle detection events | 3, one per confirmed track |
+
+        | Confirmed plates | None — no confident plate reading reported |
+
+
+        Source: Adrian Pingstone / Wikimedia Commons, public domain.'
+      grid_options: *id001
+    - type: entities
+      title: MQTT event received by Home Assistant
+      entities:
+      - entity: event.stock_street_demo_1_vehicle_events
+        name: Latest demo event
+      grid_options: *id001

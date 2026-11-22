@@ -1,16 +1,40 @@
 # mqtt-camera-streamer
 
-Run a USB webcam or RTSP source through one of two ONNX presets:
+Turn a USB webcam or RTSP source into Home Assistant detections, vehicle events
+and local license-plate recognition. Configure an MQTT broker, choose a camera
+and run one headless Python process on available CPU hardware.
 
 | Preset | Model | Purpose |
 | --- | --- | --- |
-| **Speed** (default for new configs) | YOLOX Nano FP32 | Faster person/vehicle detection on the Pi |
+| **Speed** (default) | YOLOX Nano FP32 | Faster detection on a Raspberry Pi |
 | **Accuracy** | RF-DETR Nano static INT8 | Higher measured detection accuracy |
 
-Both share Supervision, Roboflow ByteTrack, configurable presence holds, optional
-pretrained plate recognition and Home Assistant MQTT. The headless Pi runtime
-has no PyTorch, TorchVision or detector training package. Sparse MQTT JPEGs are
-the default; RTSP and disk-backed recording are optional.
+Supervision and Roboflow ByteTrack provide boxes, track confirmation and presence
+holds. FastALPR provides optional local plate detection/OCR and watched-plate
+matching. Home Assistant's built-in MQTT integration supplies the dashboard and
+automations. The Pi runtime uses **42 locked packages, without PyTorch/TorchVision**;
+these features add no new runtime dependency.
+
+Sparse annotated JPEGs over MQTT keep the original simple setup. RTSP and bounded,
+file-backed recording are optional. Model preparation stays on a development
+computer; the Pi runs ONNX Runtime CPU.
+
+## See it working
+
+Actual Pi inference on public stock images, displayed in Home Assistant. The
+stock view is clearly separate from the live webcam: four tracked vehicles and
+plate **5AU5341** with an exact watchlist match, plus three vehicles in the Rome
+photo. The examples repeat still images to exercise confirmation and suppression.
+Nano labels the foreground car as `truck`; that prediction is shown unchanged.
+
+![Home Assistant stock-image demonstration](docs/images/vehicle-demo/home-assistant-stock-demo.jpg)
+
+Vehicle, plate and watched-plate events arrive in Home Assistant's native event
+entity, once per confirmed track/reading rather than on every frame:
+
+![Home Assistant MQTT vehicle event history](docs/images/vehicle-demo/home-assistant-events.jpg)
+
+[Reproduce the demo](docs/stock-demo.md) · [Image credits and licenses](examples/images/README.md)
 
 ## Quick start with uv
 
@@ -56,13 +80,15 @@ with local settings/weights are ignored by Git.
 | Headless Raspberry Pi, uv and systemd | [Raspberry Pi deployment](docs/raspberry-pi.md) |
 | Configuration, tracking and MQTT discovery | [ONNX and Home Assistant](docs/onnx-home-assistant.md) |
 | MQTT snapshots, RTSP, SSH preview and file-backed SQLite | [Images and RTSP](docs/images-and-rtsp.md) |
+| Vehicle events, watched plates and automations | [Vehicle events](docs/vehicle-events.md) |
 | Pretrained plate detection and OCR | [License plates](docs/license-plates.md) |
+| Public-image demo and dashboard configuration | [Stock demo](docs/stock-demo.md) |
 | Speed/Accuracy selection and model preparation | [Model presets](docs/models.md) |
 | All model and quantization experiments | [Experiment record](docs/experiments/README.md) |
 | Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 | Original MQTT frame-streaming scripts | [Legacy examples](docs/legacy.md) |
 
-## License plates
+## Vehicle events and plates
 
 Cache the pretrained ONNX models, enable `lpr.enabled` in the local configuration,
 and run the same service:
@@ -72,9 +98,35 @@ uv run --locked --no-dev scripts/download-plate-models.py --config config/onnx.l
 uv run --locked --no-dev scripts/onnx_camera.py --config config/onnx.local.yml
 ```
 
-Confirmed readings update Last plate, timestamp and confidence sensors. A
-non-retained `mqtt_camera/<camera_id>/plate/events` message drives automations.
-Repeated matching OCR readings and a cooldown suppress duplicate events.
+Home Assistant automatically discovers the snapshot camera, counts, held presence,
+object details, historical plate readings and a vehicle event entity.
+
+| Event | Meaning |
+| --- | --- |
+| `vehicle_detected` | New confirmed vehicle track |
+| `vehicle_lost` | Track no longer observed for the configured timeout |
+| `plate_recognized` | Repeated matching OCR confirmed a plate |
+| `watched_plate_detected` | Confirmed plate exactly matched a configured alias |
+
+Events are transient MQTT messages under `mqtt_camera/<camera_id>/events`.
+Confirmed plates also retain the existing `plate/events` topic and latest `plate`
+state. Plate events include confidence, box centre and a vehicle type/track link
+when a containing vehicle box is available. Region, make/model, colour and
+orientation are not inferred by the current local models.
+
+```yaml
+lpr:
+  enabled: true
+  watched_plates:
+    AB12CDE: Family car
+images:
+  transport: mqtt
+  annotate: true
+```
+
+Read [event payloads and automation examples](docs/vehicle-events.md). Vehicle loss
+is not proof of physical departure; held presence is a separate signal. OCR
+consensus, exact watchlist matching and cooldown prevent repeated plate triggers.
 
 ## Benchmark
 
@@ -101,7 +153,7 @@ and the service's rate-limit sleep are excluded. These results are not model-onl
 ```sh
 uv sync --locked
 uv run pytest -q
-uv run ruff check scripts/onnx_camera.py scripts/onnx_detector.py scripts/yolox_detector.py scripts/plates.py scripts/media.py scripts/benchmark.py tests
+uv run ruff check scripts/onnx_camera.py scripts/onnx_detector.py scripts/yolox_detector.py scripts/plates.py scripts/media.py scripts/vehicle_events.py scripts/demo.py scripts/benchmark.py tests
 ```
 
 Dependencies live in `pyproject.toml` and `uv.lock`. Use `uv add`, `uv remove` or

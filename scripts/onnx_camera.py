@@ -30,6 +30,7 @@ from pydantic import (
     model_validator,
 )
 from trackers import ByteTrackTracker
+from vehicle_events import EVENT_TYPES, VehicleEvents, enrich_plate, event_payload
 from vendor.rfdetr.streams import iter_live_frames
 
 LOG = logging.getLogger(__name__)
@@ -75,6 +76,7 @@ class CameraConfig(BaseModel):
     camera_id: str = Field(pattern=r"^[a-zA-Z0-9_]+$")
     name: str = Field(min_length=1)
     source: int | str = 0
+    demo: bool = False
     preset: Literal["speed", "accuracy"] | None = None
     model_path: Path | None = None
     threshold: float = Field(default=0.5, ge=0, le=1)
@@ -190,6 +192,7 @@ def prediction_payload(detections: sv.Detections, config, sequence, processing_m
         "predicted_at": datetime.now(UTC).isoformat(),
         "model": config.model_path.name,
         "preset": config.preset,
+        "demo": config.demo,
         "processing_ms": round(processing_ms, 1),
         "counts": counts,
         "presence": {key: count > 0 for key, count in counts.items()},
@@ -228,6 +231,7 @@ class PredictionProcessor:
     def __init__(self, config):
         self.config = config
         self.presence = PresenceHold(config)
+        self.events = VehicleEvents(config)
         self.last_frame_at = None
         self.tracker = (
             ByteTrackTracker(
@@ -248,6 +252,7 @@ class PredictionProcessor:
             and now - self.last_frame_at >= self.config.stale_seconds
         ):
             self.presence.reset()
+            self.events.reset()
             if self.tracker is not None:
                 self.tracker.reset()
         self.last_frame_at = now
@@ -257,6 +262,7 @@ class PredictionProcessor:
             selected = selected[selected.tracker_id >= 0]
         payload = prediction_payload(selected, self.config, sequence, processing_ms)
         payload["presence"] = self.presence.update(payload["counts"], now)
+        payload["events"] = self.events.update(payload["detections"], now)
         return payload
 
 
@@ -342,6 +348,32 @@ class HomeAssistantPublisher:
                 )
                 yield topic, payload
 
+        event_entity = f"{self.config.camera_id}_vehicle_events"
+        yield (
+            f"{self.config.mqtt.discovery_prefix}/event/{event_entity}/config",
+            {
+                "name": "Vehicle events",
+                "unique_id": f"mqtt_camera_{event_entity}",
+                "state_topic": f"{self.base}/events",
+                "event_types": EVENT_TYPES,
+                "device": common["device"],
+                "icon": "mdi:car-connected",
+            },
+        )
+        details = f"{self.config.camera_id}_detection_details"
+        yield (
+            f"{self.config.mqtt.discovery_prefix}/sensor/{details}/config",
+            dict(
+                common,
+                name="Detections",
+                unique_id=f"mqtt_camera_{details}",
+                state_topic=f"{self.base}/predictions",
+                value_template="{{ value_json.detections | length }}",
+                json_attributes_topic=f"{self.base}/predictions",
+                json_attributes_template="{{ {'detections': value_json.detections, 'predicted_at': value_json.predicted_at, 'preset': value_json.preset, 'demo': value_json.get('demo', false)} | tojson }}",
+                icon="mdi:crosshairs-gps",
+            ),
+        )
         camera_topic = f"{self.config.mqtt.discovery_prefix}/camera/{self.config.camera_id}_snapshot/config"
         camera_payload = None
         if self.config.images.transport == "mqtt":
@@ -359,8 +391,21 @@ class HomeAssistantPublisher:
             plate_common = dict(common, state_topic=f"{self.base}/plate")
             # These are historical observations, not live occupancy states.
             plate_common.pop("expire_after")
+            plate_common.pop("availability_topic")
             for key, name, template, extra in (
                 ("last_plate", "Last plate", "{{ value_json.plate }}", {}),
+                (
+                    "plate_alias",
+                    "Plate alias",
+                    "{{ value_json.get('plate_alias') or 'Not watched' }}",
+                    {},
+                ),
+                (
+                    "vehicle_type",
+                    "Vehicle type",
+                    "{{ value_json.get('vehicle_type') or 'Unknown' }}",
+                    {},
+                ),
                 (
                     "plate_recognized_at",
                     "Plate recognized at",
@@ -442,10 +487,14 @@ class HomeAssistantPublisher:
 
     def publish(self, payload):
         with self.lock:
-            self.last_result = {k: v for k, v in payload.items() if k != "detections"}
+            self.last_result = {
+                k: v for k, v in payload.items() if k not in ("detections", "events")
+            }
             self.last_received = time.monotonic()
             if not self.connected.is_set():
                 return
+            for event in payload.get("events", []):
+                self.publish_event(event)
             # Transient predictions and state use QoS 0 so reconnects cannot replay a backlog.
             self._publish("predictions", json.dumps(payload, allow_nan=False))
             state = self._publish(
@@ -454,6 +503,19 @@ class HomeAssistantPublisher:
             if state.rc == mqtt.MQTT_ERR_SUCCESS and not self.online:
                 self._publish("availability", "online", retain=True, qos=1)
                 self.online = True
+
+    def publish_event(self, event):
+        """Transient events have no reconnect backlog and are never retained."""
+        with self.lock:
+            if not self.connected.is_set():
+                return
+            payload = dict(
+                event, camera_id=self.config.camera_id, demo=self.config.demo
+            )
+            encoded = json.dumps(payload, allow_nan=False)
+            self._publish("events", encoded)
+            if event["event_type"].startswith("vehicle_"):
+                self._publish("vehicle/events", encoded)
 
     def publish_snapshot(self, jpeg):
         """Keep only the newest JPEG; never queue disconnected camera frames."""
@@ -465,12 +527,27 @@ class HomeAssistantPublisher:
     def publish_plate(self, event):
         """Retain the last confirmed observation; never replay transient plate events."""
         with self.lock:
-            self.last_plate = dict(event, camera_id=self.config.camera_id)
+            self.last_plate = dict(
+                event, camera_id=self.config.camera_id, demo=self.config.demo
+            )
             if not self.connected.is_set():
                 return
             payload = json.dumps(self.last_plate, allow_nan=False)
             self._publish("plate", payload, retain=True, qos=1)
             self._publish("plate/events", payload)
+            self.publish_event(dict(event, event_type="plate_recognized"))
+            if event.get("watched"):
+                self.publish_event(
+                    event_payload(
+                        "watched_plate_detected",
+                        plate_event_id=event["event_id"],
+                        **{
+                            k: v
+                            for k, v in event.items()
+                            if k not in ("event_id", "event_type", "occurred_at")
+                        },
+                    )
+                )
 
     def __enter__(self):
         self.client.connect_async(
@@ -586,7 +663,15 @@ def run(config, max_frames=None):
                             "Detector result is missing its RGB source_image"
                         )
                     events = [
-                        dict(event, frame_sequence=sequence)
+                        dict(
+                            enrich_plate(
+                                event,
+                                payload,
+                                frame.shape,
+                                config.classes.get("vehicle", []),
+                            ),
+                            frame_sequence=sequence,
+                        )
                         for event in plates.process(frame)
                     ]
                     for event in events:

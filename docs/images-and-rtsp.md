@@ -142,3 +142,5 @@ The legacy `scripts/db-recorder.py` also writes this file/path format. Existing
 BLOB tables are preserved. Datasette can inspect metadata but filesystem paths
 are not image URLs; a remote browser needs separate access to the image files.
 There is no image-serving web dependency on the Pi.
+
+Snapshots and RTSP frames use Supervision annotations by default. Set `images.annotate: false` for plain output; inference/OCR always use the original RGB frame. See the [public stock demonstration](stock-demo.md).
