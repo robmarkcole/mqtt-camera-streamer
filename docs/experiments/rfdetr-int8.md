@@ -1,5 +1,8 @@
 # RF-DETR Nano INT8 experiments on Raspberry Pi
 
+> Historical experiment record. For the supported presets, see [model setup](../models.md).
+> Results are unchanged; commands use the current tool locations.
+
 INT8 is available as an experimental model choice; **FP32 remains the default**.
 The inference application, Supervision detections, Roboflow ByteTrack, presence
 holds, MQTT/HA, snapshots/RTSP and FastALPR/OCR use the same runtime path. No Torch,
@@ -27,7 +30,7 @@ Convolutions remain floating point. Plate detector and OCR models are unchanged.
 ## Physical Pi results
 
 Tested 2026-11-21 on the same Raspberry Pi 4 Model B (4 GB, 64-bit Debian 13.6,
-approximately 1.5 GHz) used in the [deployment smoke test](raspberry-pi.md).
+approximately 1.5 GHz) used in the [deployment smoke test](../raspberry-pi.md).
 The desktop/RetroArch workload remained running. Four ORT threads were used for
 all variants, in serial fresh processes, with reversed model order on the second
 repeat. A fixed recording ensured every model processed the same frames.

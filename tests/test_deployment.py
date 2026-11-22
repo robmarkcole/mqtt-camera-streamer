@@ -13,6 +13,8 @@ def test_pi_example_is_valid_and_uses_separate_secret_environment():
     config = load_config(Path(__file__).resolve().parents[1] / "deploy/pi.yml")
     assert config.source.startswith("/dev/v4l/by-id/")
     assert config.model_path.is_absolute()
+    assert config.preset == "speed"
+    assert config.model_path.name == "yolox-nano.onnx"
     assert config.mqtt.username_env == "MQTT_USERNAME"
     assert config.mqtt.password_env == "MQTT_PASSWORD"
     assert config.onnx_threads == 2

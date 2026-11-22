@@ -1,38 +1,20 @@
 # ONNX webcam detection with Home Assistant
 
-The detector runs exported RF-DETR or YOLOX Nano/Tiny models directly through ONNX Runtime CPU.
-See [YOLOX setup and Pi results](yolox.md) for the alternative exports.
-Small Apache-licensed NumPy preprocessing/decoding and bounded capture helpers
-are reused from RF-DETR 1.12.1, with attribution in `scripts/vendor/rfdetr`.
-Supervision detections feed class filtering, Roboflow ByteTrack and MQTT/HA.
-The default runtime does not install PyTorch, TorchVision, Transformers, RF-DETR
-or the ONNX Python/export package. No Roboflow account/API key is required.
+Choose `preset: speed` (YOLOX Nano FP32) or `preset: accuracy` (RF-DETR Nano
+static INT8). [Model setup](models.md) covers artifact preparation and the measured
+tradeoff. Both use ONNX Runtime CPU and emit Supervision detections into the same
+class filtering, Roboflow ByteTrack, presence-hold, plate and MQTT pipeline.
 
-## Install and export
-
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
-these commands from the repository root. The pinned Python version is 3.12;
-uv manages Python, the `.venv` environment, and the dependencies in `uv.lock`:
-
-```sh
-uv sync --locked
-uv run --extra export scripts/export-rfdetr-onnx.py
-```
-
-The export script downloads pretrained RF-DETR Nano and writes
-`models/rfdetr-nano/rfdetr-nano.onnx`, including embedded inference metadata for
-labels, input shape and decoding. Model files and virtual environments are ignored
-by Git.
-The optional `export` extra installs the official RF-DETR/PyTorch stack for model
-export and comparison on a development computer. It is not needed on the Pi.
-The runtime supports schema-1 detection exports with fixed spatial dimensions,
-batch one, NCHW RGB/grayscale and FP32/FP16 input. Segmentation/keypoint models
-and missing/unsupported metadata fail explicitly; class names are never guessed.
+The runtime excludes PyTorch, TorchVision, Transformers and detector training
+packages. Small attributed preprocessing/decoding and bounded capture helpers
+are retained under `scripts/vendor`. No Roboflow account or API key is required.
 
 ## Configure and run
 
 Copy `config/onnx.yml` to `config/onnx.local.yml` and edit:
 
+- `preset`: `speed` (default for new configs) or `accuracy`. Default model paths
+  are relative to the installed repository; see [model setup](models.md).
 - `source`: your external webcam index. Do not assume USB is always camera 0.
   On macOS, grant the launching application camera access in System Settings.
   Video paths and RTSP URLs are also accepted. Paths/URLs containing credentials
@@ -50,8 +32,9 @@ Copy `config/onnx.yml` to `config/onnx.local.yml` and edit:
 - `tracking`: track confirmation, recovery time and low-confidence association.
 - `presence`: the default hold duration and optional overrides per entity group.
 
-Model paths are relative to the YAML file. Run from the repository root for
-relative video sources. If authentication is required, set `MQTT_USERNAME` and
+Existing explicit `model_path` configurations still work; those paths are relative
+to the YAML file. A preset plus an override path validates the selected model.
+Run from the repository root for relative video sources. If authentication is required, set `MQTT_USERNAME` and
 `MQTT_PASSWORD` in your environment; do not put secrets in committed YAML. Enable
 `mqtt.tls` for TLS using the system trust store, and set the broker's TLS port.
 
@@ -69,9 +52,9 @@ error exits the service. A process supervisor can restart it.
 The RF-DETR source generator keeps the latest live frame (`stream_buffer=False`)
 instead of queuing frames while inference runs. Lower `max_fps` reduces inference
 and MQTT load; it does not set the webcam's hardware capture rate. Raspberry Pi
-throughput is not established: use 64-bit Linux, start at a low rate, and measure
-on the target board. See [license plate detection and OCR](license-plates.md) to
-enable the optional pretrained plate pipeline and Home Assistant plate sensors.
+performance depends on the workload: use 64-bit Linux, start at a low rate, and
+measure on the target board. [Recorded Pi results](models.md) compare both presets.
+See [license plate detection and OCR](license-plates.md) to enable the optional pretrained plate pipeline and Home Assistant plate sensors.
 
 ## Tracking and presence hold times
 
@@ -132,7 +115,8 @@ Under `mqtt_camera/<camera_id>/` the service publishes:
 `predicted_at` is UTC prediction completion time, not camera exposure time.
 `processing_ms` includes obtaining the next result and detector inference; it
 excludes the rate-limit sleep and optional plate stage. Bounding boxes refer to
-original source-image pixels.
+original source-image pixels. `preset` identifies the selection (`speed`, `accuracy`,
+or null for custom/legacy paths); `model` records the actual ONNX filename.
 The schema carries `schema_version: 1`; `presence` and per-detection `tracker_id`
 are additive fields. A tracker ID is `null` when tracking is disabled. Frame
 sequence resets on service restart. Binary sensor discovery reads `presence`;

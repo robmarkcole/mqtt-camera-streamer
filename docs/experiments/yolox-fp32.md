@@ -1,5 +1,8 @@
 # YOLOX Nano and Tiny ONNX
 
+> Historical experiment record. For the supported presets, see [model setup](../models.md).
+> Results are unchanged; commands use the current tool locations.
+
 The camera service accepts metadata-bearing **YOLOX Nano/Tiny FP32 ONNX** models
 alongside RF-DETR FP32/INT8. Model selection is automatic from embedded metadata;
 no detector-family flag or new runtime dependency is required. The Pi remains on
@@ -156,4 +159,4 @@ uv run --locked --no-dev scripts/benchmark_models.py --config config/pi.local.ym
 
 `scripts/evaluate_onnx.py` now selects either adapter from metadata, while retaining
 its explicit dataset label mapping and calibration-overlap checks. See the
-[INT8 guide](int8.md) for evaluation inputs, manifests and benchmark scope.
+[INT8 guide](rfdetr-int8.md) for evaluation inputs, manifests and benchmark scope.

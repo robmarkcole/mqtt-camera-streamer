@@ -1,11 +1,11 @@
-# Paths are relative to this configuration file.
+# Preset models live under the repository. Explicit model/storage paths are relative to this file.
 camera_id: usb_camera
 name: USB camera
 source: 0 # macOS camera indices can change; verify the external camera first
-model_path: ../models/rfdetr-nano/rfdetr-nano.onnx
+preset: speed # speed: YOLOX Nano FP32; accuracy: RF-DETR Nano static INT8.
 threshold: 0.5
 max_fps: 2
-onnx_threads: 2 # RF-DETR (default) or metadata-bearing YOLOX ONNX Runtime CPU inference threads.
+onnx_threads: 2 # ONNX Runtime CPU inference threads.
 stale_seconds: 30
 tracking:
   enabled: true

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import numpy as np
 import pytest
+from experiments.quantize_yolox import calibration_tensor
 from PIL import Image
 from quantize_onnx import ImageCalibrationReader, file_hash
-from quantize_yolox import calibration_tensor
 from yolox_detector import YOLOXDetector, preprocess_yolox
 
 FIXTURE = Path(__file__).parent / "fixtures/yolox-test.onnx"
@@ -33,8 +33,8 @@ def test_real_conv_quantization_keeps_float_heads_and_contract(
 ):
     onnx = pytest.importorskip("onnx", reason="Run with the optional quantize extra")
     from evaluate_onnx import evaluate
+    from experiments.quantize_yolox import quantize
     from onnx import helper, numpy_helper
-    from quantize_yolox import quantize
 
     original = onnx.load(FIXTURE)
     rng = np.random.default_rng(42)

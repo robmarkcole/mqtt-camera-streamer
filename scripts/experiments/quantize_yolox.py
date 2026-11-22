@@ -5,9 +5,13 @@ import importlib.metadata
 import json
 import logging
 import os
+import sys
 import tempfile
 from collections import Counter
 from pathlib import Path
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import numpy as np
 from PIL import Image

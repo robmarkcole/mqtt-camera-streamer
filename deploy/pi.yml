@@ -3,7 +3,7 @@ camera_id: pi_camera
 name: Pi camera
 # Replace using `v4l2-ctl --list-devices` and `ls -l /dev/v4l/by-id/`.
 source: /dev/v4l/by-id/usb-REPLACE_WITH_YOUR_CAMERA-video-index0
-model_path: /opt/mqtt-camera-streamer/models/rfdetr-nano/rfdetr-nano.onnx
+preset: speed # speed: YOLOX Nano FP32; accuracy: RF-DETR Nano static INT8.
 threshold: 0.5
 max_fps: 1
 onnx_threads: 2

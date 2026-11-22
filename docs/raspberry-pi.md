@@ -1,8 +1,8 @@
 # Headless Raspberry Pi deployment
 
 Target a **64-bit Raspberry Pi OS Lite** installation with a USB UVC/V4L2
-webcam. Start with RF-DETR Nano at a low inference rate, then benchmark on the
-actual board. The runtime uses ONNX Runtime with NumPy preprocessing; PyTorch,
+webcam. Choose `preset: speed` (YOLOX Nano FP32) or `preset: accuracy`
+(RF-DETR Nano static INT8), then benchmark on the actual board. The runtime uses ONNX Runtime with NumPy preprocessing; PyTorch,
 TorchVision, Transformers and the RF-DETR Python package are excluded. No desktop,
 Streamlit, Docker or Home Assistant installation is required on the Pi.
 
@@ -54,24 +54,26 @@ Do not enable the `export` extra on the Pi; it belongs on the model development
 computer. Torch-related entries remain in the lockfile for that optional extra,
 but are absent from this runtime installation.
 
-## 3. Copy the exported model
+## 3. Copy the selected preset model
 
-Export RF-DETR on the development computer rather than doing training on the Pi:
+Prepare the model on the development computer using [model setup](models.md).
+Keep export and quantization dependencies off the Pi. For Speed:
 
 ```sh
-uv run --extra export scripts/export-rfdetr-onnx.py
-scp models/rfdetr-nano/rfdetr-nano.onnx YOUR_ADMIN@YOUR_PI:/tmp/rfdetr-nano.onnx
+scp models/yolox-nano/yolox-nano.onnx models/yolox-nano/yolox-nano.json YOUR_ADMIN@YOUR_PI:/tmp/
 ```
 
 Then, on the Pi:
 
 ```sh
-sudo install -d -m 0755 /opt/mqtt-camera-streamer/models/rfdetr-nano
-sudo install -m 0644 /tmp/rfdetr-nano.onnx /opt/mqtt-camera-streamer/models/rfdetr-nano/rfdetr-nano.onnx
+sudo install -d -m 0755 /opt/mqtt-camera-streamer/models/yolox-nano
+sudo install -m 0644 /tmp/yolox-nano.onnx /tmp/yolox-nano.json /opt/mqtt-camera-streamer/models/yolox-nano/
 ```
 
-The official export embeds inference metadata. The benchmark records a SHA-256
-digest so reports from different machines can be matched to the same artifact.
+For Accuracy, copy `rfdetr-nano-int8-static.onnx` and its JSON manifest into
+`/opt/mqtt-camera-streamer/models/rfdetr-nano/` and set `preset: accuracy`.
+Presets resolve models under the installed repository, even when the configuration
+is in `/etc/mqtt-camera`. No model path is required in the normal configuration.
 
 ## 4. Configure the USB camera and MQTT
 
@@ -92,7 +94,8 @@ this avoids assuming the USB webcam is always index 0. Some webcams expose extra
 metadata/video nodes, so check which node produces images. After a camera moves
 to a new index during unplug/replug, a service restart resolves the link again.
 
-Set a unique `camera_id`, model path, and the broker's **LAN IP or DNS name**.
+Set a unique `camera_id`, choose `preset: speed` or `preset: accuracy`, and set
+the broker's **LAN IP or DNS name**.
 For the Home Assistant Mosquitto app, use port `1883` and a dedicated MQTT user's
 username/password in `mqtt.env`. Usernames `homeassistant` and `addons` are
 reserved by the app. These credentials are not a Home Assistant API token.
@@ -197,56 +200,12 @@ requirement on the Pi. See [images, RTSP, recording and SSH preview](images-and-
 for configuration and a laptop-to-Pi TCP tunnel. RTSP adds software H.264 encoding;
 measure sustained CPU/temperature with the full service running.
 
-## Measured Raspberry Pi 4 smoke test
+## Measured performance
 
-Tested on 2026-11-21 with code commit `21d7914`: Raspberry Pi 4 Model B Rev 1.2,
-4 GB RAM, 64-bit Debian 13.6, CPU around 1.5 GHz, and the exported RF-DETR Nano
-384 model. A desktop and RetroArch were running, so these are short shared-machine
-measurements, not dedicated headless throughput limits. Each row measured ten
-live webcam frames after two warmup frames, without MQTT/media output overhead.
-
-| Pipeline | ORT threads | Measured FPS | Frame p95 | Peak process RSS |
-| --- | ---: | ---: | ---: | ---: |
-| Detection + tracking | 2 | 0.35 | 3.35 s | 377 MiB |
-| Detection + tracking | 4 | 0.45 | 2.36 s | 381 MiB |
-| Detection + tracking + every-frame plate scans | 4 | 0.38 | 2.89 s | 401 MiB |
-
-Temperature reached about 51°C during these checks; `get_throttled` remained
-`0x0`. The installed runtime contained 42 packages, with no Torch, TorchVision,
-RF-DETR, Transformers or ONNX Python/export package. OCR scans averaged about
-363 ms per frame; general RF-DETR inference was the dominant cost.
-
-The Alcor USB webcam advertises 1280×720 MJPEG, but the current OpenCV capture
-path opened it at **640×480 YUYV, 30 FPS**. Check actual capture settings rather
-than assuming the advertised format is selected. The initial frame was black;
-warmed-up frames were normal. Camera resolution/FPS/codec controls are not yet
-exposed in the application configuration.
-
-Hardware acceptance checks also passed: live webcam JPEGs and predictions reached
-the local Home Assistant test instance through an authenticated MQTT SSH tunnel;
-JPEG files and relative SQLite paths were verified; a public pretrained plate
-sample produced one confirmed event and updated HA's plate/timestamp sensors;
-and a laptop decoded H.264 from the Pi through a TCP-only RTSP SSH tunnel.
-RTSP mode continued MQTT predictions and sent no MQTT images.
-
-At these rates this is an occasional detection/snapshot pipeline, not reliable
-fast-moving plate recognition. Benchmark representative footage before relying
-on it. Next performance experiments should measure explicit camera capture
-settings and a calibrated/accuracy-checked quantized or smaller model.
-
-Tests used a user-owned installation without sudo. No system services were enabled;
-boot behavior, long uptime and production-broker integration remain deployment
-checks. The systemd units were separately verified in a Linux ARM64 container.
-
-## INT8 follow-up
-
-The [INT8 experiment guide](int8.md) records a subsequent comparison on this Pi.
-Static INT8 improved detection/tracking from about 0.45 to 0.66 FPS and the
-pipeline with every-frame plate scans from about 0.42 to 0.58 FPS. Its model file
-was about 32 MiB versus 103 MiB FP32, with a 1.28-point mAP50–95 loss on the small
-calibration-disjoint diagnostic. FP32 remains the default pending evaluation on
-representative deployment footage; the guide includes quantization and comparison
-commands that keep all development tools off the Pi.
+The [two-preset guide](models.md) compares Speed and Accuracy on the physical Pi.
+The full [experiment record](experiments/README.md) retains the original smoke
+checks, FP32/INT8 comparisons and unsuccessful candidates. Short checks do not
+replace sustained workload, boot and recovery tests on your installation.
 
 ## Updates
 
@@ -262,10 +221,9 @@ sudo systemctl restart mqtt-camera
 
 If the unit file changed, install it again and run `systemctl daemon-reload`.
 Keep the prior revision/lockfile and model artifact for rollback. Preparation and
-the short Pi 4 smoke test above do not replace sustained workload, camera/boot
+the short Pi measurements do not replace sustained workload, camera/boot
 and recovery testing on the intended installation. [systemd reference](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html),
 [uv installation](https://docs.astral.sh/uv/getting-started/installation/).
 
-For a faster CPU alternative, see [YOLOX Nano/Tiny](yolox.md) for metadata-bearing
-ONNX exports, the physical Pi comparison and the measured quality tradeoff.
-Neither export extra belongs in the Pi runtime.
+Both presets use the same service, MQTT entities, tracking and plate pipeline.
+No export extra belongs in the Pi runtime.

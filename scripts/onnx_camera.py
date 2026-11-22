@@ -11,12 +11,13 @@ import threading
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal
 
 import numpy as np
 import supervision as sv
 import yaml
 from media import ImageConfig, MediaOutputs, StorageConfig
-from onnx_detector import load_detector
+from onnx_detector import MODEL_DIRECTORY, PRESETS, load_detector
 from paho.mqtt import client as mqtt
 from plates import PlateConfig, PlateProcessor
 from pydantic import (
@@ -74,7 +75,8 @@ class CameraConfig(BaseModel):
     camera_id: str = Field(pattern=r"^[a-zA-Z0-9_]+$")
     name: str = Field(min_length=1)
     source: int | str = 0
-    model_path: Path
+    preset: Literal["speed", "accuracy"] | None = None
+    model_path: Path | None = None
     threshold: float = Field(default=0.5, ge=0, le=1)
     max_fps: float = Field(default=2, gt=0)
     onnx_threads: int = Field(
@@ -91,6 +93,9 @@ class CameraConfig(BaseModel):
 
     @model_validator(mode="after")
     def valid_processing(self):
+        if self.model_path is None:
+            self.preset = self.preset or "speed"
+            self.model_path = MODEL_DIRECTORY / PRESETS[self.preset]["path"]
         if self.tracking.enabled and self.tracking.recovery_threshold > self.threshold:
             raise ValueError("tracking.recovery_threshold must not exceed threshold")
         unknown = self.presence.hold_seconds_by_class.keys() - self.classes.keys()
@@ -140,7 +145,9 @@ def load_config(path):
     config.model_path = (path.parent / config.model_path).resolve()
     config.storage.directory = (path.parent / config.storage.directory).resolve()
     if config.model_path.suffix.lower() != ".onnx":
-        raise ValueError("model_path must point to a metadata-bearing ONNX detector export")
+        raise ValueError(
+            "model_path must point to a metadata-bearing ONNX detector export"
+        )
     if config.stale_seconds <= 1 / config.max_fps:
         raise ValueError("stale_seconds must exceed the interval between predictions")
     return config
@@ -150,7 +157,7 @@ def select_classes(detections: sv.Detections, config):
     """Filter model output with Supervision before association or publication."""
     names = np.asarray(detections.data.get("class_name", []), dtype=str)
     if len(names) != len(detections):
-        raise ValueError("RF-DETR predictions must include class_name metadata")
+        raise ValueError("Predictions must include class_name metadata")
     wanted = {label for labels in config.classes.values() for label in labels}
     return detections[np.isin(names, list(wanted))]
 
@@ -182,6 +189,7 @@ def prediction_payload(detections: sv.Detections, config, sequence, processing_m
         "sequence": sequence,
         "predicted_at": datetime.now(UTC).isoformat(),
         "model": config.model_path.name,
+        "preset": config.preset,
         "processing_ms": round(processing_ms, 1),
         "counts": counts,
         "presence": {key: count > 0 for key, count in counts.items()},
@@ -494,8 +502,12 @@ class HomeAssistantPublisher:
 def create_predictor(config):
     """Load the same CPU predictor for the service and performance benchmark."""
     if not config.model_path.is_file():
-        raise FileNotFoundError(f"Export the model first: {config.model_path}")
-    predictor = load_detector(config.model_path, threads=config.onnx_threads)
+        raise FileNotFoundError(
+            f"Model not found: {config.model_path}. Prepare the selected preset (docs/models.md)."
+        )
+    predictor = load_detector(
+        config.model_path, threads=config.onnx_threads, preset=config.preset
+    )
     supported = set(predictor.class_names)
     requested = {label for labels in config.classes.values() for label in labels}
     if missing := requested - supported:
@@ -504,7 +516,7 @@ def create_predictor(config):
 
 
 def resolve_camera_source(source):
-    """Resolve stable Linux V4L2 symlinks to indexes accepted by RF-DETR."""
+    """Resolve stable Linux V4L2 symlinks to indexes accepted by the capture helper."""
     if not isinstance(source, str) or not source.startswith("/dev/"):
         return source
     device = Path(source).resolve(strict=True)
@@ -571,7 +583,7 @@ def run(config, max_frames=None):
                 if plates is not None:
                     if frame is None:
                         raise ValueError(
-                            "RF-DETR result is missing its RGB source_image"
+                            "Detector result is missing its RGB source_image"
                         )
                     events = [
                         dict(event, frame_sequence=sequence)

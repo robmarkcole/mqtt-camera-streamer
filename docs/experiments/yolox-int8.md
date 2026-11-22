@@ -1,5 +1,8 @@
 # YOLOX INT8 experiments on Raspberry Pi
 
+> Historical experiment record. For the supported presets, see [model setup](../models.md).
+> Results are unchanged; commands use the current tool locations.
+
 YOLOX Nano/Tiny can be statically quantized on a development computer with the
 existing optional `quantize` extra. The Pi only needs the normal locked runtime:
 ONNX Runtime CPU, Supervision, Roboflow ByteTrack, FastALPR and Home Assistant
@@ -24,17 +27,17 @@ manifests record calibration image hashes, excluded nodes, model hashes, setting
 and tool versions. Overwriting originals, already quantized sources and existing
 outputs is refused; the result must execute through the CPU adapter before saving.
 
-First export the metadata-bearing FP32 models using [the YOLOX guide](yolox.md).
+First export the metadata-bearing FP32 models using [the YOLOX guide](yolox-fp32.md).
 Use a separate development environment for quantization:
 
 ```sh
 # Tiny: MinMax retained most measured accuracy.
-UV_PROJECT_ENVIRONMENT=.venv-quantize uv run --locked --no-dev --extra quantize scripts/quantize_yolox.py \
+UV_PROJECT_ENVIRONMENT=.venv-quantize uv run --locked --no-dev --extra quantize scripts/experiments/quantize_yolox.py \
   --model models/yolox-tiny/yolox-tiny.onnx \
   --output models/yolox-tiny/yolox-tiny-int8-static.onnx \
   --calibration-list /path/to/calibration.txt --limit 96 --calibration-method minmax
 # Nano: percentile 99.99 was less damaging, but still lost substantial accuracy.
-UV_PROJECT_ENVIRONMENT=.venv-quantize uv run --locked --no-dev --extra quantize scripts/quantize_yolox.py \
+UV_PROJECT_ENVIRONMENT=.venv-quantize uv run --locked --no-dev --extra quantize scripts/experiments/quantize_yolox.py \
   --model models/yolox-nano/yolox-nano.onnx \
   --output models/yolox-nano/yolox-nano-int8-static.onnx \
   --calibration-list /path/to/calibration.txt --limit 96 --calibration-method percentile
@@ -130,5 +133,5 @@ uv run --locked --no-dev scripts/benchmark_models.py --config config/pi.local.ym
 
 Use `scripts/evaluate_onnx.py` with the same evaluation list, YOLO labels and COCO
 class-name mapping for each model; pass `--calibration-list` to enforce separation.
-See [the INT8 evaluation guide](int8.md) for dataset preparation and evaluator
+See [the INT8 evaluation guide](rfdetr-int8.md) for dataset preparation and evaluator
 commands. No additional runtime packages or changes to plate models are required.

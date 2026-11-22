@@ -27,4 +27,4 @@ predictor on representative frames at both tracking and detection thresholds.
 Do not update the helper copy implicitly when changing the optional exporter.
 
 After changing quantization helpers, also repeat labelled quality checks and native
-Pi comparisons from `docs/int8.md`; predictor parity alone does not validate INT8.
+Pi comparisons from `docs/experiments/rfdetr-int8.md`; predictor parity alone does not validate INT8.

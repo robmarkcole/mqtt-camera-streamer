@@ -185,6 +185,7 @@ def benchmark(config, frames=100, warmup=5, lpr_mode="configured"):
         "detector_backend": "onnxruntime-direct",
         "helpers_source": getattr(predictor, "helpers_source", "rfdetr-1.12.1"),
         "detector_family": getattr(predictor, "family", "rfdetr"),
+        "preset": config.preset,
         "measured_at": datetime.now(UTC).isoformat(),
         "platform": {
             "system": platform.system(),
@@ -255,6 +256,7 @@ def main():
         if args.model.suffix.lower() != ".onnx":
             parser.error("--model must point to an ONNX artifact")
         config.model_path = args.model.resolve()
+        config.preset = None  # Explicit experiment overrides bypass preset selection.
     if args.onnx_threads is not None:
         config.onnx_threads = args.onnx_threads
     if args.source is not None:

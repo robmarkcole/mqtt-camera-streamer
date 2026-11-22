@@ -7,7 +7,7 @@ The optional plate stage uses pretrained ONNX models on CPU:
 - **Pipeline:** FastALPR handles detector preprocessing, cropping and OCR.
 - **Tracking:** Roboflow ByteTrack and Supervision maintain plate tracks and data.
 
-RF-DETR continues to provide person/vehicle detection. The plate stage scans the
+The selected Speed or Accuracy preset provides person/vehicle detection. The plate stage scans the
 same original-resolution RGB source frame, converts it to FastALPR's BGR input,
 and does not depend on a vehicle being detected first. Plate tracker IDs are
 separate from person/vehicle tracker IDs; no vehicle-to-plate association is

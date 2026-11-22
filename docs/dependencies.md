@@ -79,7 +79,7 @@ artifact or vendored helpers; this is not a full COCO accuracy evaluation.
 
 The `quantize` extra adds ONNX and SymPy only for development-time quantization.
 It does not add Torch. Copy the resulting model to the Pi and keep the normal
-runtime installation without that extra. [Measured INT8 results and commands](int8.md)
+runtime installation without that extra. [Measured INT8 results and commands](experiments/rfdetr-int8.md)
 show the speed, file-size and quality tradeoff; the application still uses the
 same Supervision, tracking and ALPR path.
 
@@ -128,7 +128,7 @@ Relevant references: [RF-DETR ONNX adapter](https://github.com/roboflow/rf-detr/
 [OpenCV wheel variants](https://pypi.org/project/opencv-python-headless/),
 [PyAV](https://pyav.org/docs/stable/).
 
-YOLOX Nano/Tiny support adds no base runtime packages. Its attributed NumPy/OpenCV
+The Speed and Accuracy presets share the same runtime packages. Its attributed NumPy/OpenCV
 letterbox, decode and NMS helpers live in `scripts/vendor/yolox`; the optional
-`yolox-export` extra stays on the development computer. See [the YOLOX guide](yolox.md)
+`yolox-export` extra stays on the development computer. See [the YOLOX guide](models.md)
 for source provenance, export parity and Pi speed/quality measurements.

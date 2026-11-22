@@ -5,6 +5,7 @@ Apache license are retained in vendor/rfdetr.
 """
 
 import json
+from pathlib import Path
 from typing import Literal
 
 import numpy as np
@@ -14,6 +15,46 @@ from PIL import Image
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from vendor.rfdetr._resize import _bilinear_resize_half_pixel
 from vendor.rfdetr.decode import decode_detections
+
+MODEL_DIRECTORY = Path(__file__).resolve().parents[1] / "models"
+PRESETS = {
+    "speed": {
+        "path": "yolox-nano/yolox-nano.onnx",
+        "family": "yolox",
+        "variant": "yolox-nano",
+    },
+    "accuracy": {
+        "path": "rfdetr-nano/rfdetr-nano-int8-static.onnx",
+        "family": "rfdetr",
+        "variant": "rfdetr-nano",
+    },
+}
+
+
+def validate_preset(preset, props):
+    """Fail rather than silently running the wrong model/precision for a preset."""
+    if preset not in PRESETS:
+        raise ValueError("preset must be speed or accuracy")
+    spec = PRESETS[preset]
+    metadata = json.loads(props.get(f"{spec['family']}_inference", "{}"))
+    quantization = json.loads(props.get(f"{spec['family']}_quantization", "null"))
+    valid_precision = (
+        quantization is None
+        if preset == "speed"
+        else isinstance(quantization, dict)
+        and quantization.get("mode") == "static"
+        and quantization.get("precision") == "mixed-fp32-int8"
+    )
+    if (
+        not isinstance(metadata, dict)
+        or metadata.get("variant") != spec["variant"]
+        or metadata.get("input_dtype") != "float32"
+        or not valid_precision
+    ):
+        precision = "FP32" if preset == "speed" else "static INT8"
+        raise ValueError(
+            f"Preset {preset!r} requires {spec['variant']} {precision}; check model_path"
+        )
 
 
 class DetectionMetadata(BaseModel):
@@ -106,7 +147,7 @@ def create_cpu_session(model_path, threads=2):
     )
 
 
-def load_detector(model_path, threads=2):
+def load_detector(model_path, threads=2, *, preset=None):
     """Choose a validated adapter from embedded metadata; load the graph only once."""
     session = create_cpu_session(model_path, threads)
     props = session.get_modelmeta().custom_metadata_map
@@ -117,6 +158,8 @@ def load_detector(model_path, threads=2):
         raise ValueError(
             "Expected exactly one supported detector metadata contract (RF-DETR or YOLOX)"
         )
+    if preset is not None:
+        validate_preset(preset, props)
     if supported[0] == "yolox_inference":
         from yolox_detector import YOLOXDetector
 
