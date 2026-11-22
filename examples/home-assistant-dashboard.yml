@@ -1,5 +1,5 @@
-# Home Assistant raw dashboard configuration. Adjust live entity IDs for your camera name.
-# Stock-demo images: copy generated demo JPEGs into /config/www/mqtt-camera-demo/.
+# Built-in Home Assistant cards; adjust live entity IDs to your camera name.
+# Copy recorded demo JPEGs into /config/www/mqtt-camera-demo/.
 title: Camera
 views:
 - title: Live
@@ -100,7 +100,35 @@ views:
       entities:
       - entity: event.raspberry_pi_camera_vehicle_events
         name: Latest event
-      grid_options: &id001
+      grid_options:
+        columns: 12
+        rows: auto
+    - type: markdown
+      title: Latest vehicle observation
+      content: '{% set e = ''event.raspberry_pi_camera_vehicle_events'' %}
+
+        {% set kind = state_attr(e, ''event_type'') %}
+
+        {% if kind %}
+
+        **{{ kind | replace(''_'', '' '') | title }}**
+
+        {% if state_attr(e, ''plate'') %}Plate: **{{ state_attr(e, ''plate'') }}**{%
+        endif %}
+
+        {% if state_attr(e, ''plate_alias'') %}Watchlist: **{{ state_attr(e, ''plate_alias'')
+        }}**{% endif %}
+
+        {% if state_attr(e, ''vehicle_type'') %}Vehicle prediction: **{{ state_attr(e,
+        ''vehicle_type'') }}** · track {{ state_attr(e, ''vehicle_tracker_id'') }}{%
+        endif %}
+
+        {% else %}
+
+        No vehicle event observed yet on this camera.
+
+        {% endif %}'
+      grid_options:
         columns: 12
         rows: auto
     - type: heading
@@ -115,6 +143,10 @@ views:
         name: Recognised at
       - entity: sensor.raspberry_pi_camera_plate_confidence
         name: OCR confidence
+      - entity: sensor.raspberry_pi_camera_plate_alias
+        name: Watchlist alias
+      - entity: sensor.raspberry_pi_camera_vehicle_type
+        name: Vehicle type (prediction)
       grid_options:
         columns: 12
         rows: auto
@@ -156,7 +188,9 @@ views:
       image: /local/mqtt-camera-demo/plate_sample.jpg
       tap_action:
         action: none
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto
     - type: markdown
       content: '**Recorded stock-image demo — not live camera data.**
 
@@ -186,13 +220,17 @@ views:
 
 
         Source: ankandrew / FastALPR sample, MIT.'
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto
     - type: entities
       title: MQTT event received by Home Assistant
       entities:
       - entity: event.stock_plate_demo_vehicle_events
         name: Latest demo event
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto
   - type: grid
     cards:
     - type: heading
@@ -203,7 +241,9 @@ views:
       image: /local/mqtt-camera-demo/rome_parking.jpg
       tap_action:
         action: none
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto
     - type: markdown
       content: '**Recorded stock-image demo — not live camera data.**
 
@@ -225,10 +265,14 @@ views:
 
 
         Source: Adrian Pingstone / Wikimedia Commons, public domain.'
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto
     - type: entities
       title: MQTT event received by Home Assistant
       entities:
       - entity: event.stock_street_demo_1_vehicle_events
         name: Latest demo event
-      grid_options: *id001
+      grid_options:
+        columns: 12
+        rows: auto

@@ -98,3 +98,21 @@ The current broker and Home Assistant instance run on the Mac, which must remain
 available with Docker running. The Pi connects directly over LAN, without an SSH
 tunnel. The 20-second metric is service activation, not a sustained throughput or
 full boot-to-OCR latency guarantee.
+
+## Local vehicle events and stock-image demonstration
+
+On 2026-11-22 the Pi emitted all four vehicle/plate/watch event types through
+native Home Assistant MQTT discovery, with no new runtime dependency. Six
+repeated public stock frames produced four confirmed vehicle tracks and one
+5AU5341 plate/watch match in the FastALPR sample, and three vehicle tracks in the
+Rome image. Native HA history recorded 4 detected / 4 lost / 1 plate / 1 watch
+events for the first device and 3 detected / 3 lost for the second. Event IDs were
+unique; stock events used separate camera IDs and `demo: true`.
+
+The temporary inference demo finished; the live Speed systemd service remained
+enabled/running, with its watchlist unchanged and 42 Torch-free runtime packages.
+The two screenshots and public image licenses are included in the updated README.
+The foreground car's `truck` label is an actual Nano classification error, not a
+manually corrected result. See [demo reproduction](../stock-demo.md),
+[event semantics](../vehicle-events.md) and
+[the validation report](results/2026-11-22-vehicle-events.json).
