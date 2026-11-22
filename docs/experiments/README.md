@@ -17,6 +17,9 @@ the decision at that time.
 
 ## Latest matched comparison
 
+FPS measured on a **Raspberry Pi 4 Model B (4 GB)**; mAP evaluated separately on
+the development computer.
+
 | Candidate | Detection + tracking FPS | Every-frame OCR FPS | mAP50 (%) | mAP50–95 (%) |
 | --- | ---: | ---: | ---: | ---: |
 | YOLOX Nano FP32 — Speed | 4.33 | 1.75 | 64.92 | 46.91 |

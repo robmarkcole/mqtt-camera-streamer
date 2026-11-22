@@ -5,6 +5,9 @@ Supervision, Roboflow ByteTrack, configurable presence holds, optional pretraine
 plate detection/OCR and the same Home Assistant MQTT entities. No preset adds
 runtime dependencies or requires PyTorch on the Pi.
 
+FPS measured on a **Raspberry Pi 4 Model B (4 GB)**; mAP evaluated separately on
+the development computer.
+
 | Preset | Model | Detection + tracking FPS | Every-frame OCR FPS | mAP50 (%) |
 | --- | --- | ---: | ---: | ---: |
 | `speed` (new-config default) | YOLOX Nano FP32 | 4.33 | 1.75 | 64.92 |

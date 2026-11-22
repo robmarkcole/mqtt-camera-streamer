@@ -1,5 +1,12 @@
 # mqtt-camera-streamer
 
+The goal is simple: make useful camera data available over MQTT with as little
+setup, code and as few dependencies as practical, using hardware you already
+have. Configure a broker and camera, then run one headless Python process—no
+GPU, accelerator or separate inference server required. Keep the core small;
+tracking, plate recognition, RTSP and recording build on shared libraries rather
+than adding a separate service for each feature.
+
 Turn a USB webcam or RTSP source into Home Assistant detections, vehicle events
 and local license-plate recognition. Configure an MQTT broker, choose a camera
 and run one headless Python process on available CPU hardware.
@@ -129,6 +136,13 @@ is not proof of physical departure; held presence is a separate signal. OCR
 consensus, exact watchlist matching and cooldown prevent repeated plate triggers.
 
 ## Benchmark
+
+The recorded inference-speed benchmarks were measured on a **Raspberry Pi 4
+Model B (4 GB)** running 64-bit Debian 13.6, with four ONNX Runtime CPU threads.
+They are short tests on a shared machine, not performance guarantees for every
+Pi or workload. The reported mAP scores were evaluated separately on the
+development computer using a small diagnostic dataset. See the
+[comparison table and test conditions](docs/experiments/README.md#latest-matched-comparison).
 
 Use a representative recording to compare machines without opening a webcam or
 requiring an MQTT broker:
