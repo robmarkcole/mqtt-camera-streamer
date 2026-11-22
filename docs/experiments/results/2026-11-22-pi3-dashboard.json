@@ -1,0 +1,32 @@
+{
+  "updated_at": "2026-11-22T12:27:33.083601+00:00",
+  "dashboard": "mqtt-camera",
+  "view": "overview",
+  "camera": "camera.window_pi_camera_snapshot",
+  "old_pi4_references_in_live_view": false,
+  "stock_demo_view_unchanged": true,
+  "saved_config_verified": true,
+  "jpeg_resolution": [
+    640,
+    480
+  ],
+  "prediction_freshness_verified": true,
+  "plate_status": "No confirmed live plate yet; enabled local OCR is documented, and isolated public-sample plate check previously passed.",
+  "native_entities_verified": [
+    "binary_sensor.window_pi_camera_person_detected",
+    "binary_sensor.window_pi_camera_vehicle_detected",
+    "camera.window_pi_camera_snapshot",
+    "event.window_pi_camera_vehicle_events",
+    "sensor.window_pi_camera_detections",
+    "sensor.window_pi_camera_last_plate",
+    "sensor.window_pi_camera_person_count",
+    "sensor.window_pi_camera_plate_alias",
+    "sensor.window_pi_camera_plate_confidence",
+    "sensor.window_pi_camera_plate_recognized_at",
+    "sensor.window_pi_camera_vehicle_count",
+    "sensor.window_pi_camera_vehicle_type"
+  ],
+  "native_entity_count": 12,
+  "browser_verified": true,
+  "private_live_screenshot_committed": false
+}

@@ -202,6 +202,18 @@ Separate [Raspberry Pi 3 setup and benchmarks](docs/experiments/pi3.md) record a
 1 GB board with active undervoltage/throttling; those power-limited results are
 not a promise of performance on other Pi 3 installations.
 
+| Preset | Pi 3 detection + tracking FPS | Pi 4 detection + tracking FPS | Pi 3 every-frame OCR FPS | Pi 4 every-frame OCR FPS |
+| --- | ---: | ---: | ---: | ---: |
+| Speed — YOLOX Nano FP32 | 1.49 | 4.33 | 0.56 | 1.75 |
+| Accuracy — RF-DETR Nano static INT8 | 0.25 | 0.65 | 0.23 | 0.57 |
+
+This comparison uses four detector threads, two plate-model threads and identical
+model/recording hashes, with medians of two runs. The Pi 4 has 4 GB RAM; the Pi 3
+has 1 GB. Power conditions and background workloads differ. A separate two-thread
+Speed probe reached **1.89 detection + tracking FPS** on the Pi 3, so its live
+service uses two detector threads, a 1 FPS cap and plate scans every five seconds.
+Every-frame OCR above is a separate workload, not the live service's frame rate.
+
 Use a representative recording to compare machines without opening a webcam or
 requiring an MQTT broker:
 

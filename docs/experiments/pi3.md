@@ -48,10 +48,10 @@ Pi 3. Memory, power conditions, OS and background workload differ between boards
 
 ## Matched preset comparison
 
-| Preset | Pi 3 detection + tracking FPS | Pi 4 reference FPS | Pi 3 every-frame OCR FPS | Pi 4 reference OCR FPS | Pi 3 detection peak RSS |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Speed — YOLOX Nano FP32 | 1.49 | 4.33 | 0.56 | 1.75 | 269.2 MiB |
-| Accuracy — RF-DETR Nano static INT8 | 0.25 | 0.65 | 0.23 | 0.57 | 432.7 MiB |
+| Preset | Pi 3 detection + tracking FPS | Pi 4 reference FPS | Pi 3 every-frame OCR FPS | Pi 4 reference OCR FPS | Pi 3 detection peak RSS | Pi 4 detection peak RSS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Speed — YOLOX Nano FP32 | 1.49 | 4.33 | 0.56 | 1.75 | 269.2 MiB | 267.4 MiB |
+| Accuracy — RF-DETR Nano static INT8 | 0.25 | 0.65 | 0.23 | 0.57 | 432.7 MiB | 433.5 MiB |
 
 These are medians of two runs, rounded to two decimals. Peak RSS is the maximum
 of the detection runs; the smaller plate recording has a different memory
@@ -98,6 +98,25 @@ SSH with `systemctl --user status mqtt-camera.service`, replacing `status` with
 `stop` or `start` to manage it. Use
 `systemctl --user disable --now mqtt-camera.service` to stop it and disable boot
 startup. Configuration and broker credentials remain private on the Pi.
+
+## Home Assistant dashboard follow-up
+
+The `mqtt-camera` dashboard's **Live** view now uses `window_pi_camera` entities
+throughout, replacing the stopped Pi 4 camera. It shows the annotated MQTT image,
+current object labels/confidence/track IDs, counts, held presence, vehicle events,
+plate number/confidence/time/watchlist alias and vehicle-type prediction. The
+exported [dashboard example](../../examples/home-assistant-dashboard.yml) matches
+the saved configuration. Its Stock demo view remains explicitly separate.
+
+All twelve referenced native MQTT entities were present, the latest prediction
+was fresh and the HA camera proxy returned a 640×480 JPEG. The UI was checked
+after reloading its cached dashboard configuration. With no confirmed live plate
+yet, the plate status explains that OCR is enabled and awaiting repeated matching
+readings. The old Pi 4's historical public-sample plate is no longer displayed in
+the Live view. Live camera screenshots remain local rather than being committed;
+the README's public stock-image screenshots remain reproducible examples.
+
+See the [dashboard validation record](results/2026-11-22-pi3-dashboard.json).
 
 See the [raw validation/benchmark report](results/2026-11-22-pi3.json) for all runs,
 model/recording hashes, package versions, power flags and test scope. The setup
