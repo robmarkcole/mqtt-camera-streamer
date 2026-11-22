@@ -1,0 +1,102 @@
+{
+  "before_boot_id": "ca046c24-8704-4ec7-a15a-32bbe854c613",
+  "sample_validation": {
+    "context": "actual systemd user service, isolated public plate fixture",
+    "preset": "speed",
+    "ha_image_format": "JPEG",
+    "ha_resolution": [
+      518,
+      330
+    ],
+    "ha_plate": "5AU5341",
+    "ha_plate_timestamp": "2026-11-22T06:28:47+00:00",
+    "predictions": 9,
+    "confirmed_track_ids": 4,
+    "plate_events": 1,
+    "public_sample_plate": "5AU5341",
+    "systemd_exit_status": 0,
+    "discovery_topics": 8,
+    "mqtt_via_lan": true
+  },
+  "before_service": {
+    "MainPID": "23899",
+    "NRestarts": "0",
+    "ExecMainStartTimestampMonotonic": "597528333434",
+    "ActiveState": "active",
+    "SubState": "running",
+    "FragmentPath": "<pi-home>/.config/systemd/user/mqtt-camera.service",
+    "DropInPaths": "",
+    "UnitFileState": "enabled",
+    "ActiveEnterTimestamp": "Sun 2026-11-22 06:30:32 GMT",
+    "ActiveEnterTimestampMonotonic": "597528334832"
+  },
+  "before_ha_camera": {
+    "entity_id": "camera.raspberry_pi_camera_snapshot",
+    "format": "JPEG",
+    "resolution": [
+      640,
+      480
+    ],
+    "bytes": 10929
+  },
+  "broker": "existing development Mosquitto/Home Assistant on Mac, direct LAN access",
+  "reboot_requested_at": "2026-11-22T06:32:05.406776+00:00",
+  "reboot_request_returncode": 1,
+  "after_boot_id": "e10eb4e3-8c0e-46a6-9c3c-b789a4bf912f",
+  "reboot_verified": true,
+  "mqtt_online_observed_before_verification_ssh": true,
+  "after_service": {
+    "MainPID": "1297",
+    "NRestarts": "0",
+    "ExecMainStartTimestampMonotonic": "20190587",
+    "ActiveState": "active",
+    "SubState": "running",
+    "FragmentPath": "<pi-home>/.config/systemd/user/mqtt-camera.service",
+    "DropInPaths": "",
+    "UnitFileState": "enabled",
+    "ActiveEnterTimestamp": "Sun 2026-11-22 06:34:48 GMT",
+    "ActiveEnterTimestampMonotonic": "20205324"
+  },
+  "after_ha_camera": {
+    "entity_id": "camera.raspberry_pi_camera_snapshot",
+    "format": "JPEG",
+    "resolution": [
+      640,
+      480
+    ],
+    "bytes": 10492
+  },
+  "fresh_predictions_after_boot": 5,
+  "fresh_snapshots_after_boot": 4,
+  "plate_models_loaded_after_boot": true,
+  "linger": true,
+  "elapsed_since_initial_reboot_request_seconds": 195.49,
+  "reboot_method": "User performed administrator-authorised reboot after noninteractive systemctl request was rejected",
+  "service_active_seconds_after_boot": 20.205324,
+  "runtime": {
+    "preset": "speed",
+    "model": "yolox-nano.onnx",
+    "max_fps": 1.0,
+    "onnx_threads": 4,
+    "tracking_enabled": true,
+    "presence_hold_seconds": 10.0,
+    "plate_recognition_enabled": true,
+    "plate_interval_seconds": 2.0,
+    "plate_minimum_readings": 2,
+    "plate_cooldown_seconds": 30,
+    "mqtt_port": 18883,
+    "mqtt_tunnel_required": false,
+    "image_transport": "mqtt",
+    "runtime_packages": 42,
+    "training_packages_absent": true,
+    "installed_unit_sha256": "1512db9c9ac759c76fce4c19d367117a2d89859fa6f9c0ac020464a11f3b3599",
+    "app_code_commit": "75322acb574328fce049531c84f260700809d859"
+  },
+  "recorded_at": "2026-11-22T06:37:58.205295+00:00",
+  "live_service_left_running": true,
+  "unit_template": "deploy/mqtt-camera-user.service",
+  "unit_validation": "systemd-analyze --user verify passed on the Pi",
+  "broker_dependency": "Development Mosquitto/Home Assistant on the Mac over authenticated LAN MQTT; Mac and Docker must remain available; no SSH tunnel required",
+  "test_device_removed": true,
+  "archive_note": "Actual systemd deployment and reboot validation on 2026-11-22. Private home/checkout paths redacted; no credentials or webcam images included."
+}

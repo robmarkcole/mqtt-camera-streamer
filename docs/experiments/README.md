@@ -78,3 +78,23 @@ notices or model-specific preprocessing to reduce line count. Both presets need
 those contracts. Fine-tuning and model updates require new labelled quality checks
 and representative Pi measurements; the historical numbers are not promises for
 new artifacts.
+
+## Speed deployment and reboot validation
+
+On 2026-11-22 Speed was deployed as a boot-persistent systemd user service on
+`mypi`, with lingering, tracking, plate recognition and authenticated LAN MQTT.
+An isolated nine-frame public-sample test confirmed four vehicle tracks and one
+plate event through the actual service; its test Home Assistant device was removed.
+
+After an administrator-authorised reboot, the boot ID changed and the service
+started automatically about 20 seconds after boot. It remained enabled/running
+with zero restarts. Fresh Speed predictions and 640×480 JPEGs reached Home
+Assistant, and the current-boot journal confirmed both plate models loaded. The
+runtime stayed at 42 packages without Torch/training/export dependencies. See
+[the deployment report](results/2026-11-22-systemd.json) and
+[user-service instructions](../raspberry-pi.md#alternative-boot-persistent-user-service).
+
+The current broker and Home Assistant instance run on the Mac, which must remain
+available with Docker running. The Pi connects directly over LAN, without an SSH
+tunnel. The 20-second metric is service activation, not a sustained throughput or
+full boot-to-OCR latency guarantee.

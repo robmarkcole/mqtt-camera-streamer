@@ -191,6 +191,70 @@ broker is reachable; the application times out and systemd retries. Ensure the
 Pi has no second process holding the webcam. Tune journald retention for the
 storage capacity of the device.
 
+## Alternative: boot-persistent user service
+
+For a home-directory installation at `~/mqtt-camera-streamer`, use the supplied
+user unit instead of the `/opt` system unit. It expects uv at `~/.local/bin/uv`,
+uses the same locked environment and runs as the ordinary camera/video-group
+user. Only one service should own the USB webcam.
+
+On the Pi, as that user:
+
+```sh
+cd ~/mqtt-camera-streamer
+~/.local/bin/uv sync --locked --no-dev
+install -d -m 0700 ~/.config/mqtt-camera
+install -d ~/.config/systemd/user
+install -m 0600 deploy/pi.yml ~/.config/mqtt-camera/config.yml
+install -m 0600 deploy/mqtt.env.example ~/.config/mqtt-camera/mqtt.env
+# Edit config and broker credentials before starting:
+nano ~/.config/mqtt-camera/config.yml
+nano ~/.config/mqtt-camera/mqtt.env
+```
+
+Select `preset: speed`, the webcam's stable device path, `tracking.enabled: true`
+and `lpr.enabled: true`. Point `mqtt.broker` directly at a reachable LAN broker;
+loopback refers to the Pi itself. For storage, use a writable path such as
+`/home/YOUR_USER/.local/state/mqtt-camera/captures`, rather than `/var/lib`.
+Keep `max_fps: 1` initially and cache plate weights under the same user:
+
+```sh
+~/.local/bin/uv run --locked --no-dev scripts/download-plate-models.py --config ~/.config/mqtt-camera/config.yml
+install -m 0644 deploy/mqtt-camera-user.service ~/.config/systemd/user/mqtt-camera.service
+loginctl enable-linger "$USER"
+systemctl --user daemon-reload
+systemd-analyze --user verify ~/.config/systemd/user/mqtt-camera.service
+systemctl --user enable --now mqtt-camera.service
+systemctl --user status mqtt-camera.service
+```
+
+Lingering starts the user manager at boot and keeps it running after logout.
+`loginctl show-user "$USER" -p Linger` must report `yes`; enabling it may require
+administrator authentication on other installations. The unit uses offline/no-sync
+uv execution, private environment-file permissions and automatic restart after
+errors. The restart policy also handles a network or USB device not ready at boot.
+It neither installs dependencies nor requires an SSH tunnel during startup.
+
+Use `systemctl --user restart mqtt-camera.service` after editing the config,
+`systemctl --user stop mqtt-camera.service` to release the camera, and
+`systemctl --user disable --now mqtt-camera.service` to remove boot startup.
+Read current-boot logs with:
+
+```sh
+journalctl -b _SYSTEMD_USER_UNIT=mqtt-camera.service _UID="$(id -u)" -f
+```
+
+To check boot recovery, reboot with administrator authorization, reconnect and
+check `systemctl --user is-enabled mqtt-camera.service`,
+`systemctl --user is-active mqtt-camera.service`, the current-boot journal and
+fresh Home Assistant predictions/snapshots. A running service before a reboot
+alone does not establish reboot recovery.
+
+The current development deployment uses Mosquitto/Home Assistant on the Mac over
+LAN. That Mac and Docker must remain running; it is not a Pi-hosted broker.
+For standalone production use, configure the permanent Home Assistant/Mosquitto
+host and port instead. The Home Assistant Mosquitto app normally uses port 1883.
+
 ## Optional RTSP and SSH preview
 
 MQTT snapshots are enabled by default and appear in Home Assistant without extra
@@ -227,3 +291,9 @@ and recovery testing on the intended installation. [systemd reference](https://w
 
 Both presets use the same service, MQTT entities, tracking and plate pipeline.
 No export extra belongs in the Pi runtime.
+
+For the home-directory user service, use `systemctl --user stop mqtt-camera.service`,
+update the reviewed checkout, run `~/.local/bin/uv sync --locked --no-dev` there,
+then `systemctl --user start mqtt-camera.service`. If its unit template changes,
+copy it back to `~/.config/systemd/user/mqtt-camera.service` and run
+`systemctl --user daemon-reload` before starting.
