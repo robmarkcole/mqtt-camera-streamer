@@ -18,6 +18,8 @@ threads, excluding MQTT/media output costs. Accuracy uses a 32-image COCO128
 train2017 diagnostic, separate from calibration but not the models' original
 training. They are not deployment guarantees. The [experiment record](experiments/README.md)
 keeps full protocols, raw reports and all candidates, including Tiny and YOLOX INT8.
+The [Pi 3 follow-up](experiments/pi3.md) records setup and power-limited results
+on a 1 GB board; the table above remains the Pi 4 comparison.
 
 ## Select and run
 

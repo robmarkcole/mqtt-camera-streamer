@@ -34,11 +34,11 @@ The image selection and uv installer are described in the linked official docs.
 
 ## 2. Install the reviewed application and environment
 
-The implementation currently lives on `feat/onnx-home-assistant`; use a reviewed
-release or commit when available. The commands below select that feature branch:
+The ONNX runtime is on the default branch, `master`. Use a reviewed release or
+commit for a reproducible installation; the commands below select `master`:
 
 ```sh
-sudo git clone --branch feat/onnx-home-assistant https://github.com/robmarkcole/mqtt-camera-streamer.git /opt/mqtt-camera-streamer
+sudo git clone --branch master https://github.com/robmarkcole/mqtt-camera-streamer.git /opt/mqtt-camera-streamer
 sudo useradd --system --user-group --create-home --home-dir /var/lib/mqtt-camera --shell /usr/sbin/nologin mqtt-camera
 sudo usermod -aG video mqtt-camera
 sudo install -d -o mqtt-camera -g mqtt-camera -m 0750 /var/cache/mqtt-camera

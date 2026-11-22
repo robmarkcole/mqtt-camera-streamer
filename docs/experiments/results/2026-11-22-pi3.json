@@ -1,0 +1,1132 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-22T12:03:23.954919+00:00",
+  "default_branch": "master",
+  "deployed_commit": "4629998dcdf4f2acc889f175a148ed9cc7912216",
+  "default_branch_review": "PR #46 merged: both ONNX presets, tracking/holds, local plate recognition, Home Assistant MQTT/events, media/RTSP, uv/systemd, experiment records, MIT project license; deployment guide still referenced feature branch and is corrected in this follow-up.",
+  "hardware": {
+    "model": "Raspberry Pi 3 Model B Rev 1.2",
+    "kernel": "6.18.50+rpt-rpi-v8",
+    "machine": "aarch64",
+    "os_release": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.7\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+    "memory": "MemTotal:         926764 kB\nMemFree:          107068 kB\nMemAvailable:     422504 kB\nBuffers:           17436 kB\nCached:           328840 kB\nSwapCached:            0 kB\nActive:           578652 kB\nInactive:         124856 kB\nActive(anon):     361056 kB\nInactive(anon):        0 kB\nActive(file):     217596 kB\nInactive(file):   124856 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:        926716 kB\nSwapFree:         926716 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:                48 kB\nWriteback:             0 kB\nAnonPages:        357492 kB\nMapped:           141000 kB\nShmem:              3900 kB\nKReclaimable:      36336 kB\nSlab:              62420 kB\nSReclaimable:      36336 kB\nSUnreclaim:        26084 kB\nKernelStack:        2740 kB\nPageTables:         3700 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     1390096 kB\nCommitted_AS:    1060808 kB\nVmallocTotal:   261087232 kB\nVmallocUsed:       17588 kB\nVmallocChunk:          0 kB\nPercpu:              720 kB\nCmaTotal:         262144 kB\nCmaFree:           30512 kB\nBalloon:               0 kB\n",
+    "governor": "ondemand",
+    "app_revision": "4629998dcdf4f2acc889f175a148ed9cc7912216",
+    "deployment_method": "git archive of default branch master; git not installed on target",
+    "uv": "uv 0.13.9 (aarch64-unknown-linux-gnu)",
+    "camera_formats": "Format Video Capture:\n\tWidth/Height      : 640/480\n\tPixel Format      : 'YUYV' (YUYV 4:2:2)\n\tField             : None\n\tBytes per Line    : 1280\n\tSize Image        : 614400\n\tColorspace        : sRGB\n\tTransfer Function : Rec. 709\n\tYCbCr/HSV Encoding: ITU-R 601\n\tQuantization      : Default (maps to Limited Range)\n\tFlags             : \n",
+    "initial_power_status": "0x50000",
+    "initial_temperature_c": 34.9
+  },
+  "power_limited": true,
+  "power_note": "Historical flags 0x50000 at connection; active undervoltage/throttling 0x50005 under inference. User explicitly chose to continue with this supply. Results do not establish properly powered Pi 3 capability.",
+  "detection_tracking_4_threads": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "off",
+    "frames_per_run": 20,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "2bca2f45e1e800e95ae4f3c729825c9ece6ee5518787bbc8a80ce1b068c70b70",
+    "source": "work/pi3/input/people-walking.mp4",
+    "source_sha256": "822671fb20ed13ef9ead91d1f3678863b5aa078dd3b2ed45953fda39a61c979d",
+    "models": [
+      {
+        "model": "yolox-nano.onnx",
+        "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "model_bytes": 3715036,
+        "quantization": null,
+        "median_fps": 1.487,
+        "median_frame_p95_ms": 736.1880000000001,
+        "max_peak_rss_mib": 269.2,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T11:52:17.471075+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 479.259,
+            "plate_load_ms": null,
+            "elapsed_seconds": 12.876,
+            "pipeline_fps": 1.553,
+            "cpu_seconds": 33.551,
+            "cpu_core_equivalents": 2.606,
+            "peak_process_rss_mib": 269.2,
+            "health_before": {
+              "temperature_c": 42.932,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 46.16,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 619.527,
+                "p50_ms": 698.53,
+                "p95_ms": 711.635,
+                "min_ms": 399.83,
+                "max_ms": 742.343
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 24.226,
+                "p50_ms": 26.401,
+                "p95_ms": 28.176,
+                "min_ms": 13.233,
+                "max_ms": 28.907
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 643.766,
+                "p50_ms": 724.645,
+                "p95_ms": 739.426,
+                "min_ms": 414.263,
+                "max_ms": 769.13
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T11:56:09.419713+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 295.256,
+            "plate_load_ms": null,
+            "elapsed_seconds": 14.071,
+            "pipeline_fps": 1.421,
+            "cpu_seconds": 36.345,
+            "cpu_core_equivalents": 2.583,
+            "peak_process_rss_mib": 268.9,
+            "health_before": {
+              "temperature_c": 51.54,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 51.54,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 676.524,
+                "p50_ms": 700.361,
+                "p95_ms": 704.896,
+                "min_ms": 564.648,
+                "max_ms": 746.138
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 26.982,
+                "p50_ms": 27.787,
+                "p95_ms": 29.334,
+                "min_ms": 23.337,
+                "max_ms": 29.545
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 703.52,
+                "p50_ms": 726.568,
+                "p95_ms": 732.95,
+                "min_ms": 591.135,
+                "max_ms": 773.982
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.2475,
+        "median_frame_p95_ms": 4470.182,
+        "max_peak_rss_mib": 432.7,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "preset": null,
+            "measured_at": "2026-11-22T11:54:00.764813+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 3280.869,
+            "plate_load_ms": null,
+            "elapsed_seconds": 81.031,
+            "pipeline_fps": 0.247,
+            "cpu_seconds": 277.433,
+            "cpu_core_equivalents": 3.424,
+            "peak_process_rss_mib": 432.7,
+            "health_before": {
+              "temperature_c": 45.084,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 54.768,
+              "throttle_hex": "0x50000"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 4038.874,
+                "p50_ms": 4000.223,
+                "p95_ms": 4435.637,
+                "min_ms": 3222.185,
+                "max_ms": 4481.578
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 12.657,
+                "p50_ms": 11.291,
+                "p95_ms": 21.103,
+                "min_ms": 10.522,
+                "max_ms": 21.533
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 4051.541,
+                "p50_ms": 4011.904,
+                "p95_ms": 4456.16,
+                "min_ms": 3232.793,
+                "max_ms": 4492.33
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "preset": null,
+            "measured_at": "2026-11-22T11:55:43.977036+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 1934.125,
+            "plate_load_ms": null,
+            "elapsed_seconds": 80.554,
+            "pipeline_fps": 0.248,
+            "cpu_seconds": 272.551,
+            "cpu_core_equivalents": 3.383,
+            "peak_process_rss_mib": 432.2,
+            "health_before": {
+              "temperature_c": 51.54,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 55.844,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 4010.309,
+                "p50_ms": 4054.745,
+                "p95_ms": 4463.213,
+                "min_ms": 3393.291,
+                "max_ms": 4602.478
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 17.354,
+                "p50_ms": 20.836,
+                "p95_ms": 22.452,
+                "min_ms": 10.607,
+                "max_ms": 23.511
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 4027.674,
+                "p50_ms": 4070.654,
+                "p95_ms": 4484.204,
+                "min_ms": 3414.567,
+                "max_ms": 4624.604
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "every_frame_alpr_4_threads": {
+    "schema_version": 1,
+    "onnx_threads": 4,
+    "lpr": "every-frame",
+    "frames_per_run": 16,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "2bca2f45e1e800e95ae4f3c729825c9ece6ee5518787bbc8a80ce1b068c70b70",
+    "source": "work/pi3/input/plate-video-pi4.mp4",
+    "source_sha256": "7c287de86d0f7adab277dfbfc9ec02e8592d988285b469a795193d69d6885370",
+    "models": [
+      {
+        "model": "yolox-nano.onnx",
+        "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "model_bytes": 3715036,
+        "quantization": null,
+        "median_fps": 0.5569999999999999,
+        "median_frame_p95_ms": 1981.712,
+        "max_peak_rss_mib": 245.7,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T11:56:51.506913+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/plate-video-pi4.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 295.063,
+            "plate_load_ms": 834.702,
+            "elapsed_seconds": 27.755,
+            "pipeline_fps": 0.576,
+            "cpu_seconds": 67.07,
+            "cpu_core_equivalents": 2.416,
+            "peak_process_rss_mib": 245.7,
+            "health_before": {
+              "temperature_c": 51.54,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 51.54,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 493.522,
+                "p50_ms": 394.465,
+                "p95_ms": 652.507,
+                "min_ms": 356.12,
+                "max_ms": 658.128
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 8.955,
+                "p50_ms": 10.46,
+                "p95_ms": 10.603,
+                "min_ms": 5.545,
+                "max_ms": 10.652
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 1232.175,
+                "p50_ms": 1314.224,
+                "p95_ms": 1321.644,
+                "min_ms": 708.337,
+                "max_ms": 1325.538
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 1734.676,
+                "p50_ms": 1721.083,
+                "p95_ms": 1978.885,
+                "min_ms": 1091.61,
+                "max_ms": 1994.272
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T12:00:40.253319+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/plate-video-pi4.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 295.86,
+            "plate_load_ms": 832.04,
+            "elapsed_seconds": 29.743,
+            "pipeline_fps": 0.538,
+            "cpu_seconds": 71.15,
+            "cpu_core_equivalents": 2.392,
+            "peak_process_rss_mib": 245.7,
+            "health_before": {
+              "temperature_c": 56.382,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 53.692,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 531.934,
+                "p50_ms": 538.722,
+                "p95_ms": 686.281,
+                "min_ms": 358.353,
+                "max_ms": 761.308
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 10.326,
+                "p50_ms": 10.561,
+                "p95_ms": 10.989,
+                "min_ms": 5.621,
+                "max_ms": 11.418
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 1316.659,
+                "p50_ms": 1344.183,
+                "p95_ms": 1361.253,
+                "min_ms": 1200.483,
+                "max_ms": 1378.406
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 1858.939,
+                "p50_ms": 1854.666,
+                "p95_ms": 1984.539,
+                "min_ms": 1713.337,
+                "max_ms": 1991.938
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      },
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+        "model_bytes": 33922625,
+        "quantization": {
+          "mode": "static",
+          "precision": "mixed-fp32-int8",
+          "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+          "recipe": "rfdetr-1.12.1-linear-only"
+        },
+        "median_fps": 0.23249999999999998,
+        "median_frame_p95_ms": 4985.9065,
+        "max_peak_rss_mib": 347.9,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "preset": null,
+            "measured_at": "2026-11-22T11:58:21.505909+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/plate-video-pi4.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 2056.187,
+            "plate_load_ms": 809.726,
+            "elapsed_seconds": 65.904,
+            "pipeline_fps": 0.243,
+            "cpu_seconds": 210.057,
+            "cpu_core_equivalents": 3.187,
+            "peak_process_rss_mib": 347.9,
+            "health_before": {
+              "temperature_c": 52.078,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 56.92,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 2935.977,
+                "p50_ms": 3094.699,
+                "p95_ms": 3517.029,
+                "min_ms": 2238.435,
+                "max_ms": 4046.947
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 13.065,
+                "p50_ms": 14.77,
+                "p95_ms": 14.901,
+                "min_ms": 7.793,
+                "max_ms": 14.943
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 1169.949,
+                "p50_ms": 1342.599,
+                "p95_ms": 1349.232,
+                "min_ms": 728.512,
+                "max_ms": 1351.086
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 4119.01,
+                "p50_ms": 4451.023,
+                "p95_ms": 4790.139,
+                "min_ms": 2974.754,
+                "max_ms": 5066.053
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": {
+              "mode": "static",
+              "precision": "mixed-fp32-int8",
+              "source_sha256": "2a5f36b0e0a255fb2074c75b91b17ecef1f3ae78e0cdcd4b2e2f7688945972ea",
+              "recipe": "rfdetr-1.12.1-linear-only"
+            },
+            "model_bytes": 33922625,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "rfdetr-1.12.1",
+            "detector_family": "rfdetr",
+            "preset": null,
+            "measured_at": "2026-11-22T11:59:57.043441+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/plate-video-pi4.mp4",
+            "model": "rfdetr-nano-int8-static.onnx",
+            "model_sha256": "49aab8e5af337c003afb447d81caad7a9cb19bbd4e030f2848e0d6be46e1db4a",
+            "onnx_threads": 4,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "every-frame",
+            "lpr_enabled": true,
+            "lpr_models": {
+              "detector": "yolo-v9-t-384-license-plate-end2end",
+              "ocr": "cct-xs-v2-global-model"
+            },
+            "warmup_frames": 3,
+            "measured_frames": 16,
+            "source_exhausted": false,
+            "detector_load_ms": 1971.244,
+            "plate_load_ms": 848.453,
+            "elapsed_seconds": 72.005,
+            "pipeline_fps": 0.222,
+            "cpu_seconds": 229.928,
+            "cpu_core_equivalents": 3.193,
+            "peak_process_rss_mib": 346.7,
+            "health_before": {
+              "temperature_c": 55.844,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 57.996,
+              "throttle_hex": "0x50005"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 16,
+                "mean_ms": 3223.075,
+                "p50_ms": 3103.806,
+                "p95_ms": 4130.551,
+                "min_ms": 2464.738,
+                "max_ms": 4356.893
+              },
+              "tracking": {
+                "samples": 16,
+                "mean_ms": 14.784,
+                "p50_ms": 14.763,
+                "p95_ms": 15.065,
+                "min_ms": 14.594,
+                "max_ms": 15.122
+              },
+              "lpr_scan": {
+                "samples": 16,
+                "mean_ms": 1262.423,
+                "p50_ms": 1345.82,
+                "p95_ms": 1353.083,
+                "min_ms": 942.085,
+                "max_ms": 1353.303
+              },
+              "frame_total": {
+                "samples": 16,
+                "mean_ms": 4500.304,
+                "p50_ms": 4467.383,
+                "p95_ms": 5181.674,
+                "min_ms": 3825.503,
+                "max_ms": 5313.763
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "speed_thread_probe_2_threads": {
+    "schema_version": 1,
+    "onnx_threads": 2,
+    "lpr": "off",
+    "frames_per_run": 20,
+    "warmup_per_run": 3,
+    "repeats": 2,
+    "order": "forward, reverse on alternate repeats",
+    "config_sha256": "2bca2f45e1e800e95ae4f3c729825c9ece6ee5518787bbc8a80ce1b068c70b70",
+    "source": "work/pi3/input/people-walking.mp4",
+    "source_sha256": "822671fb20ed13ef9ead91d1f3678863b5aa078dd3b2ed45953fda39a61c979d",
+    "models": [
+      {
+        "model": "yolox-nano.onnx",
+        "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+        "model_bytes": 3715036,
+        "quantization": null,
+        "median_fps": 1.893,
+        "median_frame_p95_ms": 544.8054999999999,
+        "max_peak_rss_mib": 268.7,
+        "runs": [
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T12:01:06.596295+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 2,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 294.548,
+            "plate_load_ms": null,
+            "elapsed_seconds": 10.541,
+            "pipeline_fps": 1.897,
+            "cpu_seconds": 19.27,
+            "cpu_core_equivalents": 1.828,
+            "peak_process_rss_mib": 268.6,
+            "health_before": {
+              "temperature_c": 52.078,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 56.382,
+              "throttle_hex": "0x50000"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 512.988,
+                "p50_ms": 510.892,
+                "p95_ms": 523.954,
+                "min_ms": 509.444,
+                "max_ms": 532.644
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 14.054,
+                "p50_ms": 14.343,
+                "p95_ms": 14.898,
+                "min_ms": 12.06,
+                "max_ms": 15.939
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 527.051,
+                "p50_ms": 525.276,
+                "p95_ms": 537.849,
+                "min_ms": 522.902,
+                "max_ms": 546.96
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          },
+          {
+            "schema_version": 2,
+            "quantization": null,
+            "model_bytes": 3715036,
+            "detector_backend": "onnxruntime-direct",
+            "helpers_source": "yolox-6ddff4824372906469a7fae2dc3206c7aa4bbaee",
+            "detector_family": "yolox",
+            "preset": null,
+            "measured_at": "2026-11-22T12:01:25.937804+00:00",
+            "platform": {
+              "system": "Linux",
+              "machine": "aarch64",
+              "python": "3.12.16"
+            },
+            "versions": {
+              "supervision": "0.32.0",
+              "trackers": "2.7.0",
+              "onnxruntime": "1.32.0",
+              "fast-alpr": "0.4.0",
+              "numpy": "2.5.5",
+              "opencv-python-headless": "5.1.0.95",
+              "av": "19.0.2"
+            },
+            "source": "work/pi3/input/people-walking.mp4",
+            "model": "yolox-nano.onnx",
+            "model_sha256": "6695650ad589605a45c7f75e34509d2a1fdebf820a6b613dc961f79c7af004e5",
+            "onnx_threads": 2,
+            "configured_max_fps": 1.0,
+            "lpr_mode": "off",
+            "lpr_enabled": false,
+            "lpr_models": null,
+            "warmup_frames": 3,
+            "measured_frames": 20,
+            "source_exhausted": false,
+            "detector_load_ms": 295.666,
+            "plate_load_ms": null,
+            "elapsed_seconds": 10.59,
+            "pipeline_fps": 1.889,
+            "cpu_seconds": 19.31,
+            "cpu_core_equivalents": 1.823,
+            "peak_process_rss_mib": 268.7,
+            "health_before": {
+              "temperature_c": 53.692,
+              "throttle_hex": "0x50000"
+            },
+            "health_after": {
+              "temperature_c": 57.996,
+              "throttle_hex": "0x50000"
+            },
+            "stages": {
+              "source_and_detection": {
+                "samples": 20,
+                "mean_ms": 515.513,
+                "p50_ms": 510.863,
+                "p95_ms": 537.969,
+                "min_ms": 508.863,
+                "max_ms": 562.464
+              },
+              "tracking": {
+                "samples": 20,
+                "mean_ms": 13.978,
+                "p50_ms": 14.173,
+                "p95_ms": 14.774,
+                "min_ms": 12.023,
+                "max_ms": 15.908
+              },
+              "lpr_scan": null,
+              "frame_total": {
+                "samples": 20,
+                "mean_ms": 529.499,
+                "p50_ms": 525.07,
+                "p95_ms": 551.762,
+                "min_ms": 522.769,
+                "max_ms": 577.186
+              }
+            },
+            "scope": "capture/decode + detector preprocessing/inference/postprocessing + tracking + optional plate scans; no MQTT, JPEG encoding, recording, RTSP output, annotations, or application rate limit"
+          }
+        ]
+      }
+    ]
+  },
+  "pi4_reference": {
+    "report": "2026-11-21-yolox-int8.json",
+    "hardware": "Raspberry Pi 4 Model B Rev 1.2, 4 GB, 64-bit Debian 13.6; desktop and RetroArch left running",
+    "same_recording_and_model_hashes_verified": true,
+    "models": [
+      {
+        "model": "rfdetr-nano-int8-static.onnx",
+        "detector_threads": 4,
+        "detection_tracking_fps": 0.6545000000000001,
+        "every_frame_alpr_fps": 0.573
+      },
+      {
+        "model": "yolox-nano.onnx",
+        "detector_threads": 4,
+        "detection_tracking_fps": 4.3294999999999995,
+        "every_frame_alpr_fps": 1.754
+      }
+    ],
+    "limitation": "Historical earlier code and different OS/background workload/power conditions; not a controlled hardware-only comparison. mAP was evaluated on the development computer and was not rerun on Pi 3."
+  },
+  "functional": {
+    "public_sample": {
+      "predictions": 10,
+      "max_vehicle_count": 4,
+      "plate": "5AU5341",
+      "plate_events": 1,
+      "event_types": [
+        "plate_recognized",
+        "vehicle_detected",
+        "watched_plate_detected"
+      ],
+      "all_demo": true,
+      "ha_plate_state_verified": true,
+      "snapshots": 7
+    },
+    "live": {
+      "predictions_at_least": 8,
+      "demo": false,
+      "snapshot_resolution": [
+        640,
+        480
+      ],
+      "ha_jpeg_verified": true,
+      "entities": {
+        "camera.window_pi_camera_snapshot": "idle",
+        "sensor.window_pi_camera_detections": "1",
+        "binary_sensor.window_pi_camera_person_detected": "off",
+        "binary_sensor.window_pi_camera_vehicle_detected": "on"
+      }
+    },
+    "service": {
+      "NRestarts": "0",
+      "ActiveState": "active",
+      "UnitFileState": "enabled",
+      "Linger": "yes"
+    }
+  },
+  "runtime": {
+    "runtime_packages": 42,
+    "packages": {
+      "pyyaml": "6.0.4",
+      "protobuf": "7.36.2",
+      "pydantic": "2.14.4",
+      "open-image-models": "0.6.0",
+      "markdown-it-py": "4.3.0",
+      "jsonargparse": "4.53.0",
+      "mdurl": "0.1.2",
+      "supervision": "0.32.0",
+      "idna": "3.20",
+      "fast-plate-ocr": "1.1.0",
+      "typing_extensions": "4.16.0",
+      "pyparsing": "3.3.3",
+      "fonttools": "4.68.0",
+      "pillow": "12.3.0",
+      "trackers": "2.7.0",
+      "tqdm": "4.70.1",
+      "kiwisolver": "1.5.1",
+      "numpy": "2.5.5",
+      "onnxruntime": "1.32.0",
+      "typing-inspection": "0.4.5",
+      "contourpy": "1.4.0",
+      "matplotlib": "3.11.2",
+      "packaging": "26.3",
+      "paho-mqtt": "2.2.0",
+      "tzdata": "2026.6",
+      "certifi": "2026.11.20",
+      "pygments": "2.21.0",
+      "charset-normalizer": "3.5.2",
+      "annotated-types": "0.8.0",
+      "cycler": "0.12.1",
+      "defusedxml": "0.7.1",
+      "fast-alpr": "0.4.0",
+      "urllib3": "2.8.0",
+      "requests": "2.34.2",
+      "python-dateutil": "4.0.0",
+      "flatbuffers": "25.12.19",
+      "scipy": "1.18.1",
+      "opencv-python-headless": "5.1.0.95",
+      "pydantic_core": "2.50.5",
+      "pydeprecate": "0.9.0",
+      "av": "19.0.2",
+      "rich": "15.0.0"
+    },
+    "excluded_packages_absent": [
+      "torch",
+      "torchvision",
+      "rfdetr",
+      "transformers",
+      "onnx",
+      "pytest",
+      "ruff"
+    ],
+    "preset": "speed",
+    "detector_threads": 2,
+    "max_fps": 1,
+    "lpr_enabled": true,
+    "lpr_interval_seconds": 5,
+    "lpr_threads": 2,
+    "tracking_enabled": true,
+    "hold_seconds": 10,
+    "live_watchlist_empty": true,
+    "service": {
+      "MainPID": "2339",
+      "NRestarts": "0",
+      "ActiveState": "active",
+      "SubState": "running",
+      "UnitFileState": "enabled"
+    },
+    "linger": "Linger=yes",
+    "reboot_tested": false,
+    "final_health": {
+      "temperature": "temp=53.7'C",
+      "throttle": "throttled=0x50005"
+    },
+    "final_memory": "MemTotal:         926764 kB\nMemFree:          235920 kB\nMemAvailable:     571812 kB\nBuffers:           17868 kB\nCached:           348948 kB\nSwapCached:            0 kB\nActive:           438404 kB\nInactive:         141408 kB\nActive(anon):     216908 kB\nInactive(anon):        0 kB\nActive(file):     221496 kB\nInactive(file):   141408 kB\nUnevictable:           0 kB\nMlocked:               0 kB\nSwapTotal:        926716 kB\nSwapFree:         926716 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:                24 kB\nWriteback:             0 kB\nAnonPages:        213172 kB\nMapped:           134592 kB\nShmem:              3900 kB\nKReclaimable:      36344 kB\nSlab:              62424 kB\nSReclaimable:      36344 kB\nSUnreclaim:        26080 kB\nKernelStack:        2580 kB\nPageTables:         3256 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     1390096 kB\nCommitted_AS:     884992 kB\nVmallocTotal:   261087232 kB\nVmallocUsed:       19876 kB\nVmallocChunk:          0 kB\nPercpu:              720 kB\nCmaTotal:         262144 kB\nCmaFree:          120532 kB\nBalloon:               0 kB\n",
+    "processes": "    PID     ELAPSED %CPU   RSS COMMAND\n   2343       00:44  233 239740 <home>/mqtt-camera-streamer/.venv/bin/python scripts/onnx_camera.py --config <home>/.config/mqtt-camera/config.yml\n   2413       00:02 82.0 26400 .venv/bin/python -\n"
+  },
+  "earlier_mypi_service": {
+    "active": false,
+    "enabled": false
+  },
+  "scope": "Short matched-recording pipeline benchmarks include capture/decode, detector preprocessing/inference/postprocessing, tracking and optional OCR. They exclude MQTT, JPEG/annotations, storage, RTSP, and application rate-limit sleep.",
+  "selected_live_settings": {
+    "preset": "speed",
+    "detector_threads": 2,
+    "plate_threads": 2,
+    "max_fps": 1,
+    "plate_scan_seconds": 5,
+    "presence_hold_seconds": 10,
+    "snapshots": "annotated MQTT JPEG, 640px max width",
+    "boot_enabled": true,
+    "linger": true,
+    "reboot_tested": false
+  },
+  "limitations": [
+    "Two repeats per mode, not a sustained throughput guarantee",
+    "Power-limited; no claim that changing threads fixed undervoltage",
+    "Public plate video repeats a still image, not a moving-vehicle accuracy test",
+    "Live MQTT and HA checks are separate from the timed benchmarks",
+    "No reboot was performed; boot unit/lingering enabled and start verified within current boot",
+    "Development MQTT/HA run on Mac and require Mac/Docker availability"
+  ]
+}

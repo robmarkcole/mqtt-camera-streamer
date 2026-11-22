@@ -192,12 +192,15 @@ consensus, exact watchlist matching and cooldown prevent repeated plate triggers
 
 ## Benchmark
 
-The recorded inference-speed benchmarks were measured on a **Raspberry Pi 4
+The original preset comparison was measured on a **Raspberry Pi 4
 Model B (4 GB)** running 64-bit Debian 13.6, with four ONNX Runtime CPU threads.
 They are short tests on a shared machine, not performance guarantees for every
 Pi or workload. The reported mAP scores were evaluated separately on the
 development computer using a small diagnostic dataset. See the
 [comparison table and test conditions](docs/experiments/README.md#latest-matched-comparison).
+Separate [Raspberry Pi 3 setup and benchmarks](docs/experiments/pi3.md) record a
+1 GB board with active undervoltage/throttling; those power-limited results are
+not a promise of performance on other Pi 3 installations.
 
 Use a representative recording to compare machines without opening a webcam or
 requiring an MQTT broker:
