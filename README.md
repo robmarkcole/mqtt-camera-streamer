@@ -16,10 +16,14 @@ and run one headless Python process on available CPU hardware.
 | **Speed** (default) | YOLOX Nano FP32 | Faster detection on a Raspberry Pi |
 | **Accuracy** | RF-DETR Nano static INT8 | Higher measured detection accuracy |
 
-Supervision and Roboflow ByteTrack provide boxes, track confirmation and presence
-holds. FastALPR provides optional local plate detection/OCR and watched-plate
-matching. Home Assistant's built-in MQTT integration supplies the dashboard and
-automations. The Pi runtime uses **42 locked packages, without PyTorch/TorchVision**;
+[Supervision](https://supervision.roboflow.com/) provides boxes and annotations;
+[Roboflow ByteTrack](https://trackers.roboflow.com/develop/trackers/bytetrack/)
+confirms and associates tracks, and this project's configurable holds stabilise
+presence. [FastALPR](https://github.com/ankandrew/fast-alpr) provides optional local
+plate detection/OCR and watched-plate matching.
+[Home Assistant's built-in MQTT integration](https://www.home-assistant.io/integrations/mqtt/)
+supplies the camera and sensor entities used by dashboards and automations.
+The Pi runtime uses **42 locked packages, without PyTorch/TorchVision**;
 these features add no new runtime dependency.
 
 Sparse annotated JPEGs over MQTT keep the original simple setup. RTSP and bounded,
@@ -94,6 +98,57 @@ with local settings/weights are ignored by Git.
 | All model and quantization experiments | [Experiment record](docs/experiments/README.md) |
 | Dependency reduction and deployment ideas | [Dependencies and performance](docs/dependencies.md) |
 | Original MQTT frame-streaming scripts | [Legacy examples](docs/legacy.md) |
+
+## Person present and person left
+
+Tracking lets automations react to changes in presence instead of triggering on
+every frame. By default, a person needs two consecutive observations to become a
+confirmed track. A configurable hold keeps presence on through brief detection
+gaps, reducing flicker and repeated notifications.
+
+For example, merge these settings into your camera configuration:
+
+```yaml
+tracking:
+  enabled: true
+  minimum_consecutive_frames: 2
+presence:
+  hold_seconds_by_class:
+    person: 10
+```
+
+Use the discovered person binary sensor in a Home Assistant automation, replacing
+the entity ID with your camera's actual ID:
+
+```yaml
+alias: Camera person presence changed
+triggers:
+  - trigger: state
+    entity_id: binary_sensor.usb_camera_person_detected
+    from: "off"
+    to: "on"
+    id: present
+  - trigger: state
+    entity_id: binary_sensor.usb_camera_person_detected
+    from: "on"
+    to: "off"
+    id: left
+actions:
+  - action: persistent_notification.create
+    data:
+      title: Camera
+      message: "{{ 'Person present' if trigger.id == 'present' else 'Person left' }}"
+```
+
+This notifies once when confirmed presence starts, then once when no confirmed
+person has been seen for ten seconds (evaluated on the next processed frame).
+Another person or a recovered track extends the same presence episode. “Person
+left” means no person is currently observed after that hold, not verified physical
+departure or identification of a particular person. Camera outages become
+`unavailable`; the explicit `on` → `off` trigger does not label them as departures.
+MQTT state continues to refresh normally; these notifications come from Home
+Assistant state changes, not dedicated person event messages. See
+[tracking and hold-time details](docs/onnx-home-assistant.md#tracking-and-presence-hold-times).
 
 ## Vehicle events and plates
 

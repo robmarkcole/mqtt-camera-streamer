@@ -143,22 +143,34 @@ discovery topics or device entries; automatic entity migration is not implemente
 Use the discovered person binary sensor's actual entity ID in an automation:
 
 ```yaml
-alias: Webcam person detected
+alias: Webcam person presence changed
 triggers:
   - trigger: state
     entity_id: binary_sensor.usb_camera_person_detected
     from: "off"
     to: "on"
+    id: present
+  - trigger: state
+    entity_id: binary_sensor.usb_camera_person_detected
+    from: "on"
+    to: "off"
+    id: left
 actions:
   - action: persistent_notification.create
     data:
       title: Webcam
-      message: A person was detected.
+      message: "{{ 'Person present' if trigger.id == 'present' else 'Person left' }}"
 ```
 
 Adjust the entity ID in Home Assistant; its generated name can differ. This fires
-once per presence episode. Brief detection gaps within the hold do not create new
-transitions; a confirmed detection after the hold has expired begins a new episode.
+once when presence starts and once when it clears after the hold. Brief detection
+gaps within the hold do not create new transitions; a confirmed detection after
+the hold has expired begins a new episode. Presence groups all observed people:
+“Person left” means none remain observed after the hold, not a verified physical
+departure or identification of a particular person. Outages become `unavailable`,
+which the explicit `on` to `off` trigger excludes. MQTT state still refreshes on
+each prediction; person notifications use HA state transitions rather than
+dedicated person event messages.
 
 ## Verify changes
 
