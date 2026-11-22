@@ -1,5 +1,9 @@
 # Raspberry Pi 3 setup and benchmarks
 
+The settings below record the benchmark-time setup. The later
+[production RTSP/MQTT deployment](pi3-rtsp.md) uses both image outputs with plate
+recognition disabled and the production broker, rather than the development Mac.
+
 Tested on 2026-11-22 with a Raspberry Pi 3 Model B Rev 1.2 (1 GB),
 64-bit Debian 13.7, and an Alcor USB webcam. The installed application is the
 merged default branch, `master`, commit

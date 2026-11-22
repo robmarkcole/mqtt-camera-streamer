@@ -202,6 +202,7 @@ Upstream APIs: [RF-DETR ONNX](https://rfdetr.roboflow.com/latest/exports/onnx/),
 ## Images and recordings
 
 Sparse MQTT JPEGs now discover a Snapshot camera by default. Use `images.transport: rtsp`
-for optional PyAV RTSP output, or `off` for metadata only. Optional `storage` writes
+for optional PyAV RTSP output, `both` to retain MQTT snapshots alongside RTSP, or
+`off` for metadata only. Optional `storage` writes
 JPEGs plus relative paths/predictions in SQLite. See [images and RTSP](images-and-rtsp.md)
 for configuration, retention, SSH preview and the additional RTSP server.

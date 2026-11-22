@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-22T13:06:16.843960+00:00",
+  "pi": {
+    "source_commit": "6441ec7e0ea7cac51c4d404899e3db3fd4bbbbdd",
+    "transport": "both",
+    "rtsp_fps": 2,
+    "inference_fps_cap": 1,
+    "lpr_enabled": false,
+    "tracking_enabled": true,
+    "runtime_packages": 42,
+    "torch_free": true,
+    "mediamtx_version": "v1.21.4",
+    "mediamtx_binary_sha256": "b8dfe611821ed897683bfb4f6513ece014c7416e847625f8a84f248d9fd50c55",
+    "unauthenticated_rtsp_denied": true,
+    "decoded_frames": 8,
+    "codec": "h264",
+    "resolution": [
+      640,
+      480
+    ],
+    "decoded_timestamp_span_seconds": 3.5,
+    "services": "NRestarts=0\nId=mediamtx.service\nActiveState=active\nUnitFileState=enabled\n\nNRestarts=0\nId=mqtt-camera.service\nActiveState=active\nUnitFileState=enabled\n",
+    "power_status": "throttled=0x50005",
+    "temperature": "temp=55.8'C",
+    "process_sample": "    ELAPSED %CPU   RSS COMMAND\n      05:03  1.9 42928 mediamtx\n      05:03  247 227852 python\n      00:12 45.6 50516 python\n",
+    "swap_used_kib": 0
+  },
+  "home_assistant": {
+    "rtsp_entity": "camera.window_pi_camera_rtsp",
+    "camera_entry_created": true,
+    "dashboard_saved_and_verified": true,
+    "existing_household_cards_preserved": 13,
+    "mqtt_snapshot_entity_retained": true,
+    "hls_master_playlist_verified": true,
+    "hls_media_playlist_verified": true,
+    "video_segment_bytes": 492274,
+    "plate_recognition_enabled": false
+  },
+  "browser": {
+    "video_playing": true,
+    "video_paused": false,
+    "video_ready_state": 4,
+    "video_width": 640,
+    "video_height": 480
+  },
+  "tests": {
+    "passed": 124,
+    "targeted_ruff": "passed",
+    "systemd_unit_validation": "passed"
+  },
+  "mediamtx_archive": {
+    "version": "v1.21.4",
+    "name": "mediamtx_v1.21.4_linux_arm64.tar.gz",
+    "sha256": "47784081da54c0608ea4dc359f5cfb19880209434769c532b3ed3a67ea99c29d",
+    "published_checksum_verified": true,
+    "source": "https://github.com/bluenviron/mediamtx/releases/tag/v1.21.4"
+  },
+  "new_python_dependencies": false,
+  "additional_server": "one standalone MediaMTX binary/user service",
+  "development_containers_stopped": true,
+  "reboot_tested": false,
+  "performance_scope": "Functional RTSP/MQTT deployment check and process samples; not a new inference/accuracy or sustained output benchmark. Encoded RTSP 2 FPS repeats latest inference picture, inference capped at 1 FPS."
+}

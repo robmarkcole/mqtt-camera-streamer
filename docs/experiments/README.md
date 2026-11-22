@@ -52,6 +52,7 @@ its mAP50–95 was slightly lower than FP32.
 | YOLOX Nano/Tiny export parity, native Pi and accuracy checks | [YOLOX FP32](yolox-fp32.md) | [YOLOX report](results/2026-11-21-yolox-fp32.json) |
 | YOLOX INT8 calibration, speed, quality and end-to-end checks | [YOLOX INT8](yolox-int8.md) | [YOLOX INT8 report](results/2026-11-21-yolox-int8.json) |
 | Merged default branch on a 1 GB Pi 3, power-limited preset comparison and live MQTT checks | [Pi 3 setup and benchmarks](pi3.md) | [Pi 3 report](results/2026-11-22-pi3.json) |
+| Pi 3 production MQTT + RTSP preview, with plate recognition off | [Simultaneous RTSP/MQTT validation](pi3-rtsp.md) | [RTSP report](results/2026-11-22-pi3-rtsp.json) |
 
 Raw reports retain model/checkpoint/calibration hashes, software versions,
 individual runs, temperature/throttling, memory, diagnostic scores, export parity
